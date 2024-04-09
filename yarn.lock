@@ -2977,7 +2977,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@soundws/hls-web-audio@npm:^2.2.1-beta.3, @soundws/hls-web-audio@workspace:packages/hls-web-audio":
+"@soundws/hls-web-audio@npm:^2.2.1-beta.4, @soundws/hls-web-audio@workspace:packages/hls-web-audio":
   version: 0.0.0-use.local
   resolution: "@soundws/hls-web-audio@workspace:packages/hls-web-audio"
   dependencies:
@@ -3002,7 +3002,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@soundws/loader-element@npm:^0.0.2-beta.0, @soundws/loader-element@workspace:elements/loader-element":
+"@soundws/loader-element@npm:^0.0.2-beta.1, @soundws/loader-element@workspace:elements/loader-element":
   version: 0.0.0-use.local
   resolution: "@soundws/loader-element@workspace:elements/loader-element"
   dependencies:
@@ -3020,7 +3020,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@soundws/mask-element@npm:^0.0.2-beta.0, @soundws/mask-element@workspace:elements/mask-element":
+"@soundws/mask-element@npm:^0.0.2-beta.1, @soundws/mask-element@workspace:elements/mask-element":
   version: 0.0.0-use.local
   resolution: "@soundws/mask-element@workspace:elements/mask-element"
   dependencies:
@@ -3046,7 +3046,7 @@ __metadata:
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
     "@soundws/element-styles": "workspace:^"
-    "@stemplayer-js/stemplayer-js": "npm:^3.2.0-beta.5"
+    "@stemplayer-js/stemplayer-js": "npm:^3.2.0-beta.6"
     "@web/dev-server": "npm:^0.4.2"
     "@web/test-runner": "npm:^0.18.0"
     eslint: "npm:^8.56.0"
@@ -3094,7 +3094,7 @@ __metadata:
     "@rollup/plugin-commonjs": "npm:^25.0.7"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-replace": "npm:^5.0.5"
-    "@soundws/hls-web-audio": "npm:^2.2.1-beta.3"
+    "@soundws/hls-web-audio": "npm:^2.2.1-beta.4"
     "@web/dev-server": "npm:^0.4.2"
     "@web/dev-server-rollup": "npm:^0.6.1"
     "@web/test-runner": "npm:^0.18.0"
@@ -3125,7 +3125,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@soundws/player-button-element@npm:^0.1.0-beta.1, @soundws/player-button-element@workspace:elements/player-button-element":
+"@soundws/player-button-element@npm:^0.1.0-beta.2, @soundws/player-button-element@workspace:elements/player-button-element":
   version: 0.0.0-use.local
   resolution: "@soundws/player-button-element@workspace:elements/player-button-element"
   dependencies:
@@ -3143,7 +3143,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@soundws/range-element@npm:^0.0.3-beta.0, @soundws/range-element@workspace:elements/range-element":
+"@soundws/range-element@npm:^0.0.3-beta.1, @soundws/range-element@workspace:elements/range-element":
   version: 0.0.0-use.local
   resolution: "@soundws/range-element@workspace:elements/range-element"
   dependencies:
@@ -3161,7 +3161,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@soundws/slider-element@npm:^0.1.2-beta.0, @soundws/slider-element@workspace:elements/slider-element":
+"@soundws/slider-element@npm:^0.1.2-beta.1, @soundws/slider-element@workspace:elements/slider-element":
   version: 0.0.0-use.local
   resolution: "@soundws/slider-element@workspace:elements/slider-element"
   dependencies:
@@ -3179,7 +3179,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@soundws/waveform-element@npm:^0.1.2-beta.1, @soundws/waveform-element@workspace:elements/waveform-element":
+"@soundws/waveform-element@npm:^0.1.2-beta.2, @soundws/waveform-element@workspace:elements/waveform-element":
   version: 0.0.0-use.local
   resolution: "@soundws/waveform-element@workspace:elements/waveform-element"
   dependencies:
@@ -3197,20 +3197,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@stemplayer-js/stemplayer-js@npm:^3.2.0-beta.5, @stemplayer-js/stemplayer-js@workspace:^, @stemplayer-js/stemplayer-js@workspace:elements/stemplayer-js":
+"@stemplayer-js/stemplayer-js@npm:^3.2.0-beta.6, @stemplayer-js/stemplayer-js@workspace:^, @stemplayer-js/stemplayer-js@workspace:elements/stemplayer-js":
   version: 0.0.0-use.local
   resolution: "@stemplayer-js/stemplayer-js@workspace:elements/stemplayer-js"
   dependencies:
     "@custom-elements-manifest/analyzer": "npm:^0.4.17"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
-    "@soundws/hls-web-audio": "npm:^2.2.1-beta.3"
-    "@soundws/loader-element": "npm:^0.0.2-beta.0"
-    "@soundws/mask-element": "npm:^0.0.2-beta.0"
-    "@soundws/player-button-element": "npm:^0.1.0-beta.1"
-    "@soundws/range-element": "npm:^0.0.3-beta.0"
-    "@soundws/slider-element": "npm:^0.1.2-beta.0"
-    "@soundws/waveform-element": "npm:^0.1.2-beta.1"
+    "@soundws/hls-web-audio": "npm:^2.2.1-beta.4"
+    "@soundws/loader-element": "npm:^0.0.2-beta.1"
+    "@soundws/mask-element": "npm:^0.0.2-beta.1"
+    "@soundws/player-button-element": "npm:^0.1.0-beta.2"
+    "@soundws/range-element": "npm:^0.0.3-beta.1"
+    "@soundws/slider-element": "npm:^0.1.2-beta.1"
+    "@soundws/waveform-element": "npm:^0.1.2-beta.2"
     "@web/dev-server": "npm:^0.4.2"
     "@web/test-runner": "npm:^0.18.0"
     eslint: "npm:^8.56.0"

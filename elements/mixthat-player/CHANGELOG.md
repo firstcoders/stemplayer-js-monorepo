@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.1.2-beta.8 (2024-04-09)
+
+**Note:** Version bump only for package @soundws/mixthat-player
+
+
+
+
+
 ## [3.1.2-beta.7](https://github.com/sound-ws/mixthat-player/compare/@soundws/mixthat-player@3.1.2-beta.6...@soundws/mixthat-player@3.1.2-beta.7) (2024-03-28)
 
 **Note:** Version bump only for package @soundws/mixthat-player
