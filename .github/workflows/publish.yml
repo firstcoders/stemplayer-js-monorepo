@@ -31,7 +31,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install latest Yarn
-        run: corepack enable yarn && yarn set version 4.0.2
+        run: corepack enable yarn && yarn set version 4.1.1
 
       # https://dev.to/mpocock1/how-to-cache-nodemodules-in-github-actions-with-yarn-24eh
       - uses: actions/cache@v4
