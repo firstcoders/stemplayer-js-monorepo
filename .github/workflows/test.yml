@@ -25,7 +25,7 @@ jobs:
           node-version: 18
 
       - name: Install Yarn
-        run: corepack enable yarn && yarn set version 4.1.1
+        run: corepack enable yarn
 
       # https://dev.to/mpocock1/how-to-cache-nodemodules-in-github-actions-with-yarn-24eh
       - uses: actions/cache@v4
