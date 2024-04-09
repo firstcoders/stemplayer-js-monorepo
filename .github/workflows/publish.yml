@@ -57,13 +57,3 @@ jobs:
           fi
 
           npx lerna publish from-package --yes --registry https://registry.npmjs.org/
-
-      # - name: 'Publish to AWS SAR us-east'
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_REGION: us-east-1
-      #     AWS_SAM_PACKAGE_BUCKET_NAME: sws-sam-deployment-us-east-1
-      #     SAM_CLI_TELEMETRY: 0
-      #   run: |
-      #     yarn sam:publish
