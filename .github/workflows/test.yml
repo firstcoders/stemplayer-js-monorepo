@@ -3,7 +3,7 @@ name: Test
 on:
   push:
     branches:
-      - master
+      - main
       - v*
   pull_request:
     types: [opened, synchronize]

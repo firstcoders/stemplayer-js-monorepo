@@ -3,7 +3,7 @@ name: Push repos
 on:
   push:
     branches:
-      - master
+      - main
   # pull_request:
   #   types: [closed]
   workflow_run:
