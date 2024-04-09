@@ -1,0 +1,109 @@
+{
+  "name": "@stemplayer-js/stemplayer-js",
+  "author": "The First Coders Team (https://www.firstcoders.co.uk)",
+  "description": "A streaming, low latency Stem Player Web-Component",
+  "email": "support@firstcoders.co.uk",
+  "bugs": "https://github.com/stemplayer-js/stemplayer-js/issues",
+  "homepage": "https://stemplayer-js.com",
+  "license": "GPL-3.0-or-later",
+  "contributors": [
+    {
+      "name": "Mark Cremer",
+      "email": "mark@firstcoders.co.uk",
+      "url": "http://www.firstcoders.co.uk"
+    }
+  ],
+  "keywords": [
+    "hls",
+    "web-audio",
+    "stems",
+    "stemplayer",
+    "web-component",
+    "web-components",
+    "webcomponent",
+    "custom-element"
+  ],
+  "version": "3.2.0-beta.5",
+  "type": "module",
+  "main": "index.js",
+  "module": "index.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stemplayer-js/stem-player-js.git"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./stemplayer-legacy.js": "./stemplayer-legacy.js",
+    "./stemplayer.js": "./stemplayer.js",
+    "./config.js": "./src/config.js"
+  },
+  "scripts": {
+    "analyze": "cem analyze --litelement",
+    "build:docs": "npx web-component-analyzer --format markdown stemplayer.js --outDir docs",
+    "start": "web-dev-server",
+    "lint": "eslint --ext .js,.html . --ignore-path .gitignore && prettier \"**/*.js\" --check --ignore-path .gitignore",
+    "format": "eslint --ext .js,.html . --fix --ignore-path .gitignore && prettier \"**/*.js\" --write --ignore-path .gitignore",
+    "test": "web-test-runner",
+    "test:watch": "web-test-runner --watch",
+    "prepublishOnly": "npm run analyze && npm run build:docs"
+  },
+  "dependencies": {
+    "@soundws/hls-web-audio": "^2.2.1-beta.3",
+    "@soundws/loader-element": "^0.0.2-beta.0",
+    "@soundws/mask-element": "^0.0.2-beta.0",
+    "@soundws/player-button-element": "^0.1.0-beta.1",
+    "@soundws/range-element": "^0.0.3-beta.0",
+    "@soundws/slider-element": "^0.1.2-beta.0",
+    "@soundws/waveform-element": "^0.1.2-beta.1",
+    "lit": "^3.1.2"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.4.17",
+    "@open-wc/eslint-config": "^12.0.3",
+    "@open-wc/testing": "^4.0.0",
+    "@web/dev-server": "^0.4.2",
+    "@web/test-runner": "^0.18.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5"
+  },
+  "customElements": "custom-elements.json",
+  "eslintConfig": {
+    "extends": [
+      "@open-wc",
+      "prettier"
+    ],
+    "rules": {
+      "no-param-reassign": [
+        "error",
+        {
+          "props": false
+        }
+      ]
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

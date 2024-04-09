@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "API hls-service:GetM3u8Function",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/services/hls-service/template.yaml",
+        "logicalId": "GetM3u8Function"
+      },
+      "api": {
+        "path": "/",
+        "httpMethod": "get",
+        "payload": {
+          "json": {}
+        }
+      }
+    }
+  ]
+}

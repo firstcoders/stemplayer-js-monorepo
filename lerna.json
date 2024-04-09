@@ -1,0 +1,16 @@
+{
+  "npmClient": "yarn",
+  "version": "independent",
+  "command": {
+    "version": {
+      "allowBranch": ["master", "development", "v2", "v3"],
+      "ignoreChanges": ["**/*.md", "**/test/**", "**/tests/**"],
+      "conventionalCommits": true
+    },
+    "publish": {
+      "conventionalCommits": true,
+      "registry": "https://npm.pkg.github.com"
+    }
+  },
+  "packages": ["packages/*", "elements/*"]
+}

@@ -1,0 +1,133 @@
+name: Push repos
+
+on:
+  push:
+    branches:
+      - master
+  # pull_request:
+  #   types: [closed]
+  workflow_run:
+    workflows: [Publish]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push hls-web-audio package
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'packages/hls-web-audio'
+          destination-github-username: 'sound-ws'
+          destination-repository-name: 'hls-web-audio'
+          user-email: mark@firstcoders.co.uk
+          target-branch: main
+
+      - name: Push stem player package
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'elements/stemplayer-js'
+          destination-github-username: 'stemplayer-js'
+          destination-repository-name: 'stemplayer-js'
+          user-email: mark@firstcoders.co.uk
+          target-branch: main
+
+      - name: Push mixthat-player
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'elements/mixthat-player'
+          destination-github-username: 'sound-ws'
+          destination-repository-name: 'mixthat-player'
+          user-email: mark@firstcoders.co.uk
+          target-branch: main
+
+      - name: Push element-styles package
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'elements/element-styles'
+          destination-github-username: 'sound-ws'
+          destination-repository-name: 'element-styles'
+          user-email: mark@firstcoders.co.uk
+          target-branch: main
+
+      - name: Push soundws-loader package
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'elements/loader-element'
+          destination-github-username: 'sound-ws'
+          destination-repository-name: 'loader-element'
+          user-email: mark@firstcoders.co.uk
+          target-branch: main
+
+      - name: Push soundws-mask package
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'elements/mask-element'
+          destination-github-username: 'sound-ws'
+          destination-repository-name: 'mask-element'
+          user-email: mark@firstcoders.co.uk
+          target-branch: main
+
+      - name: Push soundws-player-button package
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'elements/player-button-element'
+          destination-github-username: 'sound-ws'
+          destination-repository-name: 'player-button-element'
+          user-email: mark@firstcoders.co.uk
+          target-branch: main
+
+      - name: Push soundws-range package
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'elements/range-element'
+          destination-github-username: 'sound-ws'
+          destination-repository-name: 'range-element'
+          user-email: mark@firstcoders.co.uk
+          target-branch: main
+
+      - name: Push soundws-slider package
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'elements/slider-element'
+          destination-github-username: 'sound-ws'
+          destination-repository-name: 'slider-element'
+          user-email: mark@firstcoders.co.uk
+          target-branch: main
+
+      - name: Push soundws-waveform package
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'elements/waveform-element'
+          destination-github-username: 'sound-ws'
+          destination-repository-name: 'waveform-element'
+          user-email: mark@firstcoders.co.uk
+          target-branch: main

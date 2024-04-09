@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        background: #fafafa;
+        --stemplayer-js-color: red;
+        --stemplayer-js-font-family: 'Arial Narrow';
+        --stemplayer-js-font-size: 0.9rem;
+        --stemplayer-js-background-color: white;
+        --stemplayer-js-wave-color: pink;
+        --stemplayer-js-wave-progress-color: purple;
+        --stemplayer-js-wave-pixel-ratio: 2;
+        --stemplayer-js-wave-bar-gap: 0;
+        --stemplayer-js-waveform-bar-width: 1;
+        --stemplayer-js-controls-color: black;
+        --stemplayer-js-controls-background-color: red;
+        --stemplayer-js-controls-wave-color: black;
+        --stemplayer-js-controls-wave-progress-color: lightblue;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="demo"></div>
+
+    <script type="module">
+      import { html, render } from 'lit';
+      import '@stemplayer-js/stemplayer-js/stemplayer.js';
+      import '../mixthat-player.js';
+
+      const src =
+        'https://d18906zu98mq5t.cloudfront.net/tracks/a26fab52-d905-4c6a-9699-8af03a9ca31f/stream?t=1709625601931';
+
+
+      render(
+        html`<mixthat-player no-analytics controls="toggle:stems download:mix" .src=${src}></mixthat-player>`,
+        document.querySelector('#demo')
+      );
+    </script>
+
+
+  </body>
+</html>

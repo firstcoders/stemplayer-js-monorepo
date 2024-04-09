@@ -1,0 +1,11 @@
+{
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.options": {
+    "extensions": [".js"]
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "github-actions.workflows.pinned.workflows": [".github/workflows/publish.yml"]
+}

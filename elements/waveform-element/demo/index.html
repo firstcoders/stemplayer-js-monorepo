@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        background: #555;
+        /* --soundws-waveform-progress-color: blue; */
+        /* --soundws-waveform-cursor-color: red; */
+        --soundws-waveform-min-height: 150px;
+        --soundws-waveform-background-color: black;
+        /* --sounds-waveform-background-blend-mode: lighten; */
+        /* --sounds-waveform-progress-blend-mode: darken; */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="demo"></div>
+
+    <script type="module">
+      import 'lit';
+      import '../soundws-waveform.js';
+    </script>
+
+    <h1>Sizing</h1>
+
+    <h5>Scaley</h5>
+    <soundws-waveform
+      src="./assets/waveforms/106 BELL_05.3.json"
+    ></soundws-waveform>
+  </body>
+</html>

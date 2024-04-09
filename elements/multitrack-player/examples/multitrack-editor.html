@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sound Web Services | Demo of Stem Player</title>
+    <style>
+      :root {
+        --sws-stemsplayer-font-family: 'Arial Narrow';
+        --sws-stemsplayer-font-size: 0.9rem;
+        /* --sws-stemsplayer-color: black; */
+        --sws-stemsplayer-bg-color: black;
+        --sws-stemsplayer-wave-color: pink;
+        --sws-stemsplayer-wave-progress-color: purple;
+        /* --sws-stemsplayer-wave-pixel-ratio: 2; */
+
+        --sws-stemsplayer-controls-color: white;
+        --sws-stemsplayer-controls-bg-color: black;
+        --sws-stemsplayer-controls-wave-color: blue;
+        --sws-stemsplayer-controls-wave-progress-color: lightblue;
+        /* --sws-stemsplayer-controls-wave-pixel-ratio: 2; */
+
+        --sws-stemsplayer-stem-bg-color: black;
+        --sws-stemsplayer-stem-track-bg-color: black;
+        --sws-stemsplayer-stem-color: white;
+        --sws-stemsplayer-stem-wave-color: white;
+        --sws-stemsplayer-stem-wave-progress-color: lightblue;
+        /* --sws-stemsplayer-stem-wave-pixel-ratio: 2; */
+
+        /* --sws-stemsplayer-wave-bar-gap: 1; */
+        /* --sws-stemsplayer-wave-bar-width: 1; */
+      }
+
+      .mb-1 {
+        margin-bottom: 25px;
+      }
+    </style>
+    <script type="module">
+      import { defineCustomElements } from '../dist/soundws-stem-player.es.js';
+      defineCustomElements();
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="container text-center">
+        <div style="padding: 50px 100px">
+          <div class="mb-1">
+            <soundws-stem-player
+              id="player"
+              row-height="60px"
+              sample-rate="44100"
+              ruler
+              zoom="1"
+              editable="true"
+            >
+              <soundws-stem-player-controls
+                slot="header"
+                label="Demo track"
+                wave-color="white"
+              ></soundws-stem-player-controls>
+              <soundws-stem label="Drums A" volume="0.5">
+                <soundws-audio
+                  audio="../assets/audio/106%20DRUMS%20A_02.5.m3u8"
+                  waveform="../assets/waveforms/106%20DRUMS%20A_02.5.json"
+                ></soundws-audio>
+                <soundws-audio
+                  audio="../assets/audio/106%20DRUMS%20A_02.5.m3u8"
+                  waveform="../assets/waveforms/106%20DRUMS%20A_02.5.json"
+                ></soundws-audio>
+              </soundws-stem>
+              <soundws-stem
+                id="stem-drums-b"
+                label="Drums B"
+                muted="true"
+                volume="0.2"
+                wave-color="red"
+              >
+                <soundws-audio
+                  audio="../assets/audio/106%20DRUMS%20B_01.5.m3u8"
+                  waveform="../assets/waveforms/106%20DRUMS%20B_01.5.json"
+                  duration="10"
+                ></soundws-audio
+              ></soundws-stem>
+              <soundws-stem label="Conga" volume="0.3">
+                <soundws-audio
+                  audio="../assets/audio/106%20CONGA_03.3.m3u8"
+                  waveform="../assets/waveforms/106%20CONGA_03.3.json"
+                ></soundws-audio
+              ></soundws-stem>
+              <soundws-stem label="Casaba" volume="0.4" muted="true">
+                <soundws-audio
+                  audio="../assets/audio/106%20CABASA_04.3.m3u8"
+                  waveform="../assets/waveforms/106%20CABASA_04.3.json"
+                ></soundws-audio
+              ></soundws-stem>
+              <soundws-stem label="Bell" bg-color="green" volume="0.5"
+                ><soundws-audio
+                  audio="../assets/audio/106%20BELL_05.3.m3u8"
+                  waveform="../assets/waveforms/106%20BELL_05.3.json"
+                ></soundws-audio
+              ></soundws-stem>
+            </soundws-stem-player>
+          </div>
+
+          <div class="mb-1">
+            <form id="editform">
+              <div class="mb-1">
+                <label for="start">Start</label>
+                <input name="start" id="start" />
+              </div>
+              <div class="mb-1">
+                <label for="end">end</label>
+                <input name="end" id="end" disabled />
+              </div>
+              <div class="mb-1">
+                <button type="button" id="button-delete">Delete</button>
+              </div>
+              <div class="mb-1">
+                <button type="button" id="button-zoomin">Zoom in</button>
+              </div>
+              <div class="mb-1">
+                <button type="button" id="button-zoomout">Zoom out</button>
+              </div>
+              <div class="mb-1">
+                <button type="button" id="button-split">Split</button>
+              </div>
+            </form>
+          </div>
+
+          <div>
+            More examples
+            <ul>
+              <li><a href="./light-theme.html">Light Theme</a></li>
+              <li><a href="./small.html">Small</a></li>
+              <li><a href="./external-control.html">Control the player externally</a></li>
+              <li><a href="./control-at-bottom.html">Control at bottom</a></li>
+              <li><a href="./scroll-pane.html">Scroll pane</a></li>
+              <li><a href="./compact.html">Compact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const player = document.getElementById('player');
+      const startInput = document.getElementById('start');
+      const endInput = document.getElementById('end');
+      const form = document.getElementById('editform');
+      let selectedAudioElement;
+
+      const select = (el) => {
+        if (selectedAudioElement) {
+          selectedAudioElement.style.removeProperty('background-color');
+          selectedAudioElement.style.removeProperty('border-radius');
+          selectedAudioElement = undefined;
+          form.reset();
+        }
+
+        const audioEl = el;
+        if (audioEl.nodeName === 'SOUNDWS-AUDIO') {
+          selectedAudioElement = el;
+          startInput.value = audioEl.start;
+          endInput.value = audioEl.end;
+          audioEl.style.setProperty('background-color', 'rgba(255, 255, 255, 0.5)');
+          audioEl.style.setProperty('border-radius', '5px');
+          audioEl.style.setProperty('resize', 'horizontal');
+          audioEl.style.setProperty('overflow-x', 'auto');
+          // audioEl.style.setProperty('border-right', '10px solid red');
+
+          // const resizerEl = document.createElement('div');
+          // resizerEl.style.setProperty('position', 'absolute');
+          // resizerEl.style.setProperty('right', '0');
+          // resizerEl.style.setProperty('top', '0');
+          // resizerEl.style.setProperty('width', '10px');
+          // resizerEl.style.setProperty('cursor', 'col-resize');
+          // console.log(audioEl);
+          // audioEl.appendChild(resizerEl);
+        }
+      };
+
+      player.addEventListener('click', (e) => select(e.target));
+      player.addEventListener('dblclick', (e) => select(e.target));
+
+      player.addEventListener('dragover', (e) => {
+        const audioEl = e.target;
+        startInput.value = audioEl.start;
+        endInput.value = audioEl.end;
+      });
+
+      player.addEventListener('drop', (e) => {
+        const audioEl = e.target;
+        startInput.value = audioEl.start;
+        endInput.value = audioEl.end;
+      });
+
+      startInput.addEventListener('input', (e) => {
+        selectedAudioElement.start = e.target.value;
+      });
+
+      document.getElementById('button-delete').addEventListener('click', () => {
+        selectedAudioElement?.remove();
+        selectedAudioElement?.destroy();
+        selectedAudioElement = null;
+      });
+
+      document.getElementById('button-zoomin').addEventListener('click', () => {
+        console.log(player.zoom);
+        player.zoom += 0.5;
+      });
+
+      document.getElementById('button-zoomout').addEventListener('click', () => {
+        player.zoom -= 0.5;
+      });
+
+      document.getElementById('button-split').addEventListener('click', () => {
+        const { duration, start } = selectedAudioElement;
+
+        selectedAudioElement.duration = player.currentTime - selectedAudioElement.start;
+
+        const clone = selectedAudioElement.cloneNode(true);
+        clone.start = player.currentTime;
+        clone.offset = player.currentTime;
+        clone.duration = duration - clone.offset + start;
+
+        selectedAudioElement.parentElement.appendChild(clone);
+      });
+    </script>
+  </body>
+</html>

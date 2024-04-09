@@ -1,0 +1,44 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "@commitlint/cli": "^18.6.1",
+    "@commitlint/config-conventional": "^18.6.1",
+    "@commitlint/config-lerna-scopes": "^18.6.1",
+    "husky": "^9.0.10",
+    "lerna": "^8.1.2"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "elements/*"
+    ]
+  },
+  "scripts": {
+    "build": "lerna run build --stream",
+    "build:docs": "lerna run build:docs --stream && make collect-docs",
+    "lint": "lerna run lint --stream",
+    "test": "lerna run test --stream --concurrency 1",
+    "postpublish": "echo \"postpublish...nothing do do\"",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "postinstall": "husky install && npx playwright install",
+    "sam:publish": "lerna run sam:publish --stream"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "yarn": ">=3.6.3"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional",
+      "@commitlint/config-lerna-scopes"
+    ],
+    "rules": {
+      "scope-empty": [
+        1,
+        "never"
+      ]
+    }
+  },
+  "packageManager": "yarn@4.0.2"
+}
