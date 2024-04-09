@@ -30,7 +30,7 @@ jobs:
           source-directory: 'packages/hls-web-audio'
           destination-github-username: 'sound-ws'
           destination-repository-name: 'hls-web-audio'
-          user-email: mark@firstcoders.co.uk
+          user-email: team@firstcoders.co.uk
           target-branch: main
 
       - name: Push stem player package
@@ -41,7 +41,7 @@ jobs:
           source-directory: 'elements/stemplayer-js'
           destination-github-username: 'stemplayer-js'
           destination-repository-name: 'stemplayer-js'
-          user-email: mark@firstcoders.co.uk
+          user-email: team@firstcoders.co.uk
           target-branch: main
 
       - name: Push mixthat-player
@@ -52,7 +52,7 @@ jobs:
           source-directory: 'elements/mixthat-player'
           destination-github-username: 'sound-ws'
           destination-repository-name: 'mixthat-player'
-          user-email: mark@firstcoders.co.uk
+          user-email: team@firstcoders.co.uk
           target-branch: main
 
       - name: Push element-styles package
@@ -63,7 +63,7 @@ jobs:
           source-directory: 'elements/element-styles'
           destination-github-username: 'sound-ws'
           destination-repository-name: 'element-styles'
-          user-email: mark@firstcoders.co.uk
+          user-email: team@firstcoders.co.uk
           target-branch: main
 
       - name: Push soundws-loader package
@@ -74,7 +74,7 @@ jobs:
           source-directory: 'elements/loader-element'
           destination-github-username: 'sound-ws'
           destination-repository-name: 'loader-element'
-          user-email: mark@firstcoders.co.uk
+          user-email: team@firstcoders.co.uk
           target-branch: main
 
       - name: Push soundws-mask package
@@ -85,7 +85,7 @@ jobs:
           source-directory: 'elements/mask-element'
           destination-github-username: 'sound-ws'
           destination-repository-name: 'mask-element'
-          user-email: mark@firstcoders.co.uk
+          user-email: team@firstcoders.co.uk
           target-branch: main
 
       - name: Push soundws-player-button package
@@ -96,7 +96,7 @@ jobs:
           source-directory: 'elements/player-button-element'
           destination-github-username: 'sound-ws'
           destination-repository-name: 'player-button-element'
-          user-email: mark@firstcoders.co.uk
+          user-email: team@firstcoders.co.uk
           target-branch: main
 
       - name: Push soundws-range package
@@ -107,7 +107,7 @@ jobs:
           source-directory: 'elements/range-element'
           destination-github-username: 'sound-ws'
           destination-repository-name: 'range-element'
-          user-email: mark@firstcoders.co.uk
+          user-email: team@firstcoders.co.uk
           target-branch: main
 
       - name: Push soundws-slider package
@@ -118,7 +118,7 @@ jobs:
           source-directory: 'elements/slider-element'
           destination-github-username: 'sound-ws'
           destination-repository-name: 'slider-element'
-          user-email: mark@firstcoders.co.uk
+          user-email: team@firstcoders.co.uk
           target-branch: main
 
       - name: Push soundws-waveform package
@@ -129,5 +129,5 @@ jobs:
           source-directory: 'elements/waveform-element'
           destination-github-username: 'sound-ws'
           destination-repository-name: 'waveform-element'
-          user-email: mark@firstcoders.co.uk
+          user-email: team@firstcoders.co.uk
           target-branch: main
