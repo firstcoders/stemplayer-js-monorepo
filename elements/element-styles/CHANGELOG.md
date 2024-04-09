@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/firstcoders/webcomponents/compare/@soundws/element-styles@0.1.0-beta.3...@soundws/element-styles@0.1.0) (2024-04-09)
+
+**Note:** Version bump only for package @soundws/element-styles
+
+
+
+
+
 # 0.1.0-beta.3 (2024-04-09)
 
 **Note:** Version bump only for package @soundws/element-styles

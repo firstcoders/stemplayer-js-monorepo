@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/sound-ws/player-button-element/compare/@soundws/player-button-element@0.1.0-beta.2...@soundws/player-button-element@0.1.0) (2024-04-09)
+
+**Note:** Version bump only for package @soundws/player-button-element
+
+
+
+
+
 # 0.1.0-beta.2 (2024-04-09)
 
 **Note:** Version bump only for package @soundws/player-button-element
