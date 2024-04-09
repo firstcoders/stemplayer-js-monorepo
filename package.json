@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "@firstcoders/webcomponents",
   "private": true,
   "devDependencies": {
     "@commitlint/cli": "^18.6.1",
