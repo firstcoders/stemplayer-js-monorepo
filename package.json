@@ -21,8 +21,9 @@
     "test": "lerna run test --stream --concurrency 1",
     "postpublish": "echo \"postpublish...nothing do do\"",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "postinstall": "husky install && npx playwright install",
-    "sam:publish": "lerna run sam:publish --stream"
+    "postinstall": "husky init && npx playwright install",
+    "sam:publish": "lerna run sam:publish --stream",
+    "prepare": "husky"
   },
   "engines": {
     "node": ">=18.0.0",
