@@ -2,11 +2,4 @@
 
 branch="$(git rev-parse --abbrev-ref HEAD)"
 
-# npx lerna run lint
-
-# if [ "$branch" = "main" ]; then
-#   npx lerna run build
-#   yarn test
-# fi
-
-
+npx lerna run lint
