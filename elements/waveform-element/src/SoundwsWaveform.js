@@ -248,6 +248,7 @@ export class SoundwsWaveform extends LitElement {
         new CustomEvent('waveform:draw', {
           bubbles: true,
           composed: true,
+          detail: this,
         }),
       );
     });
