@@ -112,6 +112,12 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
           max-height: var(--stemplayer-js-max-height, auto);
           overflow: auto;
         }
+
+        soundws-region {
+          position: absolute;
+          height: 100%;
+          z-index: 9999;
+        }
       `,
     ];
   }
@@ -131,6 +137,11 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
       duration: { type: Number },
 
       /**
+       * the offset
+       */
+      offset: { type: Number },
+
+      /**
        * Allows looping (experimental)
        */
       loop: { type: Boolean },
@@ -139,6 +150,11 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
        * Disabled the mouseover hover effect
        */
       noHover: { type: Boolean, attribute: 'no-hover' },
+
+      /**
+       * Enable region selection
+       */
+      regions: { type: Boolean },
 
       /**
        * Inject a pre instantiated AudioContext
@@ -150,6 +166,12 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
        * Controls the player by keyboard events (e.g. space = start/pause)
        */
       noKeyboardEvents: { type: Boolean, attribute: 'no-keyboard-events' },
+
+      regionLeft: { state: true },
+      regionWidth: { state: true },
+      audioDuration: { state: true },
+      regionOffset: { state: true },
+      regionDuration: { state: true },
     };
   }
 
@@ -180,11 +202,12 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
     this.noHover = false;
     this.noKeyboardEvents = false;
     this.#debouncedMergePeaks = debounce(this.#mergePeaks, 100);
+    this.regions = false;
 
     const controller = new Controller({
       ac: this.audioContext,
       acOpts: { latencyHint: 'playback', sampleRate: 44100 },
-      duration: this.duration,
+      // duration: this.duration,
       loop: this.loop,
     });
 
@@ -192,6 +215,7 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
 
     this.addEventListener('controls:play', this.#onPlay);
     this.addEventListener('controls:pause', this.#onPause);
+    this.addEventListener('controls:loop', this.#onToggleLoop);
     // this.addEventListener('peaks', this.onPeaks);
     this.addEventListener('stem:load:start', this.#onStemLoadingStart);
     this.addEventListener('stem:load:end', this.#onStemLoadingEnd);
@@ -201,15 +225,11 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
     if (!this.noHover) this.addEventListener('pointermove', this.#onHover);
 
     const handleSeek = e => {
-      if (
-        e.target instanceof StemComponent ||
-        e.target instanceof ControlComponent
-      ) {
-        controller.pct = e.detail;
-      }
+      controller.pct = e.detail;
     };
 
     this.addEventListener('waveform:seek', e => handleSeek(e));
+    this.addEventListener('region:seek', e => handleSeek(e));
     this.addEventListener('controls:seek', e => handleSeek(e));
 
     this.addEventListener('controls:seeking', () => {
@@ -236,7 +256,13 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
     });
 
     controller.on('pause-start', () => {
-      this.isLoading = true;
+      // prevent showing of loader if only buffering for a short period
+      setTimeout(() => {
+        if (controller.isBuffering) {
+          this.isLoading = true;
+        }
+      }, 150);
+
       this.dispatchEvent(new Event('loading-start'));
     });
 
@@ -274,6 +300,18 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
       this.#updateChildren({
         duration,
       });
+
+      this.audioDuration = duration;
+    });
+
+    controller.on('offset', () => {
+      this.regionOffset = controller.offset;
+      this.offset = controller.offset;
+    });
+
+    controller.on('playDuration', () => {
+      this.regionDuration = controller.playDuration;
+      // this.duration = controller.playDuration;
     });
 
     controller.on('start', () => {
@@ -341,6 +379,17 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
     changedProperties.forEach((oldValue, propName) => {
       if (['loop'].indexOf(propName) !== -1) {
         this.#controller.loop = this.loop;
+
+        // notify the controls component of the change
+        this.#updateChildren({
+          loop: this.loop,
+        });
+      }
+      if (['offset'].indexOf(propName) !== -1) {
+        this.#controller.offset = this.offset;
+      }
+      if (['duration'].indexOf(propName) !== -1) {
+        this.#controller.playDuration = this.duration;
       }
     });
   }
@@ -362,6 +411,19 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
 
   render() {
     return html`<div class="relative overflowHidden">
+      ${this.displayMode === 'lg' &&
+      this.regions &&
+      this.regionLeft &&
+      this.regionWidth
+        ? html`<soundws-region
+            .totalDuration=${this.audioDuration}
+            .offset=${this.regionOffset}
+            .duration=${this.regionDuration}
+            @region:update=${this.#onRegionUpdate}
+            @region:change=${this.#onRegionChange}
+            style="left: ${this.regionLeft}; width: ${this.regionWidth}"
+          ></soundws-region>`
+        : ''}
       <slot name="header" @slotchange=${this.#onSlotChange}></slot>
       <div class="stemsWrapper">
         <slot class="default" @slotchange=${this.#onSlotChange}></slot>
@@ -392,6 +454,11 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
     this.#controller.pause();
   }
 
+  #onToggleLoop() {
+    this.#controller.loop = !this.#controller.loop;
+    this.loop = !this.loop;
+  }
+
   /**
    * Exports the current state of the player
    */
@@ -401,6 +468,8 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
     return {
       state,
       currentTime,
+      offset: this.#controller.offset,
+      duration: this.#controller.playDuration,
       stems: this.stemComponents.map(c => ({
         id: c.id,
         src: c.src,
@@ -430,17 +499,17 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
    * Gets the duration
    * @type {number}
    */
-  get duration() {
-    return this.#controller?.duration || this._duration;
-  }
+  // get duration() {
+  //   return this.#controller?.duration || this._duration;
+  // }
 
-  set duration(duration) {
-    this._duration = duration;
+  // set duration(duration) {
+  //   this._duration = duration;
 
-    if (this.#controller) {
-      this.#controller.duration = duration;
-    }
-  }
+  //   if (this.#controller) {
+  //     this.#controller.duration = duration;
+  //   }
+  // }
 
   /**
    * Sets the currentTime to a pct of total duration, seeking to that time
@@ -546,6 +615,12 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
     if (e.target instanceof StemComponent) {
       this.#debouncedMergePeaks();
     }
+
+    // calculate the positioning of the region element
+    // @todo Not sure why but offsetLeft leaves 1 pixel of the underlying waveform visible
+    const padding = 1;
+    this.regionLeft = `${e.detail.offsetLeft - padding}px`;
+    this.regionWidth = `${e.detail.offsetWidth + padding}px`;
   }
 
   /**
@@ -603,5 +678,17 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
           el[key] = props[key];
         });
     });
+  }
+
+  #onRegionChange(e) {
+    const { offset, duration } = e.detail;
+    this.#controller.offset = offset;
+    this.#controller.playDuration = duration;
+  }
+
+  #onRegionUpdate(e) {
+    const { offset, duration } = e.detail;
+    this.regionOffset = offset;
+    this.regionDuration = duration;
   }
 }

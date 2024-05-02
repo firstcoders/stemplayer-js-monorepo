@@ -31,6 +31,10 @@ export default css`
     padding-right: 0.6rem;
   }
 
+  .p4 {
+    padding: 0.6rem;
+  }
+
   .pr2 {
     padding-right: 0.3rem;
   }
