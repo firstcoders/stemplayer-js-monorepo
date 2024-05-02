@@ -102,7 +102,7 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
           mix-blend-mode: var(--stemplayer-hover-mix-blend-mode, overlay);
           background: var(
             --stemplayer-hover-background-color,
-            rgba(255, 255, 255, 0.5)
+            rgba(255, 255, 255, 0.75)
           );
           opacity: 0;
           transition: opacity 0.2s ease;
@@ -113,7 +113,7 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
           overflow: auto;
         }
 
-        soundws-region {
+        stemplayer-js-region {
           position: absolute;
           height: 100%;
           z-index: 9999;
@@ -415,14 +415,14 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
       this.regions &&
       this.regionLeft &&
       this.regionWidth
-        ? html`<soundws-region
+        ? html`<stemplayer-js-region
             .totalDuration=${this.audioDuration}
             .offset=${this.regionOffset}
             .duration=${this.regionDuration}
             @region:update=${this.#onRegionUpdate}
             @region:change=${this.#onRegionChange}
             style="left: ${this.regionLeft}; width: ${this.regionWidth}"
-          ></soundws-region>`
+          ></stemplayer-js-region>`
         : ''}
       <slot name="header" @slotchange=${this.#onSlotChange}></slot>
       <div class="stemsWrapper">
@@ -531,13 +531,22 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
    *@private
    */
   #onHover(e) {
-    const el = this.shadowRoot.querySelector('.hover');
-    const waveformEl = e.target.waveformComponent;
+    // see if are hovering over the correct elements
+    const targetEl = e
+      .composedPath()
+      .find(
+        el =>
+          ['SOUNDWS-WAVEFORM', 'STEMPLAYER-JS-REGION'].indexOf(el.tagName) !==
+          -1,
+      );
 
-    if (el && waveformEl) {
-      const left = waveformEl.offsetLeft;
+    // over element
+    const el = this.shadowRoot.querySelector('.hover');
+
+    if (el && targetEl) {
+      const left = targetEl.offsetLeft;
       let width = e.offsetX - left > 0 ? e.offsetX - left : 0;
-      if (width > waveformEl.offsetWidth) width = waveformEl.offsetWidth;
+      if (width > targetEl.offsetWidth) width = targetEl.offsetWidth;
 
       el.style.left = `${left}px`;
       el.style.width = `${width}px`;

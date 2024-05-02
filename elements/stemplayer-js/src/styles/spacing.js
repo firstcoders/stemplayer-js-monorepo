@@ -21,6 +21,10 @@ export default css`
     padding-right: 0.15rem;
   }
 
+  .p1 {
+    padding: 0.15rem;
+  }
+
   .px1 {
     padding-left: 0.15rem;
     padding-right: 0.15rem;

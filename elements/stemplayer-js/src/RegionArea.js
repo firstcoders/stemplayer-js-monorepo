@@ -51,14 +51,30 @@ export class RegionArea extends ResponsiveLitElement {
           display: block;
         }
 
-        .selection {
+        .mask {
+          box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.85);
+        }
+
+        .dashed {
           border-width: 0 1px 0 1px;
           border-style: dashed;
           border-color: var(
             --stemplayer-js-region-selection-border-color,
             rgba(255, 255, 255, 0.75)
           );
-          box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.85);
+        }
+
+        .cursor {
+          position: absolute;
+          background-color: transparent;
+          z-index: 999;
+          height: 100%;
+          top: 0;
+          width: 1px;
+          padding: 0;
+          margin: 0;
+          border-width: 0 1px 0 0px;
+          border-style: dashed;
         }
       `,
     ];
@@ -69,6 +85,7 @@ export class RegionArea extends ResponsiveLitElement {
     offset: { type: Number },
     duration: { type: Number },
     pixelsPerSecond: { state: true },
+    cursorPosition: { state: true },
   };
 
   constructor() {
@@ -80,6 +97,7 @@ export class RegionArea extends ResponsiveLitElement {
     this.addEventListener('resize', () => {
       this.pixelsPerSecond = this.offsetWidth / this.totalDuration;
     });
+    this.addEventListener('pointermove', this.#onHover);
   }
 
   updated(changedProperties) {
@@ -92,7 +110,7 @@ export class RegionArea extends ResponsiveLitElement {
 
   render() {
     return html`<div class="w100 h100">
-      ${this.duration < this.totalDuration
+      ${this.offset > 0 && this.duration < this.totalDuration
         ? html`<div
             class="h100 absolute left w2 ztop"
             style="left: calc(${this.pixelsPerSecond * this.offset}px - 50px);"
@@ -103,7 +121,7 @@ export class RegionArea extends ResponsiveLitElement {
           </div>
           <div class="h100 overflowHidden">
             <div
-              class="selection h100 relative"
+              class="mask dashed h100 relative"
               style="left: ${Math.round(
                 this.pixelsPerSecond * this.offset,
               )}px; width: ${Math.round(
@@ -127,6 +145,13 @@ export class RegionArea extends ResponsiveLitElement {
             ></soundws-player-button>
           </div></div>`
         : ''}
+      <div class="cursor dashed w2 zTop p1">
+        <div class="w2 hRow textCenter noSelect textXs">
+          <span class="bgPlayer p1 muted"
+            >${formatSeconds(this.cursorPosition)}</span
+          >
+        </div>
+      </div>
     </div>`;
   }
 
@@ -222,5 +247,25 @@ export class RegionArea extends ResponsiveLitElement {
     const duration = Math.floor((width / pixelsPerSecond) * 100) / 100;
 
     return { offset, duration };
+  }
+
+  /**
+   *@private
+   */
+  #onHover(e) {
+    const el = this.shadowRoot.querySelector('.cursor');
+    el.style.left =
+      e.offsetX <= this.offsetWidth ? `${e.offsetX}px` : this.offsetWidth;
+
+    this.cursorPosition =
+      Math.round((e.offsetX / this.offsetWidth) * this.totalDuration * 10) / 10;
+
+    this.dispatchEvent(
+      new CustomEvent('region:hover', {
+        detail: this.state,
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 }

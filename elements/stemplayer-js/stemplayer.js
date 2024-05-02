@@ -34,4 +34,4 @@ window.customElements.define(
   SoundwsStemPlayerControls,
 );
 window.customElements.define('stemplayer-js-stem', SoundwsStemPlayerStem);
-window.customElements.define('soundws-region', RegionArea);
+window.customElements.define('stemplayer-js-region', RegionArea);
