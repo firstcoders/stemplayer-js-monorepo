@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0-beta.0](https://github.com/sound-ws/waveform-element/compare/@soundws/waveform-element@0.1.2...@soundws/waveform-element@0.2.0-beta.0) (2024-05-03)
+
+
+### Features
+
+* **waveform-element:** add reference to waveform element to waveformdraw event ([c977429](https://github.com/sound-ws/waveform-element/commit/c9774293ddf1329eaf4cd999b16e5d376050a595))
+
+
+
+
+
 ## [0.1.2](https://github.com/sound-ws/waveform-element/compare/@soundws/waveform-element@0.1.2-beta.2...@soundws/waveform-element@0.1.2) (2024-04-09)
 
 **Note:** Version bump only for package @soundws/waveform-element

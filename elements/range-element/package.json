@@ -3,7 +3,7 @@
   "description": "Webcomponent soundws-range following open-wc recommendations",
   "license": "MIT",
   "author": "soundws-range",
-  "version": "0.0.3",
+  "version": "0.0.4-beta.0",
   "type": "module",
   "main": "index.js",
   "module": "index.js",
