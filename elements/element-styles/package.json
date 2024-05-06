@@ -3,7 +3,7 @@
   "description": "Webcomponent element-styles following open-wc recommendations",
   "license": "MIT",
   "author": "element-styles",
-  "version": "0.1.1-beta.0",
+  "version": "0.1.1-beta.1",
   "type": "module",
   "main": "index.js",
   "module": "index.js",
