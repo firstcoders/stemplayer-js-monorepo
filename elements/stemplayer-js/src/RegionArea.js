@@ -38,6 +38,11 @@ export class RegionArea extends ResponsiveLitElement {
    */
   #mouseDownTime;
 
+  /**
+   * Event handler
+   */
+  #onMouseUpHandler;
+
   static get styles() {
     return [
       gridStyles,
@@ -101,11 +106,21 @@ export class RegionArea extends ResponsiveLitElement {
     this.addEventListener('mousedown', this.#onMouseDown);
     this.addEventListener('mousemove', this.#onMouseMove);
     this.addEventListener('click', this.#handleClick);
-    document.addEventListener('mouseup', e => this.#onMouseUp(e)); // mouse up _anywhere_ (not just in this element) will also trigger the select-end behaviour
     this.addEventListener('resize', () => {
       this.pixelsPerSecond = this.offsetWidth / this.totalDuration;
     });
     this.addEventListener('pointermove', this.#onHover);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.#onMouseUpHandler = e => this.#onMouseUp(e);
+    document.addEventListener('mouseup', this.#onMouseUpHandler); // mouse up _anywhere_ (not just in this element) will also trigger the select-end behaviour
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('mouseup', this.#onMouseUpHandler);
   }
 
   updated(changedProperties) {
