@@ -39,6 +39,11 @@ export class RegionArea extends ResponsiveLitElement {
   #mouseDownTime;
 
   /**
+   * How far the mouse was moved
+   */
+  #mouseMoveWidth;
+
+  /**
    * Event handler
    */
   #onMouseUpHandler;
@@ -200,9 +205,9 @@ export class RegionArea extends ResponsiveLitElement {
     ) {
       this.lastOffsetX = e.offsetX;
       const distance = Math.abs(e.offsetX - this.#mouseDownX);
-      this.mouseMoveWidth = distance; // distance > 5 ? distance : undefined;
+      this.#mouseMoveWidth = distance; // distance > 5 ? distance : undefined;
 
-      if (this.mouseMoveWidth) {
+      if (this.#mouseMoveWidth) {
         this.dispatchEvent(
           new CustomEvent('region:update', {
             detail: this.state,
@@ -216,7 +221,7 @@ export class RegionArea extends ResponsiveLitElement {
 
   #onMouseUp() {
     // if we're dragging, dispatch and event
-    if (this.mouseMoveWidth) {
+    if (this.#mouseMoveWidth) {
       this.dispatchEvent(
         new CustomEvent('region:change', {
           detail: this.state,
@@ -227,9 +232,9 @@ export class RegionArea extends ResponsiveLitElement {
     }
 
     // reset
-    this.mouseMoveWidth = undefined;
+    this.#mouseMoveWidth = undefined;
     this.#mouseDownX = undefined;
-    this.mouseDownTime = undefined;
+    this.#mouseDownTime = undefined;
   }
 
   #onDeselectClick(e) {
@@ -265,7 +270,7 @@ export class RegionArea extends ResponsiveLitElement {
     const coord1 = this.#mouseDownX;
     const coord2 = this.lastOffsetX;
     const left = coord1 < coord2 ? coord1 : coord2;
-    const width = this.mouseMoveWidth;
+    const width = this.#mouseMoveWidth;
     const offset = Math.floor((left / pixelsPerSecond) * 100) / 100;
     const duration = Math.floor((width / pixelsPerSecond) * 100) / 100;
 
