@@ -38,10 +38,10 @@
     "@open-wc/testing": "^4.0.0",
     "@web/dev-server": "^0.4.2",
     "@web/test-runner": "^0.18.0",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
+    "lint-staged": "^15.2.5",
     "prettier": "^3.2.5"
   },
   "customElements": "custom-elements.json",
