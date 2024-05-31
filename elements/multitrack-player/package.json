@@ -52,11 +52,11 @@
     "lit": "^2.7.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.24.1",
-    "@babel/core": "^7.24.3",
-    "@babel/eslint-parser": "^7.24.1",
-    "@babel/preset-env": "^7.24.3",
-    "@babel/runtime": "^7.24.1",
+    "@babel/cli": "^7.24.6",
+    "@babel/core": "^7.24.6",
+    "@babel/eslint-parser": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
+    "@babel/runtime": "^7.24.6",
     "@material-design-icons/svg": "^0.14.6",
     "@open-wc/testing": "^4.0.0",
     "@rollup/plugin-babel": "^6.0.4",
