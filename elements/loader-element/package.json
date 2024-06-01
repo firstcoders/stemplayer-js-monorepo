@@ -4,7 +4,7 @@
   "email": "support@firstcoders.co.uk",
   "description": "Webcomponent soundws-loader following open-wc recommendations",
   "license": "MIT",
-  "version": "0.0.3-beta.2",
+  "version": "0.0.3",
   "type": "module",
   "main": "index.js",
   "module": "index.js",
