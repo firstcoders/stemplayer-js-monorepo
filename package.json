@@ -1,5 +1,5 @@
 {
-  "name": "@firstcoders/webcomponents",
+  "name": "@soundws/webcomponents",
   "private": true,
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
