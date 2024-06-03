@@ -1,6 +1,6 @@
 # @soundws/webcomponents [![Test](https://github.com/sound-ws/webcomponents/actions/workflows/test.yml/badge.svg)](https://github.com/sound-ws/webcomponents/actions/workflows/test.yml)
 
-This repository is a [lerna](https://lerna.js.org/) monorepo that contains several packages relating to the [Sound Web Services Stem Player](https://stemplayer-js.com).
+This repository is a [lerna](https://lerna.js.org/) monorepo that contains several packages relating to [@stemplayer-js](https://stemplayer-js.com).
 
 Please see the README.md in the packages for further information about each package.
 
