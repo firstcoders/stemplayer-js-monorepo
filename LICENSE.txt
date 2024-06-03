@@ -1,0 +1,5 @@
+Copyright (c) 2020-2024 First Coders LTD
+
+The code in this repository is distributed with various licenses.
+
+Please see the license document in the in the various packages contained in this repo for licensing information regarding each package.

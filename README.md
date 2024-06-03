@@ -28,3 +28,9 @@ Do not push to master directly. The CI is triggered through pull requests, in th
 
 - Commit messages are enforced through [commitlint](https://commitlint.js.org/#/). As already mentioned, in order for proper versioning, proper commit messages are essential.
 - Eslint is run using [lint-staged](https://www.npmjs.com/package/lint-staged) which checks if staged javascript files are conform the eslint configuration.
+
+## License
+
+Copyright (C) 2019-2024 First Coders LTD
+
+See [LICENSE.txt](./LICENSE.txt) for license information for the various packages in this repo.
