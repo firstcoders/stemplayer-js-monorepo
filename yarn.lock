@@ -1872,18 +1872,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firstcoders/webcomponents@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@firstcoders/webcomponents@workspace:."
-  dependencies:
-    "@commitlint/cli": "npm:^19.3.0"
-    "@commitlint/config-conventional": "npm:^19.2.2"
-    "@commitlint/config-lerna-scopes": "npm:^19.0.0"
-    husky: "npm:^9.0.11"
-    lerna: "npm:^8.1.3"
-  languageName: unknown
-  linkType: soft
-
 "@github/catalyst@npm:^1.6.0":
   version: 1.6.0
   resolution: "@github/catalyst@npm:1.6.0"
@@ -3154,6 +3142,18 @@ __metadata:
     lint-staged: "npm:^15.2.5"
     lit: "npm:^3.1.3"
     prettier: "npm:^3.3.0"
+  languageName: unknown
+  linkType: soft
+
+"@soundws/webcomponents@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@soundws/webcomponents@workspace:."
+  dependencies:
+    "@commitlint/cli": "npm:^19.3.0"
+    "@commitlint/config-conventional": "npm:^19.2.2"
+    "@commitlint/config-lerna-scopes": "npm:^19.0.0"
+    husky: "npm:^9.0.11"
+    lerna: "npm:^8.1.3"
   languageName: unknown
   linkType: soft
 
