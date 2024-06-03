@@ -13,16 +13,7 @@ yarn test
 
 ## Workflow & CI
 
-### Versioning and Conventional Commits
-
-This repo enforces [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/). When used in combination with lerna, it becomes a very powerful tool to manage package releases.
-
-Do not push to master directly. The CI is triggered through pull requests, in the following fashion:
-
-- When a pull request is created or updated the test suite is run
-- When a pull request is merged into the branch named `development` packages (and SAR application) is published as _pre-release_.
-- When a pull request is merged into the _master_ branch, packages (and SAR applications) are published as _release_
-- Releases follow [semantic versioning](https://semver.org/) which is achieved via the combination of lerna and conventional commits.
+This repo enforces [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/). When used in combination with lerna, it becomes a useful tool to manage package releases.
 
 ### Commit hooks
 
