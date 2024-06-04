@@ -8,7 +8,7 @@ import { html, css, LitElement } from 'lit';
  */
 export class SoundwsMask extends LitElement {
   static styles = css`
-    .mask {
+    :host {
       position: absolute;
       top: 0;
       left: 0;
@@ -18,16 +18,14 @@ export class SoundwsMask extends LitElement {
         --soundws-mask-background-color,
         rgba(0, 0, 0, 0.5)
       );
-      z-index: 99;
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 999999;
     }
   `;
 
   render() {
-    return html`<div class="mask">
-      <slot></slot>
-    </div>`;
+    return html`<slot></slot>`;
   }
 }
