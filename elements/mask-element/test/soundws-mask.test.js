@@ -7,9 +7,7 @@ describe('SoundwsMask', () => {
   it('renders a mask element', async () => {
     const el = await fixture(html`<soundws-mask></soundws-mask>`);
 
-    expect(getComputedStyle(el.shadowRoot.firstElementChild).position).to.equal(
-      'absolute',
-    );
+    expect(getComputedStyle(el).position).to.equal('absolute');
   });
 
   it('renders content in the mask', async () => {
@@ -18,8 +16,7 @@ describe('SoundwsMask', () => {
     );
 
     expect(
-      el.shadowRoot.firstElementChild.firstElementChild.assignedNodes()[0]
-        .innerHTML,
+      el.shadowRoot.firstElementChild.assignedNodes()[0].innerHTML,
     ).to.equal('Nice!');
   });
 
