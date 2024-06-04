@@ -4,7 +4,7 @@
   "email": "support@firstcoders.co.uk",
   "description": "Webcomponent soundws-player-button following open-wc recommendations",
   "license": "MIT",
-  "version": "0.2.0",
+  "version": "0.2.1-beta.0",
   "type": "module",
   "main": "index.js",
   "module": "index.js",

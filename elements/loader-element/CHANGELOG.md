@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.4-beta.0](https://github.com/sound-ws/loader-element/compare/@soundws/loader-element@0.0.3...@soundws/loader-element@0.0.4-beta.0) (2024-06-04)
+
+**Note:** Version bump only for package @soundws/loader-element
+
+
+
+
+
 ## [0.0.3](https://github.com/sound-ws/loader-element/compare/@soundws/loader-element@0.0.3-beta.2...@soundws/loader-element@0.0.3) (2024-06-01)
 
 **Note:** Version bump only for package @soundws/loader-element
