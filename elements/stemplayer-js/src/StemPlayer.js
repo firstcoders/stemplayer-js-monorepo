@@ -232,6 +232,13 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
     this.addEventListener('region:seek', e => handleSeek(e));
     this.addEventListener('controls:seek', e => handleSeek(e));
 
+    // when scrolling in the regions overlay, which is absolutely positioned, this does not trigger scrolling of the scrollWrapper
+    // this is to "forward" any scroll events
+    this.addEventListener('wheel', e => {
+      e.preventDefault();
+      this.shadowRoot.querySelector('.scrollWrapper').scrollTop += e.deltaY;
+    });
+
     this.addEventListener('controls:seeking', () => {
       if (controller.state === 'running') {
         controller.pause();
