@@ -7,14 +7,14 @@ This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) reco
 ## Installation
 
 ```bash
-npm i @soundws/player-button-element
+npm i @firstcoders/player-button-element
 ```
 
 ## Usage
 
 ```html
 <script type="module">
-  import '@soundws/player-button-element/soundws-player-button.js';
+  import '@firstcoders/player-button-element/soundws-player-button.js';
 </script>
 
 <soundws-player-button></soundws-player-button>

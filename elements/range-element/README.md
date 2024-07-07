@@ -7,14 +7,14 @@ This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) reco
 ## Installation
 
 ```bash
-npm i @soundws/range-element
+npm i @firstcoders/range-element
 ```
 
 ## Usage
 
 ```html
 <script type="module">
-  import '@soundws/range-element/soundws-range.js';
+  import '@firstcoders/range-element/soundws-range.js';
 </script>
 
 <soundws-range></soundws-range>

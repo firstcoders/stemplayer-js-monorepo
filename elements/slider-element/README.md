@@ -5,14 +5,14 @@ This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) reco
 ## Installation
 
 ```bash
-npm i @soundws/slider-element
+npm i @firstcoders/slider-element
 ```
 
 ## Usage
 
 ```html
 <script type="module">
-  import '@soundws/slider-element/soundws-slider.js';
+  import '@firstcoders/slider-element/soundws-slider.js';
 </script>
 
 <soundws-slider></soundws-slider>
