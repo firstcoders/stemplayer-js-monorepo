@@ -28,7 +28,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: 'packages/hls-web-audio'
-          destination-github-username: 'sound-ws'
+          destination-github-username: 'firstcoders'
           destination-repository-name: 'hls-web-audio'
           user-email: team@firstcoders.co.uk
           target-branch: main
@@ -50,7 +50,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: 'elements/mixthat-player'
-          destination-github-username: 'sound-ws'
+          destination-github-username: 'firstcoders'
           destination-repository-name: 'mixthat-player'
           user-email: team@firstcoders.co.uk
           target-branch: main
@@ -61,7 +61,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: 'elements/element-styles'
-          destination-github-username: 'sound-ws'
+          destination-github-username: 'firstcoders'
           destination-repository-name: 'element-styles'
           user-email: team@firstcoders.co.uk
           target-branch: main
@@ -72,7 +72,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: 'elements/loader-element'
-          destination-github-username: 'sound-ws'
+          destination-github-username: 'firstcoders'
           destination-repository-name: 'loader-element'
           user-email: team@firstcoders.co.uk
           target-branch: main
@@ -83,7 +83,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: 'elements/mask-element'
-          destination-github-username: 'sound-ws'
+          destination-github-username: 'firstcoders'
           destination-repository-name: 'mask-element'
           user-email: team@firstcoders.co.uk
           target-branch: main
@@ -94,7 +94,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: 'elements/player-button-element'
-          destination-github-username: 'sound-ws'
+          destination-github-username: 'firstcoders'
           destination-repository-name: 'player-button-element'
           user-email: team@firstcoders.co.uk
           target-branch: main
@@ -105,7 +105,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: 'elements/range-element'
-          destination-github-username: 'sound-ws'
+          destination-github-username: 'firstcoders'
           destination-repository-name: 'range-element'
           user-email: team@firstcoders.co.uk
           target-branch: main
@@ -116,7 +116,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: 'elements/slider-element'
-          destination-github-username: 'sound-ws'
+          destination-github-username: 'firstcoders'
           destination-repository-name: 'slider-element'
           user-email: team@firstcoders.co.uk
           target-branch: main
@@ -127,7 +127,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: 'elements/waveform-element'
-          destination-github-username: 'sound-ws'
+          destination-github-username: 'firstcoders'
           destination-repository-name: 'waveform-element'
           user-email: team@firstcoders.co.uk
           target-branch: main

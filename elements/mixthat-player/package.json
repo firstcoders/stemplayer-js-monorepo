@@ -1,5 +1,5 @@
 {
-  "name": "@soundws/mixthat-player",
+  "name": "@firstcoders/mixthat-player",
   "description": "Webcomponent mixthat-player following open-wc recommendations",
   "license": "GPL-3.0-or-later",
   "author": "The First Coders Team (https://www.firstcoders.co.uk)",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sound-ws/mixthat-player.git"
+    "url": "https://github.com/firstcoders/mixthat-player.git"
   },
   "exports": {
     ".": "./index.js",
@@ -28,7 +28,7 @@
     "test:watch": "web-test-runner --watch"
   },
   "dependencies": {
-    "@soundws/element-styles": "workspace:^",
+    "@firstcoders/element-styles": "workspace:^",
     "@stemplayer-js/stemplayer-js": "^3.4.0-beta.2",
     "lit": "^3.1.4"
   },

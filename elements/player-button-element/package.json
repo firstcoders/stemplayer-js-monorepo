@@ -1,5 +1,5 @@
 {
-  "name": "@soundws/player-button-element",
+  "name": "@firstcoders/player-button-element",
   "author": "The First Coders Team (https://www.firstcoders.co.uk)",
   "email": "support@firstcoders.co.uk",
   "description": "Webcomponent soundws-player-button following open-wc recommendations",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sound-ws/player-button-element.git"
+    "url": "https://github.com/firstcoders/player-button-element.git"
   },
   "exports": {
     ".": "./index.js",

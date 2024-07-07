@@ -1,5 +1,5 @@
 {
-  "name": "@soundws/loader-element",
+  "name": "@firstcoders/loader-element",
   "author": "The First Coders Team (https://www.firstcoders.co.uk)",
   "email": "support@firstcoders.co.uk",
   "description": "Webcomponent soundws-loader following open-wc recommendations",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sound-ws/loader-element.git"
+    "url": "https://github.com/firstcoders/loader-element.git"
   },
   "exports": {
     ".": "./index.js",

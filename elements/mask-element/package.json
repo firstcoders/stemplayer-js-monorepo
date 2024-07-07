@@ -1,5 +1,5 @@
 {
-  "name": "@soundws/mask-element",
+  "name": "@firstcoders/mask-element",
   "author": "The First Coders Team (https://www.firstcoders.co.uk)",
   "email": "support@firstcoders.co.uk",
   "description": "Webcomponent soundws-mask following open-wc recommendations",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sound-ws/mask-element.git"
+    "url": "https://github.com/firstcoders/mask-element.git"
   },
   "exports": {
     ".": "./index.js",

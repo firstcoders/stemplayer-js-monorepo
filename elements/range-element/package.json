@@ -1,5 +1,5 @@
 {
-  "name": "@soundws/range-element",
+  "name": "@firstcoders/range-element",
   "description": "Webcomponent soundws-range following open-wc recommendations",
   "license": "MIT",
   "author": "soundws-range",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sound-ws/range-element.git"
+    "url": "https://github.com/firstcoders/range-element.git"
   },
   "exports": {
     ".": "./index.js",

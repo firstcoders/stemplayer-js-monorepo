@@ -1,5 +1,5 @@
 {
-  "name": "@soundws/slider-element",
+  "name": "@firstcoders/slider-element",
   "author": "The First Coders Team (https://www.firstcoders.co.uk)",
   "email": "support@firstcoders.co.uk",
   "description": "Webcomponent soundws-slider following open-wc recommendations",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sound-ws/slider-element.git"
+    "url": "https://github.com/firstcoders/slider-element.git"
   },
   "exports": {
     ".": "./index.js",

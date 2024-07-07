@@ -1,5 +1,5 @@
 {
-  "name": "@soundws/mixthat-playlist",
+  "name": "@firstcoders/mixthat-playlist",
   "description": "Webcomponent mixthat-playlist following open-wc recommendations",
   "license": "MIT",
   "private": true,
@@ -21,8 +21,8 @@
     "test:watch": "web-test-runner --watch"
   },
   "dependencies": {
-    "@soundws/element-styles": "workspace:^",
-    "@soundws/mixthat-player": "workspace:^",
+    "@firstcoders/element-styles": "workspace:^",
+    "@firstcoders/mixthat-player": "workspace:^",
     "@stemplayer-js/stemplayer-js": "workspace:^",
     "lit": "^3.1.4"
   },
