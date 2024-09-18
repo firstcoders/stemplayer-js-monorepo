@@ -3,11 +3,11 @@
   "private": true,
   "license": "SEE LICENSE IN LICENSE.txt",
   "devDependencies": {
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "@commitlint/config-lerna-scopes": "^19.0.0",
-    "husky": "^9.0.11",
-    "lerna": "^8.1.3"
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "@commitlint/config-lerna-scopes": "^19.5.0",
+    "husky": "^9.1.6",
+    "lerna": "^8.1.8"
   },
   "workspaces": {
     "packages": [
