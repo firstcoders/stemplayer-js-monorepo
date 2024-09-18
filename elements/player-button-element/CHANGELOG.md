@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.3.0-beta.0 (2024-09-18)
+
+
+### Features
+
+* **player-button-element:** added loop and deselect icons ([daeca50](https://github.com/firstcoders/player-button-element/commit/daeca5002b214b6b5816561ea982d9a95a24edeb))
+
+
+
+
+
 ## [0.2.1-beta.1](https://github.com/sound-ws/player-button-element/compare/@soundws/player-button-element@0.2.1-beta.0...@soundws/player-button-element@0.2.1-beta.1) (2024-06-06)
 
 **Note:** Version bump only for package @soundws/player-button-element

@@ -699,7 +699,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/hls-web-audio@npm:^2.3.1-beta.1, @firstcoders/hls-web-audio@workspace:packages/hls-web-audio":
+"@firstcoders/hls-web-audio@npm:^2.4.0-beta.0, @firstcoders/hls-web-audio@workspace:packages/hls-web-audio":
   version: 0.0.0-use.local
   resolution: "@firstcoders/hls-web-audio@workspace:packages/hls-web-audio"
   dependencies:
@@ -718,7 +718,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/loader-element@npm:^0.0.4-beta.1, @firstcoders/loader-element@workspace:elements/loader-element":
+"@firstcoders/loader-element@npm:^0.0.4-beta.2, @firstcoders/loader-element@workspace:elements/loader-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/loader-element@workspace:elements/loader-element"
   dependencies:
@@ -737,7 +737,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/mask-element@npm:^0.0.4-beta.1, @firstcoders/mask-element@workspace:elements/mask-element":
+"@firstcoders/mask-element@npm:^0.0.4-beta.2, @firstcoders/mask-element@workspace:elements/mask-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/mask-element@workspace:elements/mask-element"
   dependencies:
@@ -765,7 +765,7 @@ __metadata:
     "@firstcoders/element-styles": "workspace:^"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
-    "@stemplayer-js/stemplayer-js": "npm:^3.4.0-beta.2"
+    "@stemplayer-js/stemplayer-js": "npm:^3.4.0-beta.3"
     "@web/dev-server": "npm:^0.4.5"
     "@web/test-runner": "npm:^0.18.2"
     eslint: "npm:^8.57.0"
@@ -799,7 +799,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/player-button-element@npm:^0.2.1-beta.1, @firstcoders/player-button-element@workspace:elements/player-button-element":
+"@firstcoders/player-button-element@npm:^0.3.0-beta.0, @firstcoders/player-button-element@workspace:elements/player-button-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/player-button-element@workspace:elements/player-button-element"
   dependencies:
@@ -818,7 +818,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/range-element@npm:^0.0.5-beta.1, @firstcoders/range-element@workspace:elements/range-element":
+"@firstcoders/range-element@npm:^0.0.5-beta.2, @firstcoders/range-element@workspace:elements/range-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/range-element@workspace:elements/range-element"
   dependencies:
@@ -837,7 +837,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/slider-element@npm:^0.1.4-beta.1, @firstcoders/slider-element@workspace:elements/slider-element":
+"@firstcoders/slider-element@npm:^0.1.4-beta.2, @firstcoders/slider-element@workspace:elements/slider-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/slider-element@workspace:elements/slider-element"
   dependencies:
@@ -856,7 +856,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/waveform-element@npm:^0.2.1-beta.1, @firstcoders/waveform-element@workspace:elements/waveform-element":
+"@firstcoders/waveform-element@npm:^0.3.0-beta.0, @firstcoders/waveform-element@workspace:elements/waveform-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/waveform-element@workspace:elements/waveform-element"
   dependencies:
@@ -2046,19 +2046,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stemplayer-js/stemplayer-js@npm:^3.4.0-beta.2, @stemplayer-js/stemplayer-js@workspace:^, @stemplayer-js/stemplayer-js@workspace:elements/stemplayer-js":
+"@stemplayer-js/stemplayer-js@npm:^3.4.0-beta.3, @stemplayer-js/stemplayer-js@workspace:^, @stemplayer-js/stemplayer-js@workspace:elements/stemplayer-js":
   version: 0.0.0-use.local
   resolution: "@stemplayer-js/stemplayer-js@workspace:elements/stemplayer-js"
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@custom-elements-manifest/analyzer": "npm:^0.10.3"
-    "@firstcoders/hls-web-audio": "npm:^2.3.1-beta.1"
-    "@firstcoders/loader-element": "npm:^0.0.4-beta.1"
-    "@firstcoders/mask-element": "npm:^0.0.4-beta.1"
-    "@firstcoders/player-button-element": "npm:^0.2.1-beta.1"
-    "@firstcoders/range-element": "npm:^0.0.5-beta.1"
-    "@firstcoders/slider-element": "npm:^0.1.4-beta.1"
-    "@firstcoders/waveform-element": "npm:^0.2.1-beta.1"
+    "@firstcoders/hls-web-audio": "npm:^2.4.0-beta.0"
+    "@firstcoders/loader-element": "npm:^0.0.4-beta.2"
+    "@firstcoders/mask-element": "npm:^0.0.4-beta.2"
+    "@firstcoders/player-button-element": "npm:^0.3.0-beta.0"
+    "@firstcoders/range-element": "npm:^0.0.5-beta.2"
+    "@firstcoders/slider-element": "npm:^0.1.4-beta.2"
+    "@firstcoders/waveform-element": "npm:^0.3.0-beta.0"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
     "@web/dev-server": "npm:^0.4.5"

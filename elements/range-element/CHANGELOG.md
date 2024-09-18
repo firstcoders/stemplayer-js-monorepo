@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.5-beta.2 (2024-09-18)
+
+**Note:** Version bump only for package @firstcoders/range-element
+
+
+
+
+
 ## [0.0.5-beta.1](https://github.com/sound-ws/range-element/compare/@soundws/range-element@0.0.5-beta.0...@soundws/range-element@0.0.5-beta.1) (2024-06-06)
 
 **Note:** Version bump only for package @soundws/range-element

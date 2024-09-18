@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.4-beta.4 (2024-09-18)
+
+**Note:** Version bump only for package @firstcoders/mixthat-playlist
+
+
+
+
+
 ## [0.0.4-beta.3](https://github.com/sound-ws/webcomponents/compare/@soundws/mixthat-playlist@0.0.4-beta.2...@soundws/mixthat-playlist@0.0.4-beta.3) (2024-06-06)
 
 **Note:** Version bump only for package @soundws/mixthat-playlist
