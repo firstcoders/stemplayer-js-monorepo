@@ -629,7 +629,7 @@ __metadata:
     eslint-config-prettier: "npm:^8.10.0"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
-    lit: "npm:^3.1.4"
+    lit: "npm:^3.2.0"
     prettier: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
@@ -667,7 +667,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
-    lit: "npm:^3.1.4"
+    lit: "npm:^3.2.0"
     prettier: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
@@ -686,7 +686,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
-    lit: "npm:^3.1.4"
+    lit: "npm:^3.2.0"
     prettier: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
@@ -707,7 +707,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
-    lit: "npm:^3.1.4"
+    lit: "npm:^3.2.0"
     prettier: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
@@ -729,7 +729,7 @@ __metadata:
     eslint-config-prettier: "npm:^8.10.0"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
-    lit: "npm:^3.1.4"
+    lit: "npm:^3.2.0"
     prettier: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
@@ -748,7 +748,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
-    lit: "npm:^3.1.4"
+    lit: "npm:^3.2.0"
     prettier: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
@@ -767,7 +767,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
-    lit: "npm:^3.1.4"
+    lit: "npm:^3.2.0"
     prettier: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
@@ -786,7 +786,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
-    lit: "npm:^3.1.4"
+    lit: "npm:^3.2.0"
     prettier: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
@@ -805,7 +805,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
-    lit: "npm:^3.1.4"
+    lit: "npm:^3.2.0"
     prettier: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
@@ -1909,7 +1909,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
-    lit: "npm:^3.1.4"
+    lit: "npm:^3.2.0"
     prettier: "npm:^3.3.1"
   languageName: unknown
   linkType: soft
@@ -7445,12 +7445,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lit-element@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "lit-element@npm:4.1.0"
+  dependencies:
+    "@lit-labs/ssr-dom-shim": "npm:^1.2.0"
+    "@lit/reactive-element": "npm:^2.0.4"
+    lit-html: "npm:^3.2.0"
+  checksum: 10/953e601478d93a27d5ae48581e32b80196c554912b1751cf788fc96c8736b8ad8a01750f1bf03bddb2ef41a5602ab1b500af22255772162db1b636f6ed8df3c5
+  languageName: node
+  linkType: hard
+
 "lit-html@npm:^2.0.0 || ^3.0.0, lit-html@npm:^3.1.2":
   version: 3.1.2
   resolution: "lit-html@npm:3.1.2"
   dependencies:
     "@types/trusted-types": "npm:^2.0.2"
   checksum: 10/601388faae8a40167906c20736645233db4c36819a2f727c5eb1926e00a17d96da7768f5b41bed31bfdcc42887e4b52881e21b9caee170b1bc9a82f96b510644
+  languageName: node
+  linkType: hard
+
+"lit-html@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "lit-html@npm:3.2.0"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.2"
+  checksum: 10/c6e6f07b3aa02d6b3dc047664d144911a49c7ed95137320b769771f8386873f8d72858b205cad707fa88fd5d882de25981de80660888c6f1be106af01bbba979
   languageName: node
   linkType: hard
 
@@ -7465,14 +7485,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lit@npm:^3.1.4":
-  version: 3.1.4
-  resolution: "lit@npm:3.1.4"
+"lit@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "lit@npm:3.2.0"
   dependencies:
     "@lit/reactive-element": "npm:^2.0.4"
-    lit-element: "npm:^4.0.4"
-    lit-html: "npm:^3.1.2"
-  checksum: 10/54799818821b66f121ab7f27909e1fd0937b2f9a36b32534804056920cb12d43f2e0bc7085021910c69d0a386cb68df4d04c2dae5b7a544395288b403f381a0e
+    lit-element: "npm:^4.1.0"
+    lit-html: "npm:^3.2.0"
+  checksum: 10/7f9f84f797f85a81a5c9c77a00bc0b7240194263aa32d1b47f8260de0b82dbd475dec0cefcbcf936799c070a63b2258183689d19a7d86e2c31ef74b01a2b16ad
   languageName: node
   linkType: hard
 
