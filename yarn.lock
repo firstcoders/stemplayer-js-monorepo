@@ -603,9 +603,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@custom-elements-manifest/analyzer@npm:^0.10.2":
-  version: 0.10.2
-  resolution: "@custom-elements-manifest/analyzer@npm:0.10.2"
+"@custom-elements-manifest/analyzer@npm:^0.10.3":
+  version: 0.10.3
+  resolution: "@custom-elements-manifest/analyzer@npm:0.10.3"
   dependencies:
     "@custom-elements-manifest/find-dependencies": "npm:^0.0.5"
     "@github/catalyst": "npm:^1.6.0"
@@ -620,7 +620,7 @@ __metadata:
   bin:
     cem: cem.js
     custom-elements-manifest: cem.js
-  checksum: 10/5321a21a7b93e5f8e185c912b1cfbdf0017885489b0408941c74d59e1c962c0ccaa5819d5f5d2084b2ca4bb49cdd7c09df546296a149084b6e11a44165c9653b
+  checksum: 10/9f1ccb972a89a3cb587ae74ef94dae9663074566da29c5acd49356e1138e1b54567325106312058d18f5e334619083919e1d08da25e6ce9e08c9902859bb7539
   languageName: node
   linkType: hard
 
@@ -723,7 +723,7 @@ __metadata:
   resolution: "@firstcoders/loader-element@workspace:elements/loader-element"
   dependencies:
     "@babel/core": "npm:^7.25.2"
-    "@custom-elements-manifest/analyzer": "npm:^0.10.2"
+    "@custom-elements-manifest/analyzer": "npm:^0.10.3"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
     "@web/dev-server": "npm:^0.4.5"
@@ -742,7 +742,7 @@ __metadata:
   resolution: "@firstcoders/mask-element@workspace:elements/mask-element"
   dependencies:
     "@babel/core": "npm:^7.25.2"
-    "@custom-elements-manifest/analyzer": "npm:^0.10.2"
+    "@custom-elements-manifest/analyzer": "npm:^0.10.3"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
     "@web/dev-server": "npm:^0.4.5"
@@ -761,7 +761,7 @@ __metadata:
   resolution: "@firstcoders/mixthat-player@workspace:elements/mixthat-player"
   dependencies:
     "@babel/core": "npm:^7.25.2"
-    "@custom-elements-manifest/analyzer": "npm:^0.10.2"
+    "@custom-elements-manifest/analyzer": "npm:^0.10.3"
     "@firstcoders/element-styles": "workspace:^"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
@@ -782,7 +782,7 @@ __metadata:
   resolution: "@firstcoders/mixthat-playlist@workspace:elements/mixthat-playlist"
   dependencies:
     "@babel/core": "npm:^7.25.2"
-    "@custom-elements-manifest/analyzer": "npm:^0.10.2"
+    "@custom-elements-manifest/analyzer": "npm:^0.10.3"
     "@firstcoders/element-styles": "workspace:^"
     "@firstcoders/mixthat-player": "workspace:^"
     "@open-wc/eslint-config": "npm:^9.2.2"
@@ -804,7 +804,7 @@ __metadata:
   resolution: "@firstcoders/player-button-element@workspace:elements/player-button-element"
   dependencies:
     "@babel/core": "npm:^7.25.2"
-    "@custom-elements-manifest/analyzer": "npm:^0.10.2"
+    "@custom-elements-manifest/analyzer": "npm:^0.10.3"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
     "@web/dev-server": "npm:^0.4.5"
@@ -823,7 +823,7 @@ __metadata:
   resolution: "@firstcoders/range-element@workspace:elements/range-element"
   dependencies:
     "@babel/core": "npm:^7.25.2"
-    "@custom-elements-manifest/analyzer": "npm:^0.10.2"
+    "@custom-elements-manifest/analyzer": "npm:^0.10.3"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
     "@web/dev-server": "npm:^0.4.5"
@@ -842,7 +842,7 @@ __metadata:
   resolution: "@firstcoders/slider-element@workspace:elements/slider-element"
   dependencies:
     "@babel/core": "npm:^7.25.2"
-    "@custom-elements-manifest/analyzer": "npm:^0.10.2"
+    "@custom-elements-manifest/analyzer": "npm:^0.10.3"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
     "@web/dev-server": "npm:^0.4.5"
@@ -861,7 +861,7 @@ __metadata:
   resolution: "@firstcoders/waveform-element@workspace:elements/waveform-element"
   dependencies:
     "@babel/core": "npm:^7.25.2"
-    "@custom-elements-manifest/analyzer": "npm:^0.10.2"
+    "@custom-elements-manifest/analyzer": "npm:^0.10.3"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
     "@web/dev-server": "npm:^0.4.5"
@@ -2051,7 +2051,7 @@ __metadata:
   resolution: "@stemplayer-js/stemplayer-js@workspace:elements/stemplayer-js"
   dependencies:
     "@babel/core": "npm:^7.25.2"
-    "@custom-elements-manifest/analyzer": "npm:^0.10.2"
+    "@custom-elements-manifest/analyzer": "npm:^0.10.3"
     "@firstcoders/hls-web-audio": "npm:^2.3.1-beta.1"
     "@firstcoders/loader-element": "npm:^0.0.4-beta.1"
     "@firstcoders/mask-element": "npm:^0.0.4-beta.1"
