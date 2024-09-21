@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5](https://github.com/firstcoders/range-element/compare/@firstcoders/range-element@0.0.5-beta.2...@firstcoders/range-element@0.0.5) (2024-09-21)
+
+**Note:** Version bump only for package @firstcoders/range-element
+
+
+
+
+
 ## 0.0.5-beta.2 (2024-09-18)
 
 **Note:** Version bump only for package @firstcoders/range-element
