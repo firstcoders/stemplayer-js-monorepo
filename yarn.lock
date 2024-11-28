@@ -699,7 +699,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/hls-web-audio@npm:^2.4.0, @firstcoders/hls-web-audio@workspace:packages/hls-web-audio":
+"@firstcoders/hls-web-audio@npm:^2.4.1-beta.0, @firstcoders/hls-web-audio@workspace:packages/hls-web-audio":
   version: 0.0.0-use.local
   resolution: "@firstcoders/hls-web-audio@workspace:packages/hls-web-audio"
   dependencies:
@@ -765,7 +765,7 @@ __metadata:
     "@firstcoders/element-styles": "workspace:^"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
-    "@stemplayer-js/stemplayer-js": "npm:^3.5.0-beta.0"
+    "@stemplayer-js/stemplayer-js": "npm:^3.5.0-beta.1"
     "@web/dev-server": "npm:^0.4.5"
     "@web/test-runner": "npm:^0.18.2"
     eslint: "npm:^8.57.0"
@@ -2046,13 +2046,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stemplayer-js/stemplayer-js@npm:^3.5.0-beta.0, @stemplayer-js/stemplayer-js@workspace:^, @stemplayer-js/stemplayer-js@workspace:elements/stemplayer-js":
+"@stemplayer-js/stemplayer-js@npm:^3.5.0-beta.1, @stemplayer-js/stemplayer-js@workspace:^, @stemplayer-js/stemplayer-js@workspace:elements/stemplayer-js":
   version: 0.0.0-use.local
   resolution: "@stemplayer-js/stemplayer-js@workspace:elements/stemplayer-js"
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@custom-elements-manifest/analyzer": "npm:^0.10.3"
-    "@firstcoders/hls-web-audio": "npm:^2.4.0"
+    "@firstcoders/hls-web-audio": "npm:^2.4.1-beta.0"
     "@firstcoders/loader-element": "npm:^0.0.4"
     "@firstcoders/mask-element": "npm:^0.0.4"
     "@firstcoders/player-button-element": "npm:^0.3.0"
