@@ -230,6 +230,8 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
     this.addEventListener('stem:load:end', this.#onStemLoadingEnd);
     this.addEventListener('stem:solo', this.#onSolo);
     this.addEventListener('stem:unsolo', this.#onUnSolo);
+    this.addEventListener('stem:load:request', this.#loadStem);
+
     this.addEventListener('waveform:draw', this.#onWaveformDraw);
     if (!this.noHover) this.addEventListener('pointermove', this.#onHover);
 
@@ -416,13 +418,19 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
   #onSlotChange(e) {
     // inject the controller when an element is added to a slot
     e.target.assignedNodes().forEach(el => {
-      // load the stem when the stem is added to the player
       if (el instanceof StemComponent) {
-        el.load(this.#controller);
+        // load the stem when the stem is added to the player so that it uses the correct controller
+        el.unload(); // unload first
+        if (el.src) el.load(this.#controller);
       }
     });
 
     this.#debouncedMergePeaks();
+  }
+
+  #loadStem(e) {
+    const el = e.target;
+    if (el.src) el.load(this.#controller);
   }
 
   render() {
