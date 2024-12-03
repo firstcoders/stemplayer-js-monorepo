@@ -1,3 +1,5 @@
+import normalize from './normalize.js';
+
 /* eslint-disable camelcase */
 export default class Peaks {
   constructor({
@@ -8,7 +10,10 @@ export default class Peaks {
     duration,
     threshold = 0.1,
   }) {
-    this.data = data.map(x => (x < threshold ? 0 : x));
+    this.data = normalize(data)
+      .map(x => x * 2 - 1) // we need values between -1 and 1
+      .map(e => Math.round(e * 100, 2) / 100)
+      .map(x => (x < threshold ? 0 : x));
 
     // if we get a structure consistent withBBC audiowaveform, deduce duration
     // otherwise use duration if provided
