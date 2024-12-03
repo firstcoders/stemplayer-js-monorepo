@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0-beta.0](https://github.com/firstcoders/waveform-element/compare/@firstcoders/waveform-element@0.3.0...@firstcoders/waveform-element@0.4.0-beta.0) (2024-12-03)
+
+
+### Features
+
+* **waveform-element:** added client side normalization of waveform data ([04a1eb2](https://github.com/firstcoders/waveform-element/commit/04a1eb24a4fa0a10ad12796618248784485db7cd))
+
+
+
+
+
 # [0.3.0](https://github.com/firstcoders/waveform-element/compare/@firstcoders/waveform-element@0.3.0-beta.0...@firstcoders/waveform-element@0.3.0) (2024-09-21)
 
 **Note:** Version bump only for package @firstcoders/waveform-element
