@@ -24,7 +24,7 @@
     "@firstcoders/element-styles": "workspace:^",
     "@firstcoders/mixthat-player": "workspace:^",
     "@stemplayer-js/stemplayer-js": "workspace:^",
-    "lit": "^3.2.0"
+    "lit": "^3.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
