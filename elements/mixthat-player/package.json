@@ -3,7 +3,7 @@
   "description": "Webcomponent mixthat-player following open-wc recommendations",
   "license": "GPL-3.0-or-later",
   "author": "The First Coders Team (https://www.firstcoders.co.uk)",
-  "version": "3.1.6-beta.5",
+  "version": "3.1.6-beta.6",
   "type": "module",
   "main": "index.js",
   "module": "index.js",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@firstcoders/element-styles": "workspace:^",
-    "@stemplayer-js/stemplayer-js": "^3.5.0-beta.5",
+    "@stemplayer-js/stemplayer-js": "^3.5.0-beta.6",
     "lit": "^3.2.1"
   },
   "devDependencies": {
