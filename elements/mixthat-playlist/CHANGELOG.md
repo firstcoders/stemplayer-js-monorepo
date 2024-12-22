@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5-beta.7](https://github.com/firstcoders/webcomponents/compare/@firstcoders/mixthat-playlist@0.0.5-beta.6...@firstcoders/mixthat-playlist@0.0.5-beta.7) (2024-12-22)
+
+**Note:** Version bump only for package @firstcoders/mixthat-playlist
+
+
+
+
+
 ## [0.0.5-beta.6](https://github.com/firstcoders/webcomponents/compare/@firstcoders/mixthat-playlist@0.0.5-beta.5...@firstcoders/mixthat-playlist@0.0.5-beta.6) (2024-12-13)
 
 **Note:** Version bump only for package @firstcoders/mixthat-playlist
