@@ -261,6 +261,7 @@ export class SoundwsWaveform extends LitElement {
       return new Peaks({
         ...peaks,
         data: peaks.data.map(e => e * (scaleY !== undefined ? scaleY : 1)),
+        normalize: false,
       });
     }
 

@@ -1,4 +1,4 @@
-import normalize from './normalize.js';
+import norm from './normalize.js';
 
 /* eslint-disable camelcase */
 export default class Peaks {
@@ -8,12 +8,17 @@ export default class Peaks {
     samples_per_pixel,
     length,
     duration,
-    threshold = 0.1,
+    threshold = 0.05,
+    normalize = true,
   }) {
-    this.data = normalize(data)
-      .map(x => x * 2 - 1) // we need values between -1 and 1
-      .map(e => Math.round(e * 100, 2) / 100)
-      .map(x => (x < threshold ? 0 : x));
+    this.data = data;
+
+    if (normalize) {
+      this.data = norm(this.data)
+        .map(x => x * 2 - 1) // we need values between -1 and 1
+        .map(e => Math.round(e * 100, 2) / 100)
+        .map(x => (x < threshold ? 0 : x));
+    }
 
     // if we get a structure consistent withBBC audiowaveform, deduce duration
     // otherwise use duration if provided
