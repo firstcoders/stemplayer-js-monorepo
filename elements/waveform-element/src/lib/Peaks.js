@@ -53,7 +53,7 @@ export default class Peaks {
 
     // for the moment, we assume all peaks have the same scale, same duration, same samples per second
     // TODO implement resampling
-    return new Peaks({ ...peakss[0], data });
+    return new Peaks({ ...peakss[0], data, normalize: false });
   }
 
   get peaksPerSecond() {
