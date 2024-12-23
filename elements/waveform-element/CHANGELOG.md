@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0-beta.2](https://github.com/firstcoders/waveform-element/compare/@firstcoders/waveform-element@0.4.0-beta.1...@firstcoders/waveform-element@0.4.0-beta.2) (2024-12-23)
+
+
+### Bug Fixes
+
+* **waveform-element:** adjustedpeaks should not normalize peaks ([77aa131](https://github.com/firstcoders/waveform-element/commit/77aa131bba6827bfbc61c3118047d736b43945b2))
+* **waveform-element:** peaks.combine should not normalize ([8787062](https://github.com/firstcoders/waveform-element/commit/8787062b2941ec48800d0c4fc12292bfe8508173))
+
+
+
+
+
 # [0.4.0-beta.1](https://github.com/firstcoders/waveform-element/compare/@firstcoders/waveform-element@0.4.0-beta.0...@firstcoders/waveform-element@0.4.0-beta.1) (2024-12-06)
 
 **Note:** Version bump only for package @firstcoders/waveform-element
