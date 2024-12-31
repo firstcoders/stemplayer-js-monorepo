@@ -1,1 +1,1 @@
-export { SoundwsPlayerButton } from './src/SoundwsPlayerButton.js';
+export { FcPlayerButton } from './src/FcPlayerButton.js';

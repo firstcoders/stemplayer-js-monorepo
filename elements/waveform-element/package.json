@@ -18,7 +18,7 @@
   },
   "exports": {
     ".": "./index.js",
-    "./soundws-waveform.js": "./soundws-waveform.js",
+    "./fc-waveform.js": "./fc-waveform.js",
     "./Peaks.js": "./src/lib/Peaks.js"
   },
   "scripts": {

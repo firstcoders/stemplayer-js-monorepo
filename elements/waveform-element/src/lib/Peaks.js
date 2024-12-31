@@ -7,11 +7,13 @@ export default class Peaks {
     sample_rate,
     samples_per_pixel,
     length,
-    duration,
     threshold = 0.05,
     normalize = true,
   }) {
     this.data = data;
+    this.sample_rate = sample_rate;
+    this.samples_per_pixel = samples_per_pixel;
+    this.length = length;
 
     if (normalize) {
       this.data = norm(this.data)
@@ -24,18 +26,16 @@ export default class Peaks {
     // otherwise use duration if provided
     if ((samples_per_pixel && samples_per_pixel, length)) {
       this.duration = (samples_per_pixel * length) / sample_rate;
-    } else if (duration) {
-      this.duration = duration;
     }
   }
 
   /**
    * Combines multiple Peaks into one
-   * @param  {...any} peakss
+   * @param  {...any} peaks
    * @returns
    */
-  static combine(...peakss) {
-    const arrays = peakss.map(p => p.data);
+  static combine(...peaks) {
+    const arrays = peaks.map(p => p.data);
 
     const n = arrays.reduce((max, xs) => Math.max(max, xs.length), 0);
     const result = Array.from({ length: n });
@@ -53,44 +53,12 @@ export default class Peaks {
 
     // for the moment, we assume all peaks have the same scale, same duration, same samples per second
     // TODO implement resampling
-    return new Peaks({ ...peakss[0], data, normalize: false });
+    const combined = new Peaks({ ...peaks[0], data, normalize: false });
+
+    return combined;
   }
 
   get peaksPerSecond() {
-    return this.data.length / this.duration;
-  }
-
-  /**
-   * Modifies the duration, but either adding null data to the peaks, or truncating data.
-   *
-   * @param {Number} duration
-   * @returns {Peaks} modified peaks
-   */
-  setDuration(duration) {
-    if (this.duration < duration) {
-      const nPeaksRequired = this.peaksPerSecond * duration;
-      const nPeaksToAdd = nPeaksRequired - this.data.length;
-
-      return new Peaks({
-        duration,
-        data: [
-          ...this.data,
-          ...(nPeaksToAdd > 0
-            ? new Array(Math.floor(nPeaksToAdd)).fill(0)
-            : []),
-        ],
-      });
-    }
-
-    if (this.duration > duration) {
-      const peaksRequired = this.peaksPerSecond * duration;
-
-      return new Peaks({
-        duration,
-        data: this.data.slice(0, peaksRequired),
-      });
-    }
-
-    return this;
+    return this.duration ? this.data.length / this.duration : undefined;
   }
 }

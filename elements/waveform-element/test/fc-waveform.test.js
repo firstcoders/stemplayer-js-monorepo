@@ -1,14 +1,14 @@
 import { html } from 'lit';
 import { fixture, expect } from '@open-wc/testing';
 
-import '../soundws-waveform.js';
+import '../fc-waveform.js';
 
-describe('SoundwsWaveform', () => {
+describe('FcWaveform', () => {
   it('loads the peaks when the .src changes', async () => {
     const el = await fixture(
-      html`<soundws-waveform
+      html`<fc-waveform
         src="demo/assets/waveforms/106 BELL_05.3.json"
-      ></soundws-waveform>`,
+      ></fc-waveform>`,
     );
 
     await new Promise(done => {
@@ -22,9 +22,9 @@ describe('SoundwsWaveform', () => {
 
   it('redraws peaks change', async () => {
     const el = await fixture(
-      html`<soundws-waveform
+      html`<fc-waveform
         src="demo/assets/waveforms/106 BELL_05.3.json"
-      ></soundws-waveform>`,
+      ></fc-waveform>`,
     );
 
     let emitted = 0;
@@ -44,9 +44,9 @@ describe('SoundwsWaveform', () => {
 
   it('redraws when the .scaleY changes', async () => {
     const el = await fixture(
-      html`<soundws-waveform
+      html`<fc-waveform
         src="demo/assets/waveforms/106 BELL_05.3.json"
-      ></soundws-waveform>`,
+      ></fc-waveform>`,
     );
 
     let emitted = 0;
@@ -65,9 +65,9 @@ describe('SoundwsWaveform', () => {
 
   it('updates the progress indicator when .progress changes', async () => {
     const el = await fixture(
-      html`<soundws-waveform
+      html`<fc-waveform
         src="demo/assets/waveforms/106 BELL_05.3.json"
-      ></soundws-waveform>`,
+      ></fc-waveform>`,
     );
 
     await new Promise(done => {
@@ -84,7 +84,7 @@ describe('SoundwsWaveform', () => {
   // it('exposes an .adjustedPeaks property which takes into account the .scaleY modifier', async () => {});
 
   it('passes the a11y audit', async () => {
-    const el = await fixture(html`<soundws-waveform></soundws-waveform>`);
+    const el = await fixture(html`<fc-waveform></fc-waveform>`);
 
     await expect(el).shadowDom.to.be.accessible();
   });

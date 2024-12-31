@@ -1,12 +1,12 @@
 import { html } from 'lit';
 import { fixture, expect } from '@open-wc/testing';
 
-import '../soundws-slider.js';
+import '../fc-slider.js';
 
-describe('SoundwsSlider', () => {
+describe('FcSlider', () => {
   it('sets accessability properties', async () => {
     const el = await fixture(
-      html`<soundws-slider min="15" max="25" value="17"></soundws-slider>`,
+      html`<fc-slider min="15" max="25" value="17"></fc-slider>`,
     );
 
     const child = el.shadowRoot.firstElementChild;
@@ -18,9 +18,7 @@ describe('SoundwsSlider', () => {
   });
 
   it('passes the a11y audit', async () => {
-    const el = await fixture(
-      html`<soundws-slider label="a label"></soundws-slider>`,
-    );
+    const el = await fixture(html`<fc-slider label="a label"></fc-slider>`);
 
     await expect(el).shadowDom.to.be.accessible();
   });

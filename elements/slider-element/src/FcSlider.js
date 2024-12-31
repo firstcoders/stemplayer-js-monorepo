@@ -4,9 +4,9 @@ import { html, css, LitElement } from 'lit';
  * A range-type element
  *
  * @slot - The default slot
- * @cssprop [--soundws-slider-handle-border-right-color="rgb(1, 164, 179)"]
+ * @cssprop [--fc-slider-handle-border-right-color="rgb(1, 164, 179)"]
  */
-export class SoundwsSlider extends LitElement {
+export class FcSlider extends LitElement {
   static get styles() {
     return [
       css`
@@ -24,7 +24,7 @@ export class SoundwsSlider extends LitElement {
           left: 0;
           height: 100%;
           border-right: 0.188rem solid
-            var(--soundws-slider-handle-border-right-color, rgb(1, 164, 179));
+            var(--fc-slider-handle-border-right-color, rgb(1, 164, 179));
           transition: width 0.2s ease-in-out;
           box-sizing: border-box;
           width: var(--x-handle-width, 100%);

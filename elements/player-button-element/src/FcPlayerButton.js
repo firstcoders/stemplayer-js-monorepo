@@ -2,17 +2,17 @@ import { html, css, LitElement } from 'lit';
 import * as icons from './assets/icons.js';
 
 /**
- * SoundwsPlayerButton
+ * FcPlayerButton
  *
  * Renders a button with a player svg icon
  *
  * @customElement
  * @litElement
  * @extends LitElement
- * @cssprop [--soundws-player-button-color="black"]
- * @cssprop [--soundws-player-button-focus-background-color="rgb(1, 164, 179)"]
+ * @cssprop [--fc-player-button-color="black"]
+ * @cssprop [--fc-player-button-focus-background-color="rgb(1, 164, 179)"]
  */
-export class SoundwsPlayerButton extends LitElement {
+export class FcPlayerButton extends LitElement {
   static get styles() {
     return [
       css`
@@ -35,7 +35,7 @@ export class SoundwsPlayerButton extends LitElement {
 
         button:focus {
           background-color: var(
-            --soundws-player-button-focus-background-color,
+            --fc-player-button-focus-background-color,
             rgb(1, 164, 179)
           );
           outline: none;
@@ -50,7 +50,7 @@ export class SoundwsPlayerButton extends LitElement {
         }
 
         svg {
-          fill: var(--soundws-player-button-color, black);
+          fill: var(--fc-player-button-color, black);
         }
       `,
     ];

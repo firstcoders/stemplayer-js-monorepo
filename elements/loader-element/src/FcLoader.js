@@ -3,15 +3,15 @@ import { html, css, LitElement } from 'lit';
 /**
  * A loader element.
  *
- * @cssprop [--soundws-loader-size="2rem"]
+ * @cssprop [--fc-loader-size="2rem"]
  */
-export class SoundwsLoader extends LitElement {
+export class FcLoader extends LitElement {
   static get styles() {
     return [
       css`
         .loader {
-          width: var(--soundws-loader-size, 2rem);
-          height: var(--soundws-loader-size, 2rem);
+          width: var(--fc-loader-size, 2rem);
+          height: var(--fc-loader-size, 2rem);
         }
 
         .loader,

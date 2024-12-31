@@ -3,10 +3,10 @@ import { LitElement, html, css } from 'lit';
 /**
  * A tyled range slider
  *
- * @cssprop [--soundws-range-border-color="#01a4b3"]
- * @cssprop [--soundws-range-focus-background-color="rgb(1, 164, 179)"]
+ * @cssprop [--fc-range-border-color="#01a4b3"]
+ * @cssprop [--fc-range-focus-background-color="rgb(1, 164, 179)"]
  */
-export class SoundwsRange extends LitElement {
+export class FcRange extends LitElement {
   static get styles() {
     return [
       css`
@@ -68,7 +68,7 @@ export class SoundwsRange extends LitElement {
         }
         [type='range']::-webkit-slider-thumb:hover {
           background-color: #fff;
-          border-color: var(--soundws-range-border-color, #01a4b3);
+          border-color: var(--fc-range-border-color, #01a4b3);
         }
         [type='range']::-moz-range-track {
           box-shadow:
@@ -100,7 +100,7 @@ export class SoundwsRange extends LitElement {
         }
         [type='range']::-moz-range-thumb:hover {
           background-color: #fff;
-          border-color: var(--soundws-range-border-color, #01a4b3);
+          border-color: var(--fc-range-border-color, #01a4b3);
         }
         [type='range']::-ms-track {
           cursor: default;
@@ -146,14 +146,7 @@ export class SoundwsRange extends LitElement {
         }
         [type='range']::-ms-thumb:hover {
           background-color: #fff;
-          border-color: var(--soundws-range-border-color, #01a4b3);
-        }
-
-        input:focus {
-          background-color: var(
-            --soundws-range-focus-background-color,
-            rgb(1, 164, 179)
-          );
+          border-color: var(--fc-range-border-color, #01a4b3);
         }
 
         .sr {

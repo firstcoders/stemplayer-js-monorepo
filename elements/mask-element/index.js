@@ -1,1 +1,1 @@
-export { SoundwsMask } from './src/SoundwsMask.js';
+export { FcMask } from './src/FcMask.js';

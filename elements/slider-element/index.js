@@ -1,1 +1,1 @@
-export { SoundwsSlider } from './src/SoundwsSlider.js';
+export { FcSlider } from './src/FcSlider.js';

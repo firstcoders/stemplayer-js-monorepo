@@ -18,7 +18,7 @@
   },
   "exports": {
     ".": "./index.js",
-    "./soundws-loader.js": "./soundws-loader.js"
+    "./fc-loader.js": "./fc-loader.js"
   },
   "scripts": {
     "analyze": "cem analyze --litelement",
