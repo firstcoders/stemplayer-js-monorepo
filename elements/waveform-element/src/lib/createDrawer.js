@@ -32,8 +32,8 @@ const defaults = {
   barGap: null,
   barMinHeight: 1,
   container: null,
-  cursorColor: '#333',
-  cursorWidth: 1,
+  cursorColor: 'transparent',
+  cursorWidth: 0,
   dragSelection: true,
   drawingContextAttributes: {
     // Boolean that hints the user agent to reduce the latency
@@ -59,7 +59,7 @@ const defaults = {
   partialRender: false,
   pixelRatio: window.devicePixelRatio || screen.deviceXDPI / screen.logicalXDPI,
   plugins: [],
-  progressColor: '#555',
+  progressColor: 'transparent',
   removeMediaElementOnDestroy: true,
   // renderer: MultiCanvas,
   responsive: false,
