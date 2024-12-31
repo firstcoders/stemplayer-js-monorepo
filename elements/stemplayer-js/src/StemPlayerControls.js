@@ -16,15 +16,14 @@
  */
 import { html, css } from 'lit';
 import { ResponsiveLitElement } from './ResponsiveLitElement.js';
+import { WaveformHostMixin } from './mixins/WaveformHostMixin.js';
 import gridStyles from './styles/grid.js';
-import rowStyles from './styles/row.js';
 import flexStyles from './styles/flex.js';
 import spacingStyles from './styles/spacing.js';
 import typographyStyles from './styles/typography.js';
 import bgStyles from './styles/backgrounds.js';
+import utilityStyle from './styles/utilities.js';
 import formatSeconds from './lib/format-seconds.js';
-import { defaults } from './config.js';
-import { computeWaveformStyles } from './lib/compute-styles.js';
 import debounce from './lib/debounce.js';
 
 /**
@@ -32,18 +31,18 @@ import debounce from './lib/debounce.js';
  *
  * @cssprop [--stemplayer-js-controls-color]
  * @cssprop [--stemplayer-js-controls-background-color]
- * @cssprop [--stemplayer-js-controls-waveform-color]
- * @cssprop [--stemplayer-js-controls-waveform-progress-color]
  */
-export class SoundwsStemPlayerControls extends ResponsiveLitElement {
+export class SoundwsStemPlayerControls extends WaveformHostMixin(
+  ResponsiveLitElement,
+) {
   static get styles() {
     return [
       gridStyles,
-      rowStyles,
       flexStyles,
       spacingStyles,
       typographyStyles,
       bgStyles,
+      utilityStyle,
       css`
         :host {
           --soundws-player-button-color: var(
@@ -60,8 +59,6 @@ export class SoundwsStemPlayerControls extends ResponsiveLitElement {
 
   static get properties() {
     return {
-      ...ResponsiveLitElement.properties,
-
       /**
        * The label to display
        */
@@ -93,24 +90,22 @@ export class SoundwsStemPlayerControls extends ResponsiveLitElement {
       isPlaying: { type: Boolean },
 
       /**
-       * The colour of the waveform
-       */
-      waveColor: { type: String },
-
-      /**
-       * The wave progress colour
-       */
-      waveProgressColor: { type: String },
-
-      /**
        * Whether the loop is toggled on or off
        */
       loop: { type: Boolean },
 
       /**
-       * Used to determine whether the DOM has been initialised
+       * The controls that are enables
        */
-      _rowHeight: { state: true },
+      controls: {
+        type: String,
+        converter: {
+          fromAttribute: value => {
+            if (typeof value === 'string') return value.split(' ');
+            return value;
+          },
+        },
+      },
     };
   }
 
@@ -119,73 +114,131 @@ export class SoundwsStemPlayerControls extends ResponsiveLitElement {
    */
   #debouncedHandleSeek;
 
-  /**
-   * @private
-   */
-  #computedWaveformStyles;
-
   constructor() {
     super();
     this.#debouncedHandleSeek = debounce(this.#handleSeek, 100);
-  }
-
-  firstUpdated() {
-    this.#computedWaveformStyles = this.#computeWaveformStyles();
-
-    // get the _rowHeight so we know the height for the waveform
-    this._rowHeight = this.shadowRoot.firstElementChild.clientHeight;
+    this.controls = ['loop', 'label'];
   }
 
   render() {
-    const styles = this.#computedWaveformStyles;
+    return html`<div>
+      ${this.displayMode === 'lg'
+        ? this.#getLargeScreenTpl()
+        : this.#getSmallScreenTpl()}
+    </div>`;
+  }
 
-    return html`<div class="dFlex flexRow row">
+  #getLargeScreenTpl() {
+    const styles = this.getComputedWaveformStyles();
+
+    return html`<stemplayer-js-row>
+      <div slot="controls" class="dFlex h100">
+        <soundws-player-button
+          class="w2 flexNoShrink"
+          .disabled=${!this.duration}
+          @click=${this.isPlaying ? this.#onPauseClick : this.#onPlayClick}
+          .title=${this.isPlaying ? 'Pause' : 'Play'}
+          .type=${this.isPlaying ? 'pause' : 'play'}
+        ></soundws-player-button>
+        ${
+          this.isControlEnabled('loop')
+            ? html`<soundws-player-button
+                class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
+                @click=${this.#toggleLoop}
+                .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
+                type="loop"
+              ></soundws-player-button>`
+            : ''
+        }
+        <div class="flex1">
+        ${
+          this.isControlEnabled('label')
+            ? html`<div
+                class="w100 truncate hideXs px4 pr5 textCenter flexNoShrink"
+              >
+                ${this.label}
+              </div>`
+            : html``
+        }
+        </div>
+        <div
+          class="w2 textCenter flexNoShrink z99 bgPlayer op75 top right textXs"
+        >
+          ${formatSeconds(this.currentTime || 0)}
+        </div>
+      </div>
+      ${
+        this.isControlEnabled('waveform') && styles && this.displayMode === 'lg'
+          ? html`
+              <soundws-waveform
+                slot="flex"
+                .peaks=${this.peaks}
+                .duration=${this.duration}
+                .progress=${this.currentPct}
+                .progressColor=${styles.waveProgressColor}
+                .waveColor=${styles.waveColor}
+                .barWidth=${styles.barWidth}
+                .barGap=${styles.barGap}
+                .pixelRatio=${styles.devicePixelRatio}
+              ></soundws-waveform>
+            `
+          : html`<soundws-range
+              label="progress"
+              slot="flex"
+              .value=${this.currentPct * 100}
+              @input=${this.#handleSeeking}
+              @change=${this.#debouncedHandleSeek}
+            ></soundws-range>`
+      }
+      </div>
+      <div
+        slot="end"
+        class="textCenter"
+      >
+        <span class="p2 textXs">${formatSeconds(this.duration)}</span>
+      </div>
+    </stemplayer-js-row>`;
+  }
+
+  #getSmallScreenTpl() {
+    return html`<stemplayer-js-row displayMode="sm">
       <soundws-player-button
-        class="w2"
+        class="w2 flexNoShrink"
         .disabled=${!this.duration}
         @click=${this.isPlaying ? this.#onPauseClick : this.#onPlayClick}
         .title=${this.isPlaying ? 'Pause' : 'Play'}
         .type=${this.isPlaying ? 'pause' : 'play'}
       ></soundws-player-button>
       <soundws-player-button
-        class="w2 ${this.loop ? '' : 'textMuted'}"
+        class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
         @click=${this.#toggleLoop}
         .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
         type="loop"
       ></soundws-player-button>
       ${this.displayMode !== 'xs'
-        ? html`<div class="w9 truncate hideXs px4 textCenter">
-            <span>${this.label}</span>
+        ? html`<div
+            class="flex1 truncate hideXs px4 pr5 textCenter flexNoShrink"
+          >
+            ${this.label}
           </div>`
         : ''}
-      <div class="w2 textXs textMuted pr1 textCenter">
-        <span>${formatSeconds(this.currentTime || 0)}</span>
+      <div
+        class="w2 truncate textCenter flexNoShrink z99 bgPlayer op75 top right textXs"
+      >
+        ${formatSeconds(this.currentTime || 0)}
       </div>
-      ${this.displayMode === 'lg' && this._rowHeight
-        ? html`<div class="flex1">
-            <soundws-waveform
-              .peaks=${this.peaks}
-              .duration=${this.duration}
-              .progress=${this.currentPct}
-              .progressColor=${styles.waveProgressColor}
-              .waveColor=${styles.waveColor}
-              .barWidth=${styles.barWidth}
-              .barGap=${styles.barGap}
-              .pixelRatio=${styles.devicePixelRatio}
-            ></soundws-waveform>
-          </div>`
-        : html`<soundws-range
-            label="progress"
-            class="focusBgBrand px1 flex1"
-            .value=${this.currentPct * 100}
-            @input=${this.#handleSeeking}
-            @change=${this.#debouncedHandleSeek}
-          ></soundws-range>`}
-      <div class="w2 truncate textXs textMuted textCenter">
-        <span>${formatSeconds(this.duration)}</span>
-      </div>
+      <soundws-range
+        label="progress"
+        class="focusBgBrand px1 flex1 flexNoShrink w2"
+        .value=${this.currentPct * 100}
+        @input=${this.#handleSeeking}
+        @change=${this.#debouncedHandleSeek}
+      ></soundws-range>
       <slot name="end"></slot>
-    </div>`;
+      <div class="w2 op75 textCenter textXs">
+        <span class="p2">${formatSeconds(this.duration)}</span>
+      </div>
+    </stemplayer-js-row>`;
   }
 
   /**
@@ -200,24 +253,6 @@ export class SoundwsStemPlayerControls extends ResponsiveLitElement {
    */
   #onPauseClick() {
     this.dispatchEvent(new Event('controls:pause', { bubbles: true }));
-  }
-
-  /**
-   * Calculates the styles for rendering the waveform
-   *
-   * @private
-   */
-  #computeWaveformStyles() {
-    const styles = computeWaveformStyles(this, defaults.waveform);
-
-    return {
-      ...styles,
-      waveColor: this.waveColor || styles.controlsWaveColor || styles.waveColor,
-      waveProgressColor:
-        this.waveProgressColor ||
-        styles.controlsProgressColor ||
-        styles.progressColor,
-    };
   }
 
   /**
@@ -239,12 +274,12 @@ export class SoundwsStemPlayerControls extends ResponsiveLitElement {
     );
   }
 
-  get waveformComponent() {
-    return this.shadowRoot?.querySelector('soundws-waveform');
-  }
-
   #toggleLoop(e) {
     this.dispatchEvent(new CustomEvent('controls:loop', { bubbles: true }));
     e.target.blur();
+  }
+
+  isControlEnabled(value) {
+    return this.controls.indexOf(value) !== -1;
   }
 }

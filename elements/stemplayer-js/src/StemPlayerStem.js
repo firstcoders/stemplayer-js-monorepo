@@ -17,27 +17,29 @@
 import { html, css } from 'lit';
 import HLS from '@firstcoders/hls-web-audio/hls.js';
 import { ResponsiveLitElement } from './ResponsiveLitElement.js';
+import { WaveformHostMixin } from './mixins/WaveformHostMixin.js';
 import gridStyles from './styles/grid.js';
-import rowStyles from './styles/row.js';
 import flexStyles from './styles/flex.js';
 import spacingStyles from './styles/spacing.js';
 import typographyStyles from './styles/typography.js';
 import bgStyles from './styles/backgrounds.js';
-import { defaults, fetchOptions } from './config.js';
-import { computeWaveformStyles } from './lib/compute-styles.js';
+import utilityStyle from './styles/utilities.js';
+import { fetchOptions } from './config.js';
 
 /**
  * A component to render a single stem
  */
-export class SoundwsStemPlayerStem extends ResponsiveLitElement {
+export class SoundwsStemPlayerStem extends WaveformHostMixin(
+  ResponsiveLitElement,
+) {
   static get styles() {
     return [
       gridStyles,
-      rowStyles,
       flexStyles,
       spacingStyles,
       typographyStyles,
       bgStyles,
+      utilityStyle,
       css`
         :host {
           --soundws-player-button-color: var(
@@ -52,8 +54,6 @@ export class SoundwsStemPlayerStem extends ResponsiveLitElement {
 
   static get properties() {
     return {
-      ...ResponsiveLitElement.properties,
-
       /**
        * The label to display
        */
@@ -91,11 +91,6 @@ export class SoundwsStemPlayerStem extends ResponsiveLitElement {
        * The wave progress colour
        */
       waveProgressColor: { type: String },
-
-      /**
-       * Used to determine whether the DOM has been initialised
-       */
-      _rowHeight: { state: true },
     };
   }
 
@@ -104,12 +99,6 @@ export class SoundwsStemPlayerStem extends ResponsiveLitElement {
    * @private
    */
   #volume;
-
-  /**
-   * @type {Object}
-   * @private
-   */
-  #computedWaveformStyles;
 
   /**
    * @type {HLS}
@@ -121,13 +110,6 @@ export class SoundwsStemPlayerStem extends ResponsiveLitElement {
     super();
     this.#volume = 1;
     this.solo = 'off';
-  }
-
-  firstUpdated() {
-    this.#computedWaveformStyles = this.#computeWaveformStyles();
-
-    // get the _rowHeight so we know the height for the waveform
-    this._rowHeight = this.shadowRoot.firstElementChild.clientHeight;
   }
 
   disconnectedCallback() {
@@ -213,7 +195,7 @@ export class SoundwsStemPlayerStem extends ResponsiveLitElement {
   }
 
   render() {
-    return html`<div class="row">
+    return html`<div>
       ${this.displayMode === 'lg'
         ? this.#getLargeScreenTpl()
         : this.#getSmallScreenTpl()}
@@ -224,22 +206,19 @@ export class SoundwsStemPlayerStem extends ResponsiveLitElement {
    * @private
    */
   #getSmallScreenTpl() {
-    return html`<div class="dFlex flexRow showSm">
-      <div class="w2 flexNoShrink">
-        <soundws-player-button
-          @click=${this.solo === 'on' ? this.#onUnSoloClick : this.#onSoloClick}
-          .title=${this.solo === 'on' ? 'Disable solo' : 'Solo'}
-          .type=${this.solo === 'on' ? 'unsolo' : 'solo'}
-          class=${this.solo === 'on' ? 'bgBrand' : ''}
-        ></soundws-player-button>
-      </div>
-      <div class="w2 flexNoShrink">
-        <soundws-player-button
-          @click=${this.#toggleMute}
-          .title="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
-          .type="${this.muted || this.volume === 0 ? 'unmute' : 'mute'}"
-        ></soundws-player-button>
-      </div>
+    return html`<stemplayer-js-row displayMode="sm">
+      <soundws-player-button
+        @click=${this.solo === 'on' ? this.#onUnSoloClick : this.#onSoloClick}
+        .title=${this.solo === 'on' ? 'Disable solo' : 'Solo'}
+        .type=${this.solo === 'on' ? 'unsolo' : 'solo'}
+        class="w2 flexNoShrink ${this.solo === 'on' ? 'bgBrand' : ''}"
+      ></soundws-player-button>
+      <soundws-player-button
+        class="w2 flexNoShrink"
+        @click=${this.#toggleMute}
+        .title="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
+        .type="${this.muted || this.volume === 0 ? 'unmute' : 'mute'}"
+      ></soundws-player-button>
       <soundws-slider
         .value=${this.volume * 100}
         label="volume"
@@ -253,57 +232,63 @@ export class SoundwsStemPlayerStem extends ResponsiveLitElement {
         .scaleY=${this.volume}
         style="display: none;"
       ></soundws-waveform>
-    </div>`;
+    </stemplayer-js-row>`;
   }
 
   /**
    * @private
    */
   #getLargeScreenTpl() {
-    const styles = this.#computedWaveformStyles;
+    const styles = this.getComputedWaveformStyles();
 
-    return html`<div class="dFlex flexRow row">
-      <div class="w2 flexNoShrink">
+    return html`<stemplayer-js-row>
+      <div slot="controls" class="dFlex h100">
         <soundws-player-button
+          class="w2 overflowHidden"
           @click=${this.solo === 'on' ? this.#onUnSoloClick : this.#onSoloClick}
           .title=${this.solo === 'on' ? 'Disable solo' : 'Solo'}
           .type=${this.solo === 'on' ? 'unsolo' : 'solo'}
         ></soundws-player-button>
-      </div>
-      <div class="w5 hoverMenuAnchor dFlex flexAlignStretch pr1">
         <soundws-player-button
-          class="w2 flexNoShrink pr1"
+          class="w2 overflowHidden"
           @click=${this.#toggleMute}
           .title="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
           type="${this.muted || this.volume === 0 ? 'unmute' : 'mute'}"
         ></soundws-player-button>
         <soundws-range
+          class="w2"
           label="volume"
-          class="focusbgBrand px1"
           @change=${e => this.#handleVolume(e.detail / 100)}
           .value=${this.volume * 100}
         ></soundws-range>
+        <div
+          class="flex1 px4 truncate noPointerEvents textCenter flexNoShrink textSm"
+        >
+          ${this.label}
+        </div>
       </div>
-      <div class="w8 px4 alignRight truncate noPointerEvents textCenter">
-        <span class="truncate textSm">${this.label}</span>
+        ${
+          styles
+            ? html`
+                <soundws-waveform
+                  class="h100"
+                  slot="flex"
+                  .src=${this.waveform}
+                  .progress=${this.currentPct}
+                  .scaleY=${this.volume}
+                  .progressColor=${styles.waveProgressColor}
+                  .waveColor=${styles.waveColor}
+                  .barWidth=${styles.barWidth}
+                  .barGap=${styles.barGap}
+                  .pixelRatio=${styles.devicePixelRatio}
+                ></soundws-waveform>
+              `
+            : ''
+        }
       </div>
-      ${this._rowHeight
-        ? html`<soundws-waveform
-            class="flex1"
-            .src=${this.waveform}
-            .duration=${this.duration}
-            .progress=${this.currentPct}
-            .scaleY=${this.volume}
-            .progressColor=${styles.waveProgressColor}
-            .waveColor=${styles.waveColor}
-            .barWidth=${styles.barWidth}
-            .barGap=${styles.barGap}
-            .pixelRatio=${styles.devicePixelRatio}
-          ></soundws-waveform>`
-        : ''}
-      <div class="w2 flexNoShrink"></div>
+      <div class="wSpacer flexNoShrink"></div>
       <slot name="end"></slot>
-    </div>`;
+    </stemplayer-js-row>`;
   }
 
   /**
@@ -392,18 +377,7 @@ export class SoundwsStemPlayerStem extends ResponsiveLitElement {
     return this.shadowRoot?.querySelector('soundws-waveform');
   }
 
-  /**
-   * Calculates the styles for rendering the waveform
-   *
-   * @private
-   */
-  #computeWaveformStyles() {
-    const styles = computeWaveformStyles(this, defaults.waveform);
-
-    return {
-      ...styles,
-      waveColor: this.waveColor || styles.waveColor,
-      waveProgressColor: this.waveProgressColor || styles.progressColor,
-    };
+  get row() {
+    return this.shadowRoot.querySelector('stemplayer-js-row');
   }
 }
