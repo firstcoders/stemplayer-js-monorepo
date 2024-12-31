@@ -162,9 +162,9 @@ export class FcStemPlayerControls extends WaveformHostMixin(
         }
         </div>
         <div
-          class="w2 textCenter flexNoShrink z99 bgPlayer op75 top right textXs"
+          class="w2 textCenter flexNoShrink z99 bgPlayer op75 top right"
         >
-          ${formatSeconds(this.currentTime || 0)}
+          <span class="p2 textXs">${formatSeconds(this.currentTime || 0)}</span>
         </div>
       </div>
       ${

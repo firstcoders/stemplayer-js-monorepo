@@ -664,7 +664,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
   }
 
   #recalculatePixelsPerSecond() {
-    if (this.stemComponents[0].row) {
+    if (this.stemComponents[0]?.row) {
       const pps =
         ((this.clientWidth - this.stemComponents[0].row.nonFlexWidth) /
           this.#controller.duration) *
