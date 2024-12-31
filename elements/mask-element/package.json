@@ -18,7 +18,7 @@
   },
   "exports": {
     ".": "./index.js",
-    "./soundws-mask.js": "./soundws-mask.js"
+    "./fc-mask.js": "./fc-mask.js"
   },
   "scripts": {
     "analyze": "cem analyze --litelement",

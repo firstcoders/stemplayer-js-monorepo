@@ -1,1 +1,1 @@
-export { SoundwsLoader } from './src/SoundwsLoader.js';
+export { FcLoader } from './src/FcLoader.js';

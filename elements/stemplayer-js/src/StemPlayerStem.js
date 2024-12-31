@@ -29,9 +29,7 @@ import { fetchOptions } from './config.js';
 /**
  * A component to render a single stem
  */
-export class SoundwsStemPlayerStem extends WaveformHostMixin(
-  ResponsiveLitElement,
-) {
+export class FcStemPlayerStem extends WaveformHostMixin(ResponsiveLitElement) {
   static get styles() {
     return [
       gridStyles,
@@ -42,7 +40,7 @@ export class SoundwsStemPlayerStem extends WaveformHostMixin(
       utilityStyle,
       css`
         :host {
-          --soundws-player-button-color: var(
+          --fc-player-button-color: var(
             --stemplayer-js-stem-color,
             var(--stemplayer-js-color, white)
           );
@@ -207,31 +205,31 @@ export class SoundwsStemPlayerStem extends WaveformHostMixin(
    */
   #getSmallScreenTpl() {
     return html`<stemplayer-js-row displayMode="sm">
-      <soundws-player-button
+      <fc-player-button
         @click=${this.solo === 'on' ? this.#onUnSoloClick : this.#onSoloClick}
         .title=${this.solo === 'on' ? 'Disable solo' : 'Solo'}
         .type=${this.solo === 'on' ? 'unsolo' : 'solo'}
         class="w2 flexNoShrink ${this.solo === 'on' ? 'bgBrand' : ''}"
-      ></soundws-player-button>
-      <soundws-player-button
+      ></fc-player-button>
+      <fc-player-button
         class="w2 flexNoShrink"
         @click=${this.#toggleMute}
         .title="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
         .type="${this.muted || this.volume === 0 ? 'unmute' : 'mute'}"
-      ></soundws-player-button>
-      <soundws-slider
+      ></fc-player-button>
+      <fc-slider
         .value=${this.volume * 100}
         label="volume"
         class="flex1"
         @change=${e => this.#handleVolume(e.detail / 100)}
-        >${this.label}</soundws-slider
+        >${this.label}</fc-slider
       >
       <!-- for calculating combined peaks which should still be emited in events -->
-      <soundws-waveform
+      <fc-waveform
         .src=${this.waveform}
         .scaleY=${this.volume}
         style="display: none;"
-      ></soundws-waveform>
+      ></fc-waveform>
     </stemplayer-js-row>`;
   }
 
@@ -243,24 +241,24 @@ export class SoundwsStemPlayerStem extends WaveformHostMixin(
 
     return html`<stemplayer-js-row>
       <div slot="controls" class="dFlex h100">
-        <soundws-player-button
+        <fc-player-button
           class="w2 overflowHidden"
           @click=${this.solo === 'on' ? this.#onUnSoloClick : this.#onSoloClick}
           .title=${this.solo === 'on' ? 'Disable solo' : 'Solo'}
           .type=${this.solo === 'on' ? 'unsolo' : 'solo'}
-        ></soundws-player-button>
-        <soundws-player-button
+        ></fc-player-button>
+        <fc-player-button
           class="w2 overflowHidden"
           @click=${this.#toggleMute}
           .title="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
           type="${this.muted || this.volume === 0 ? 'unmute' : 'mute'}"
-        ></soundws-player-button>
-        <soundws-range
+        ></fc-player-button>
+        <fc-range
           class="w2"
           label="volume"
           @change=${e => this.#handleVolume(e.detail / 100)}
           .value=${this.volume * 100}
-        ></soundws-range>
+        ></fc-range>
         <div
           class="flex1 px4 truncate noPointerEvents textCenter flexNoShrink textSm"
         >
@@ -270,7 +268,7 @@ export class SoundwsStemPlayerStem extends WaveformHostMixin(
         ${
           styles
             ? html`
-                <soundws-waveform
+                <fc-waveform
                   class="h100"
                   slot="flex"
                   .src=${this.waveform}
@@ -281,7 +279,7 @@ export class SoundwsStemPlayerStem extends WaveformHostMixin(
                   .barWidth=${styles.barWidth}
                   .barGap=${styles.barGap}
                   .pixelRatio=${styles.devicePixelRatio}
-                ></soundws-waveform>
+                ></fc-waveform>
               `
             : ''
         }
@@ -374,7 +372,7 @@ export class SoundwsStemPlayerStem extends WaveformHostMixin(
    * @private
    */
   get waveformComponent() {
-    return this.shadowRoot?.querySelector('soundws-waveform');
+    return this.shadowRoot?.querySelector('fc-waveform');
   }
 
   get row() {

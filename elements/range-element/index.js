@@ -1,1 +1,1 @@
-export { SoundwsRange } from './src/SoundwsRange.js';
+export { FcRange } from './src/FcRange.js';

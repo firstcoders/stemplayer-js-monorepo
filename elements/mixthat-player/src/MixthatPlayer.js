@@ -126,7 +126,7 @@ export class MixthatPlayer extends LitElement {
                 label="${this.track.songTitle}"
               >
                 ${this.controls.indexOf('stems') !== -1
-                  ? html`<soundws-player-button
+                  ? html`<fc-player-button
                       slot="end"
                       @click=${() => {
                         this.collapsed = !this.collapsed;
@@ -134,10 +134,10 @@ export class MixthatPlayer extends LitElement {
                       class="w2"
                       title="Mix Stems"
                       type="mix"
-                    ></soundws-player-button>`
+                    ></fc-player-button>`
                   : ''}
                 ${this.controls.indexOf('download:mix') !== -1
-                  ? html`<soundws-player-button
+                  ? html`<fc-player-button
                       @click=${() => this.createMix('wav')}
                       .disabled=${this.collapsed || this._isCreatingMix}
                       slot="end"
@@ -146,7 +146,7 @@ export class MixthatPlayer extends LitElement {
                       .type="${!this._isCreatingMix
                         ? 'download'
                         : 'downloading'}"
-                    ></soundws-player-button>`
+                    ></fc-player-button>`
                   : ''}
               </stemplayer-js-controls>`
             : ''}

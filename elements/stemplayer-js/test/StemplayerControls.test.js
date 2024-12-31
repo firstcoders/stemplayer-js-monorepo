@@ -86,7 +86,7 @@ describe('StemPlayerControls', () => {
       el.slottedElements[0].peaks = peaks;
 
       const waveformEl =
-        el.slottedElements[0].shadowRoot.querySelector('soundws-waveform');
+        el.slottedElements[0].shadowRoot.querySelector('fc-waveform');
 
       await waveformEl.updateComplete;
 
@@ -109,7 +109,7 @@ describe('StemPlayerControls', () => {
       await el.slottedElements[0].updateComplete;
 
       const waveformEl =
-        el.slottedElements[0].shadowRoot.querySelector('soundws-waveform');
+        el.slottedElements[0].shadowRoot.querySelector('fc-waveform');
 
       await waveformEl.updateComplete;
 
@@ -132,8 +132,7 @@ describe('StemPlayerControls', () => {
       await el.slottedElements[0].updateComplete;
 
       expect(
-        el.slottedElements[0].shadowRoot.querySelector('soundws-player-button')
-          .type,
+        el.slottedElements[0].shadowRoot.querySelector('fc-player-button').type,
       ).to.equal('pause');
     });
   });
@@ -153,8 +152,7 @@ describe('StemPlayerControls', () => {
       await el.slottedElements[0].updateComplete;
 
       expect(
-        el.slottedElements[0].shadowRoot.querySelector('soundws-player-button')
-          .type,
+        el.slottedElements[0].shadowRoot.querySelector('fc-player-button').type,
       ).to.equal('play');
     });
   });

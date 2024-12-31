@@ -9,9 +9,9 @@ import Peaks from './lib/Peaks.js';
  *
  * @see https://github.com/bbc/audiowaveform
  *
- * @cssprop [--soundws-waveform-min-height="25px"]
+ * @cssprop [--fc-waveform-min-height="25px"]
  */
-export class SoundwsWaveform extends LitElement {
+export class FcWaveform extends LitElement {
   static get styles() {
     return css`
       :host {
@@ -24,7 +24,7 @@ export class SoundwsWaveform extends LitElement {
 
       .container {
         height: 100%;
-        min-height: var(--soundws-waveform-min-height, 25px);
+        min-height: var(--fc-waveform-min-height, 25px);
       }
     `;
   }
@@ -208,7 +208,7 @@ export class SoundwsWaveform extends LitElement {
 
     // set the width of the element
     const defaultPixelsPerSecond = this.clientWidth / this.peaks.duration;
-    this.style.width = `calc(var(--soundws-waveform-pixels-per-second, ${defaultPixelsPerSecond}) * ${this.peaks.duration}px)`;
+    this.style.width = `calc(var(--fc-waveform-pixels-per-second, ${defaultPixelsPerSecond}) * ${this.peaks.duration}px)`;
 
     if (!this.drawer) this.createDrawer();
 

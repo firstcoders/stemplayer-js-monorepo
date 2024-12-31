@@ -18,7 +18,7 @@
   },
   "exports": {
     ".": "./index.js",
-    "./soundws-player-button.js": "./soundws-player-button.js"
+    "./fc-player-button.js": "./fc-player-button.js"
   },
   "scripts": {
     "analyze": "cem analyze --litelement",

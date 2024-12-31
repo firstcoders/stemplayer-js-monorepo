@@ -19,8 +19,8 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import Controller from '@firstcoders/hls-web-audio/controller.js';
 import Peaks from '@firstcoders/waveform-element/Peaks.js';
 import { ResponsiveLitElement } from './ResponsiveLitElement.js';
-import { SoundwsStemPlayerControls as ControlComponent } from './StemPlayerControls.js';
-import { SoundwsStemPlayerStem as StemComponent } from './StemPlayerStem.js';
+import { FcStemPlayerControls as ControlComponent } from './StemPlayerControls.js';
+import { FcStemPlayerStem as StemComponent } from './StemPlayerStem.js';
 import utilitiesStyles from './styles/utilities.js';
 import debounce from './lib/debounce.js';
 
@@ -54,7 +54,7 @@ import debounce from './lib/debounce.js';
  * @cssprop [--stemplayer-js-progress-background-color=rgba(255, 255, 255, 1)]
  * @cssprop [--stemplayer-js-progress-mix-blend-mode=overlay]
  */
-export class SoundwsStemPlayer extends ResponsiveLitElement {
+export class FcStemPlayer extends ResponsiveLitElement {
   #workspace = createRef();
 
   static get styles() {
@@ -62,18 +62,13 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
       utilitiesStyles,
       css`
         :host {
-          --soundws-player-button-color: var(--stemplayer-js-color, white);
-          --soundws-range-border-color: var(
-            --stemplayer-js-brand-color,
-            #01a4b3
-          );
-          --soundws-player-button-focus-background-color: var(
+          --fc-player-button-color: var(--stemplayer-js-color, white);
+          --fc-range-border-color: var(--stemplayer-js-brand-color, #01a4b3);
+          --fc-player-button-focus-background-color: var(
             --stemplayer-js-brand-color
           );
-          --soundws-range-focus-background-color: var(
-            --stemplayer-js-brand-color
-          );
-          --soundws-slider-handle-border-right-color: var(
+          --fc-range-focus-background-color: var(--stemplayer-js-brand-color);
+          --fc-slider-handle-border-right-color: var(
             --stemplayer-js-brand-color
           );
 
@@ -417,9 +412,9 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
       </div>
       <slot name="footer" @slotchange=${this.#onSlotChange}></slot>
       ${this.isLoading
-        ? html`<soundws-mask>
-            <soundws-loader></soundws-loader></soundws-icon>
-          </soundws-mask>`
+        ? html`<fc-mask>
+            <fc-loader></fc-loader></fc-icon>
+          </fc-mask>`
         : ''}
     </div>`;
   }
@@ -427,9 +422,9 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
   #getSmallScreenTpl() {
     return html`<div class="relative overflowHidden noSelect">
       ${this.isLoading
-        ? html`<soundws-mask>
-            <soundws-loader></soundws-loader></soundws-icon>
-          </soundws-mask>`
+        ? html`<fc-mask>
+            <fc-loader></fc-loader></fc-icon>
+          </fc-mask>`
         : ''}
       <div class="scrollWrapper">
         <slot name="header" @slotchange=${this.#onSlotChange}></slot>
@@ -675,8 +670,7 @@ export class SoundwsStemPlayer extends ResponsiveLitElement {
           this.#controller.duration) *
         this.zoom;
 
-      if (pps)
-        this.style.setProperty('--soundws-waveform-pixels-per-second', pps);
+      if (pps) this.style.setProperty('--fc-waveform-pixels-per-second', pps);
     }
   }
 

@@ -113,16 +113,16 @@ export class Workspace extends ResponsiveLitElement {
           mix-blend-mode: var(--stemplayer-js-progress-mix-blend-mode, overlay);
           width: calc(
             (1px * var(--stemplayer-progress, 0)) *
-              var(--soundws-waveform-pixels-per-second)
+              var(--fc-waveform-pixels-per-second)
           );
         }
 
         .regionArea {
           left: calc(
-            var(--soundws-waveform-pixels-per-second) * var(--offset) * 1px
+            var(--fc-waveform-pixels-per-second) * var(--offset) * 1px
           );
           width: calc(
-            var(--soundws-waveform-pixels-per-second) * var(--duration) * 1px
+            var(--fc-waveform-pixels-per-second) * var(--duration) * 1px
           );
         }
       `,
@@ -192,11 +192,11 @@ export class Workspace extends ResponsiveLitElement {
             <div class="w2 hRow textCenter textXs">
               ${formatSeconds(this.offset + this.duration)}
             </div>
-            <soundws-player-button
+            <fc-player-button
               @click=${this.#onDeselectClick}
               class="hRow w2"
               type="deselect"
-            ></soundws-player-button>
+            ></fc-player-button>
           </div></div></div>`
           : ''}
         <div class="cursor dashed w2 z999 noPointerEvents">

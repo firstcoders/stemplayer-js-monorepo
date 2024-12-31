@@ -32,7 +32,7 @@ import debounce from './lib/debounce.js';
  * @cssprop [--stemplayer-js-controls-color]
  * @cssprop [--stemplayer-js-controls-background-color]
  */
-export class SoundwsStemPlayerControls extends WaveformHostMixin(
+export class FcStemPlayerControls extends WaveformHostMixin(
   ResponsiveLitElement,
 ) {
   static get styles() {
@@ -45,7 +45,7 @@ export class SoundwsStemPlayerControls extends WaveformHostMixin(
       utilityStyle,
       css`
         :host {
-          --soundws-player-button-color: var(
+          --fc-player-button-color: var(
             --stemplayer-js-controls-color,
             var(--stemplayer-js-color, white)
           );
@@ -133,21 +133,21 @@ export class SoundwsStemPlayerControls extends WaveformHostMixin(
 
     return html`<stemplayer-js-row>
       <div slot="controls" class="dFlex h100">
-        <soundws-player-button
+        <fc-player-button
           class="w2 flexNoShrink"
           .disabled=${!this.duration}
           @click=${this.isPlaying ? this.#onPauseClick : this.#onPlayClick}
           .title=${this.isPlaying ? 'Pause' : 'Play'}
           .type=${this.isPlaying ? 'pause' : 'play'}
-        ></soundws-player-button>
+        ></fc-player-button>
         ${
           this.isControlEnabled('loop')
-            ? html`<soundws-player-button
+            ? html`<fc-player-button
                 class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
                 @click=${this.#toggleLoop}
                 .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
                 type="loop"
-              ></soundws-player-button>`
+              ></fc-player-button>`
             : ''
         }
         <div class="flex1">
@@ -170,7 +170,7 @@ export class SoundwsStemPlayerControls extends WaveformHostMixin(
       ${
         this.isControlEnabled('waveform') && styles && this.displayMode === 'lg'
           ? html`
-              <soundws-waveform
+              <fc-waveform
                 slot="flex"
                 .peaks=${this.peaks}
                 .duration=${this.duration}
@@ -180,15 +180,15 @@ export class SoundwsStemPlayerControls extends WaveformHostMixin(
                 .barWidth=${styles.barWidth}
                 .barGap=${styles.barGap}
                 .pixelRatio=${styles.devicePixelRatio}
-              ></soundws-waveform>
+              ></fc-waveform>
             `
-          : html`<soundws-range
+          : html`<fc-range
               label="progress"
               slot="flex"
               .value=${this.currentPct * 100}
               @input=${this.#handleSeeking}
               @change=${this.#debouncedHandleSeek}
-            ></soundws-range>`
+            ></fc-range>`
       }
       </div>
       <div
@@ -202,19 +202,19 @@ export class SoundwsStemPlayerControls extends WaveformHostMixin(
 
   #getSmallScreenTpl() {
     return html`<stemplayer-js-row displayMode="sm">
-      <soundws-player-button
+      <fc-player-button
         class="w2 flexNoShrink"
         .disabled=${!this.duration}
         @click=${this.isPlaying ? this.#onPauseClick : this.#onPlayClick}
         .title=${this.isPlaying ? 'Pause' : 'Play'}
         .type=${this.isPlaying ? 'pause' : 'play'}
-      ></soundws-player-button>
-      <soundws-player-button
+      ></fc-player-button>
+      <fc-player-button
         class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
         @click=${this.#toggleLoop}
         .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
         type="loop"
-      ></soundws-player-button>
+      ></fc-player-button>
       ${this.displayMode !== 'xs'
         ? html`<div
             class="flex1 truncate hideXs px4 pr5 textCenter flexNoShrink"
@@ -227,13 +227,13 @@ export class SoundwsStemPlayerControls extends WaveformHostMixin(
       >
         ${formatSeconds(this.currentTime || 0)}
       </div>
-      <soundws-range
+      <fc-range
         label="progress"
         class="focusBgBrand px1 flex1 flexNoShrink w2"
         .value=${this.currentPct * 100}
         @input=${this.#handleSeeking}
         @change=${this.#debouncedHandleSeek}
-      ></soundws-range>
+      ></fc-range>
       <slot name="end"></slot>
       <div class="w2 op75 textCenter textXs">
         <span class="p2">${formatSeconds(this.duration)}</span>

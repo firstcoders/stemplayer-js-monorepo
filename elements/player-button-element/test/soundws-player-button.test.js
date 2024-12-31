@@ -1,12 +1,12 @@
 import { html } from 'lit';
 import { fixture, expect } from '@open-wc/testing';
 
-import '../soundws-player-button.js';
+import '../fc-player-button.js';
 
-describe('SoundwsPlayerButton', () => {
+describe('FcPlayerButton', () => {
   it('renders an icon', async () => {
     const el = await fixture(
-      html`<soundws-player-button type="play"></soundws-player-button>`,
+      html`<fc-player-button type="play"></fc-player-button>`,
     );
 
     expect(!!el.shadowRoot.querySelector('svg')).to.equal(true);
@@ -15,7 +15,7 @@ describe('SoundwsPlayerButton', () => {
   describe('when no label attribute is given', () => {
     it('renders #aria-label with the type name', async () => {
       const el = await fixture(
-        html`<soundws-player-button type="play"></soundws-player-button>`,
+        html`<fc-player-button type="play"></fc-player-button>`,
       );
 
       expect(
@@ -27,10 +27,10 @@ describe('SoundwsPlayerButton', () => {
   describe('when a label attribute is given', () => {
     it('renders #aria-label with the label name', async () => {
       const el = await fixture(
-        html`<soundws-player-button
+        html`<fc-player-button
           type="play"
           label="somethingelse"
-        ></soundws-player-button>`,
+        ></fc-player-button>`,
       );
 
       expect(
@@ -41,7 +41,7 @@ describe('SoundwsPlayerButton', () => {
 
   it('passes the a11y audit', async () => {
     const el = await fixture(
-      html`<soundws-player-button type="play"></soundws-player-button>`,
+      html`<fc-player-button type="play"></fc-player-button>`,
     );
 
     await expect(el).shadowDom.to.be.accessible();

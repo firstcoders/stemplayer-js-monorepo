@@ -2,7 +2,7 @@
   "name": "@firstcoders/range-element",
   "description": "Webcomponent soundws-range following open-wc recommendations",
   "license": "MIT",
-  "author": "soundws-range",
+  "author": "team First Coders",
   "version": "0.0.6-beta.0",
   "type": "module",
   "main": "index.js",
@@ -17,7 +17,7 @@
   },
   "exports": {
     ".": "./index.js",
-    "./soundws-range.js": "./soundws-range.js"
+    "./fc-range.js": "./fc-range.js"
   },
   "scripts": {
     "analyze": "cem analyze --litelement",

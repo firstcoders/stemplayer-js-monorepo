@@ -1,1 +1,1 @@
-export { SoundwsWaveform } from './src/SoundwsWaveform.js';
+export { FcWaveform } from './src/FcWaveform.js';
