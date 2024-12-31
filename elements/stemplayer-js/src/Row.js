@@ -44,7 +44,7 @@ export class Row extends LitElement {
         }
 
         .wEnd {
-          width: var(--stemplayer-js-row-end-width);
+          min-width: var(--stemplayer-js-row-end-width);
         }
       `,
     ];
@@ -82,7 +82,7 @@ export class Row extends LitElement {
       <div class="flex1">
         <slot name="flex"></slot>
       </div>
-      <div class="wEnd flexNoShrink stickRight bgPlayer z99 op75">
+      <div class="wEnd flexNoShrink stickRight bgPlayer z999 dFlex">
         <slot name="end"></slot>
       </div>
     </div>`;
@@ -92,6 +92,8 @@ export class Row extends LitElement {
    * Returns the combined width of the non fluid (flex) containers
    */
   get nonFlexWidth() {
+    console.log(this.shadowRoot.querySelector('div.wEnd'));
+
     try {
       return (
         this.shadowRoot.querySelector('div.wControls').clientWidth +

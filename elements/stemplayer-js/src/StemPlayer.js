@@ -197,6 +197,13 @@ export class FcStemPlayer extends ResponsiveLitElement {
     this.addEventListener('controls:play', this.#onPlay);
     this.addEventListener('controls:pause', this.#onPause);
     this.addEventListener('controls:loop', this.#onToggleLoop);
+    this.addEventListener('controls:zoom:in', () => {
+      this.zoom += 0.5;
+    });
+    this.addEventListener('controls:zoom:out', () => {
+      this.zoom -= 0.5;
+      if (this.zoom < 1) this.zoom = 1;
+    });
     this.addEventListener('stem:load:start', this.#onStemLoadingStart);
     this.addEventListener('stem:load:end', this.#onStemLoadingEnd);
     this.addEventListener('stem:solo', this.#onSolo);

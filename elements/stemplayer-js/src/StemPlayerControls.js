@@ -117,7 +117,14 @@ export class FcStemPlayerControls extends WaveformHostMixin(
   constructor() {
     super();
     this.#debouncedHandleSeek = debounce(this.#handleSeek, 100);
-    this.controls = ['loop', 'label'];
+    this.controls = [
+      'playpause',
+      'loop',
+      'progress',
+      'label',
+      'duration',
+      'time',
+    ];
   }
 
   render() {
@@ -129,73 +136,20 @@ export class FcStemPlayerControls extends WaveformHostMixin(
   }
 
   #getLargeScreenTpl() {
-    const styles = this.getComputedWaveformStyles();
-
     return html`<stemplayer-js-row>
       <div slot="controls" class="dFlex h100">
-        <fc-player-button
-          class="w2 flexNoShrink"
-          .disabled=${!this.duration}
-          @click=${this.isPlaying ? this.#onPauseClick : this.#onPlayClick}
-          .title=${this.isPlaying ? 'Pause' : 'Play'}
-          .type=${this.isPlaying ? 'pause' : 'play'}
-        ></fc-player-button>
-        ${
-          this.isControlEnabled('loop')
-            ? html`<fc-player-button
-                class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
-                @click=${this.#toggleLoop}
-                .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
-                type="loop"
-              ></fc-player-button>`
-            : ''
-        }
-        <div class="flex1">
-        ${
-          this.isControlEnabled('label')
-            ? html`<div
-                class="w100 truncate hideXs px4 pr5 textCenter flexNoShrink"
-              >
-                ${this.label}
-              </div>`
-            : html``
-        }
-        </div>
-        <div
-          class="w2 textCenter flexNoShrink z99 bgPlayer op75 top right"
-        >
-          <span class="p2 textXs">${formatSeconds(this.currentTime || 0)}</span>
-        </div>
+        ${this.#renderControl('playpause', true)} ${this.#renderControl('loop')}
+        ${this.#renderControl('zoom')}
+        <div class="flex1">${this.#renderControl('label')}</div>
+        ${this.#renderControl('time', true)}
       </div>
-      ${
-        this.isControlEnabled('waveform') && styles && this.displayMode === 'lg'
-          ? html`
-              <fc-waveform
-                slot="flex"
-                .peaks=${this.peaks}
-                .duration=${this.duration}
-                .progress=${this.currentPct}
-                .progressColor=${styles.waveProgressColor}
-                .waveColor=${styles.waveColor}
-                .barWidth=${styles.barWidth}
-                .barGap=${styles.barGap}
-                .pixelRatio=${styles.devicePixelRatio}
-              ></fc-waveform>
-            `
-          : html`<fc-range
-              label="progress"
-              slot="flex"
-              .value=${this.currentPct * 100}
-              @input=${this.#handleSeeking}
-              @change=${this.#debouncedHandleSeek}
-            ></fc-range>`
-      }
+      <div slot="flex" class="h100">
+        ${this.#renderControl('waveform') ||
+        this.#renderControl('progress', true)}
       </div>
-      <div
-        slot="end"
-        class="textCenter"
-      >
-        <span class="p2 textXs">${formatSeconds(this.duration)}</span>
+      <div slot="end" class="h100 dFlex">
+        ${this.#renderControl('duration', true)}
+        ${this.#renderControl('end:loop')} ${this.#renderControl('end:zoom')}
       </div>
     </stemplayer-js-row>`;
   }
@@ -229,12 +183,11 @@ export class FcStemPlayerControls extends WaveformHostMixin(
       </div>
       <fc-range
         label="progress"
-        class="focusBgBrand px1 flex1 flexNoShrink w2"
+        class="focusBgBrand px1 flex1 flexNoShrink"
         .value=${this.currentPct * 100}
         @input=${this.#handleSeeking}
         @change=${this.#debouncedHandleSeek}
       ></fc-range>
-      <slot name="end"></slot>
       <div class="w2 op75 textCenter textXs">
         <span class="p2">${formatSeconds(this.duration)}</span>
       </div>
@@ -279,7 +232,104 @@ export class FcStemPlayerControls extends WaveformHostMixin(
     e.target.blur();
   }
 
+  #onZoominClick() {
+    this.dispatchEvent(new Event('controls:zoom:in', { bubbles: true }));
+  }
+
+  #onZoomoutClick() {
+    this.dispatchEvent(new Event('controls:zoom:out', { bubbles: true }));
+  }
+
   isControlEnabled(value) {
     return this.controls.indexOf(value) !== -1;
+  }
+
+  #renderControl(value, mandatory) {
+    if (!mandatory && this.controls.indexOf(value) === -1) return '';
+
+    if (value === 'playpause')
+      return html`<fc-player-button
+        class="w2 flexNoShrink"
+        .disabled=${!this.duration}
+        @click=${this.isPlaying ? this.#onPauseClick : this.#onPlayClick}
+        .title=${this.isPlaying ? 'Pause' : 'Play'}
+        .type=${this.isPlaying ? 'pause' : 'play'}
+      ></fc-player-button>`;
+
+    if (value === 'loop' || value === 'end:loop')
+      return html`<fc-player-button
+        class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
+        @click=${this.#toggleLoop}
+        .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
+        type="loop"
+      ></fc-player-button>`;
+
+    if (value === 'zoom' || value === 'end:zoom')
+      return html`<fc-player-button
+          class="w2 flexNoShrink"
+          title="zoom in"
+          type="zoomin"
+          @click=${this.#onZoominClick}
+        ></fc-player-button
+        ><fc-player-button
+          class="w2 flexNoShrink"
+          title="zoom out"
+          type="zoomout"
+          @click=${this.#onZoomoutClick}
+        ></fc-player-button>`;
+
+    if (value === 'progress')
+      return html`<fc-range
+        label="progress"
+        .value=${this.currentPct * 100}
+        @input=${this.#handleSeeking}
+        @change=${this.#debouncedHandleSeek}
+      ></fc-range>`;
+
+    if (value === 'waveform') {
+      const styles = this.getComputedWaveformStyles();
+
+      return html`
+        <fc-waveform
+          .peaks=${this.peaks}
+          .duration=${this.duration}
+          .progress=${this.currentPct}
+          .progressColor=${styles.waveProgressColor}
+          .waveColor=${styles.waveColor}
+          .barWidth=${styles.barWidth}
+          .barGap=${styles.barGap}
+          .pixelRatio=${styles.devicePixelRatio}
+        ></fc-waveform>
+      `;
+    }
+
+    if (value === 'loop')
+      return html`<fc-player-button
+        class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
+        @click=${this.#toggleLoop}
+        .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
+        type="loop"
+      ></fc-player-button>`;
+
+    if (value === 'label')
+      return html`<div
+        class="flex1 w100 truncate hideXs px4 pr5 textCenter flexNoShrink"
+      >
+        ${this.label}
+      </div>`;
+
+    if (value === 'duration')
+      return html`<div class="textCenter">
+        <span class="p2 textXs">${formatSeconds(this.duration)}</span>
+      </div>`;
+
+    if (value === 'time')
+      return html`<div
+        class="w2 textCenter flexNoShrink z99 bgPlayer op75 top right"
+      >
+        <span class="p2 textXs">${formatSeconds(this.currentTime || 0)}</span>
+      </div>`;
+
+    return '';
   }
 }
