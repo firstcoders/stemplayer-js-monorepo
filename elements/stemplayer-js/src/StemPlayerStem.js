@@ -265,27 +265,22 @@ export class FcStemPlayerStem extends WaveformHostMixin(ResponsiveLitElement) {
           ${this.label}
         </div>
       </div>
-        ${
-          styles
-            ? html`
-                <fc-waveform
-                  class="h100"
-                  slot="flex"
-                  .src=${this.waveform}
-                  .progress=${this.currentPct}
-                  .scaleY=${this.volume}
-                  .progressColor=${styles.waveProgressColor}
-                  .waveColor=${styles.waveColor}
-                  .barWidth=${styles.barWidth}
-                  .barGap=${styles.barGap}
-                  .pixelRatio=${styles.devicePixelRatio}
-                ></fc-waveform>
-              `
-            : ''
-        }
-      </div>
-      <div class="wSpacer flexNoShrink"></div>
-      <slot name="end"></slot>
+      ${styles
+        ? html`
+            <fc-waveform
+              class="h100"
+              slot="flex"
+              .src=${this.waveform}
+              .progress=${this.currentPct}
+              .scaleY=${this.volume}
+              .progressColor=${styles.waveProgressColor}
+              .waveColor=${styles.waveColor}
+              .barWidth=${styles.barWidth}
+              .barGap=${styles.barGap}
+              .pixelRatio=${styles.devicePixelRatio}
+            ></fc-waveform>
+          `
+        : ''}
     </stemplayer-js-row>`;
   }
 

@@ -38,6 +38,14 @@ export class Row extends LitElement {
           height: var(--stemplayer-js-row-height, 4.5rem);
           user-select: none;
         }
+
+        .wControls {
+          width: var(--stemplayer-js-row-controls-width);
+        }
+
+        .wEnd {
+          width: var(--stemplayer-js-row-end-width);
+        }
       `,
     ];
   }
@@ -74,7 +82,7 @@ export class Row extends LitElement {
       <div class="flex1">
         <slot name="flex"></slot>
       </div>
-      <div class="wSpacer flexNoShrink stickRight bgPlayer z99 op75">
+      <div class="wEnd flexNoShrink stickRight bgPlayer z99 op75">
         <slot name="end"></slot>
       </div>
     </div>`;
@@ -87,7 +95,7 @@ export class Row extends LitElement {
     try {
       return (
         this.shadowRoot.querySelector('div.wControls').clientWidth +
-        this.shadowRoot.querySelector('div.wSpacer').clientWidth
+        this.shadowRoot.querySelector('div.wEnd').clientWidth
       );
     } catch (err) {
       return undefined;
