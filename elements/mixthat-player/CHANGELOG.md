@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-beta.0](https://github.com/firstcoders/mixthat-player/compare/@firstcoders/mixthat-player@3.1.6-beta.8...@firstcoders/mixthat-player@4.0.0-beta.0) (2025-01-02)
+
+
+### Code Refactoring
+
+* change to element names ([d82db60](https://github.com/firstcoders/mixthat-player/commit/d82db60849a36ec518cb533a7aa9ba6d87423d51))
+
+
+### BREAKING CHANGES
+
+* soundws- prefix is not fc-
+
+
+
+
+
 ## [3.1.6-beta.8](https://github.com/firstcoders/mixthat-player/compare/@firstcoders/mixthat-player@3.1.6-beta.7...@firstcoders/mixthat-player@3.1.6-beta.8) (2024-12-23)
 
 **Note:** Version bump only for package @firstcoders/mixthat-player

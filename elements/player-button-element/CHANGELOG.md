@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-beta.0](https://github.com/firstcoders/player-button-element/compare/@firstcoders/player-button-element@0.3.1-beta.0...@firstcoders/player-button-element@1.0.0-beta.0) (2025-01-02)
+
+
+### Code Refactoring
+
+* change to element names ([d82db60](https://github.com/firstcoders/player-button-element/commit/d82db60849a36ec518cb533a7aa9ba6d87423d51))
+
+
+### Features
+
+* **player-button-element:** added zoom icons ([82b6f81](https://github.com/firstcoders/player-button-element/commit/82b6f81d620aaea0eb9947bdbd670908e79d50ef))
+
+
+### BREAKING CHANGES
+
+* soundws- prefix is not fc-
+
+
+
+
+
 ## [0.3.1-beta.0](https://github.com/firstcoders/player-button-element/compare/@firstcoders/player-button-element@0.3.0...@firstcoders/player-button-element@0.3.1-beta.0) (2024-12-06)
 
 **Note:** Version bump only for package @firstcoders/player-button-element

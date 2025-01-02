@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-beta.0](https://github.com/firstcoders/waveform-element/compare/@firstcoders/waveform-element@0.4.0-beta.2...@firstcoders/waveform-element@1.0.0-beta.0) (2025-01-02)
+
+
+### Code Refactoring
+
+* change to element names ([d82db60](https://github.com/firstcoders/waveform-element/commit/d82db60849a36ec518cb533a7aa9ba6d87423d51))
+* **waveform-element:** removed progress functionality ([091fddb](https://github.com/firstcoders/waveform-element/commit/091fddb3c80770ffe37815269e0ff56a14aab194))
+
+
+### BREAKING CHANGES
+
+* soundws- prefix is not fc-
+* **waveform-element:** waveform progress now has to be achieved using a separate element
+
+
+
+
+
 # [0.4.0-beta.2](https://github.com/firstcoders/waveform-element/compare/@firstcoders/waveform-element@0.4.0-beta.1...@firstcoders/waveform-element@0.4.0-beta.2) (2024-12-23)
 
 

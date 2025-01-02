@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-beta.0](https://github.com/firstcoders/mask-element/compare/@firstcoders/mask-element@0.0.5-beta.0...@firstcoders/mask-element@1.0.0-beta.0) (2025-01-02)
+
+
+### Code Refactoring
+
+* change to element names ([d82db60](https://github.com/firstcoders/mask-element/commit/d82db60849a36ec518cb533a7aa9ba6d87423d51))
+
+
+### BREAKING CHANGES
+
+* soundws- prefix is not fc-
+
+
+
+
+
 ## [0.0.5-beta.0](https://github.com/firstcoders/mask-element/compare/@firstcoders/mask-element@0.0.4...@firstcoders/mask-element@0.0.5-beta.0) (2024-12-06)
 
 **Note:** Version bump only for package @firstcoders/mask-element
