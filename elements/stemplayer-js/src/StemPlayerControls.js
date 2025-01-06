@@ -52,6 +52,8 @@ export class FcStemPlayerControls extends WaveformHostMixin(
           display: block;
           color: var(--stemplayer-js-controls-color, inherit);
           background-color: var(--stemplayer-js-controls-background-color);
+          --stemplayer-js-row-controls-background-color: transparent;
+          --stemplayer-js-row-end-background-color: transparent;
         }
       `,
     ];
