@@ -84,7 +84,6 @@ class Controller extends Observer {
 
     // store the handler so that we can remove it
     this.onStateChange = () => {
-      console.log('change', this.ac.state);
       if (this.ac.state === 'running') this.tick();
       else this.untick();
     };
@@ -161,8 +160,7 @@ class Controller extends Observer {
     // seek to 0 when starting playback for the first time
     if (typeof this.adjustedStart !== 'number') this.fixAdjustedStart(this.offset);
 
-    if (this.ac.state === 'suspended') {
-      console.log('start');
+    if (this.ac.state === 'suspended' && this.canPlay && !this.isBuffering) {
       await this.ac.resume();
     }
 
@@ -213,8 +211,6 @@ class Controller extends Observer {
   bufferingStart() {
     this.fireEvent('pause-start');
 
-    console.log('bufferingStart');
-
     this.isBuffering = true;
 
     if (this.ac.state === 'running') this.ac.suspend();
@@ -226,8 +222,6 @@ class Controller extends Observer {
    */
   bufferingEnd() {
     if (this.desiredState === 'resumed') this.ac.resume();
-
-    console.log('bufferingEnd');
 
     this.isBuffering = false;
 
@@ -473,6 +467,10 @@ class Controller extends Observer {
    */
   get canPlay() {
     return !this.hls.find((hls) => !hls.shouldAndCanPlay);
+  }
+
+  get isSeeking() {
+    return !!this.hls.find((hls) => hls.isSeeking);
   }
 
   /**
