@@ -25,11 +25,15 @@
     "lint": "eslint --ext .js,.html . --ignore-path .gitignore && prettier \"**/*.js\" --check --ignore-path .gitignore",
     "format": "eslint --ext .js,.html . --fix --ignore-path .gitignore && prettier \"**/*.js\" --write --ignore-path .gitignore",
     "test:disabled": "web-test-runner --coverage",
-    "test:watch": "web-test-runner --watch"
+    "test:watch": "web-test-runner --watch",
+    "build:dist": "rm -rf dist/ && mkdir dist/ && NODE_ENV=production rollup -c rollup.config.mjs",
+    "build:dev": "rm -rf dist/ && mkdir dist/ && NODE_ENV=development rollup -c rollup.config.mjs",
+    "build": "npm run build:dist",
+    "deploy": "aws s3 sync dist/ s3://$BUCKET_NAME/packages/@firstcoders/mixthat-player-$npm_package_version/ --cache-control max-age=2592000"
   },
   "dependencies": {
-    "@firstcoders/element-styles": "workspace:^",
-    "@stemplayer-js/stemplayer-js": "^4.0.0-beta.0",
+    "@firstcoders/element-styles": "^1.0.0-beta.0",
+    "@stemplayer-js/stemplayer-js": "4.0.0-beta.0",
     "lit": "^3.2.1"
   },
   "devDependencies": {
@@ -37,13 +41,19 @@
     "@custom-elements-manifest/analyzer": "^0.10.3",
     "@open-wc/eslint-config": "^12.0.3",
     "@open-wc/testing": "^4.0.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "@web/dev-server": "^0.4.5",
     "@web/test-runner": "^0.18.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "rollup": "^4.12.1",
+    "rollup-plugin-filesize": "^10.0.0",
+    "rollup-plugin-license": "^3.2.0",
+    "rollup-plugin-minify-html-literals": "^1.2.6",
+    "rollup-plugin-terser": "^7.0.2"
   },
   "customElements": "custom-elements.json",
   "eslintConfig": {

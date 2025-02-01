@@ -5,19 +5,7 @@
     <style>
       body {
         background: #fafafa;
-        --stemplayer-js-color: red;
-        --stemplayer-js-font-family: 'Arial Narrow';
-        --stemplayer-js-font-size: 0.9rem;
-        --stemplayer-js-background-color: white;
-        --stemplayer-js-wave-color: pink;
-        --stemplayer-js-wave-progress-color: purple;
-        --stemplayer-js-wave-pixel-ratio: 2;
-        --stemplayer-js-wave-bar-gap: 0;
-        --stemplayer-js-waveform-bar-width: 1;
-        --stemplayer-js-controls-color: black;
-        --stemplayer-js-controls-background-color: red;
-        --stemplayer-js-controls-wave-color: black;
-        --stemplayer-js-controls-wave-progress-color: lightblue;
+        --stemplayer-js-controls-background-color: #232323;
       }
 
     </style>
@@ -31,11 +19,11 @@
       import '../mixthat-player.js';
 
       const src =
-        'https://d18906zu98mq5t.cloudfront.net/tracks/a26fab52-d905-4c6a-9699-8af03a9ca31f/stream?t=1709625601931';
+        'https://mark.mixthat.co/api/v1/tracks/HVxkRS?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoibldDY0NqVzV2biIsInNjb3BlIjoidHJhY2tzL3JlYWQiLCJyZXNvdXJjZSI6InRyYWNrcy9IVnhrUlMiLCJpYXQiOjE3MzgzMzg2OTUsImV4cCI6MTc0MDkzMDY5NSwiYXVkIjoiaHR0cHM6Ly9tYXJrLm1peHRoYXQuY28iLCJpc3MiOiJodHRwczovL21hcmsubWl4dGhhdC5jbyIsInN1YiI6IjM0ZDgxNDU4LTcwNzEtNzBkNS01NjBmLTQyYWYwZjFkNWNhYSJ9.MUypGo4FHVmYtec41s2uq0nmXDoMy2pmPlmNv4b7g7M';
 
 
       render(
-        html`<mixthat-player no-analytics controls="toggle:stems download:mix" .src=${src}></mixthat-player>`,
+        html`<mixthat-player no-analytics .src=${src}></mixthat-player>`,
         document.querySelector('#demo')
       );
     </script>
