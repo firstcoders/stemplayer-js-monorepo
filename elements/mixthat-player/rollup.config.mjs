@@ -75,7 +75,7 @@ export default [
     },
     output: [
       {
-        file: 'dist/element.js',
+        file: 'dist/index.js',
         format: 'es',
         sourcemap: true,
       },

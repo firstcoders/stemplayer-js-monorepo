@@ -1,12 +1,12 @@
 {
   "name": "@firstcoders/mixthat-player",
   "description": "Webcomponent mixthat-player following open-wc recommendations",
-  "license": "GPL-3.0-or-later",
+  "license": "MIT",
   "author": "The First Coders Team (https://www.firstcoders.co.uk)",
   "version": "4.0.0-beta.0",
   "type": "module",
-  "main": "index.js",
-  "module": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
