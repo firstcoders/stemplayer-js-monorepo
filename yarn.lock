@@ -222,7 +222,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:^19.5.0":
+"@commitlint/cli@npm:^19.7.1":
   version: 19.7.1
   resolution: "@commitlint/cli@npm:19.7.1"
   dependencies:
@@ -239,7 +239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^19.5.0":
+"@commitlint/config-conventional@npm:^19.7.1":
   version: 19.7.1
   resolution: "@commitlint/config-conventional@npm:19.7.1"
   dependencies:
@@ -249,7 +249,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-lerna-scopes@npm:^19.5.0":
+"@commitlint/config-lerna-scopes@npm:^19.7.0":
   version: 19.7.0
   resolution: "@commitlint/config-lerna-scopes@npm:19.7.0"
   dependencies:
@@ -691,9 +691,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@firstcoders/webcomponents@workspace:."
   dependencies:
-    "@commitlint/cli": "npm:^19.5.0"
-    "@commitlint/config-conventional": "npm:^19.5.0"
-    "@commitlint/config-lerna-scopes": "npm:^19.5.0"
+    "@commitlint/cli": "npm:^19.7.1"
+    "@commitlint/config-conventional": "npm:^19.7.1"
+    "@commitlint/config-lerna-scopes": "npm:^19.7.0"
     husky: "npm:^9.1.6"
     lerna: "npm:^8.1.8"
   languageName: unknown
