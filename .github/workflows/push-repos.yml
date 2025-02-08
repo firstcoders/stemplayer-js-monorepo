@@ -44,17 +44,6 @@ jobs:
           user-email: team@firstcoders.co.uk
           target-branch: main
 
-      - name: Push mixthat-player
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-        with:
-          source-directory: 'elements/mixthat-player'
-          destination-github-username: 'firstcoders'
-          destination-repository-name: 'mixthat-player'
-          user-email: team@firstcoders.co.uk
-          target-branch: main
-
       - name: Push element-styles package
         uses: cpina/github-action-push-to-another-repository@main
         env:
