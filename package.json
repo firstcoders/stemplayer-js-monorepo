@@ -1,7 +1,7 @@
 {
   "name": "@firstcoders/webcomponents",
   "private": true,
-  "license": "SEE LICENSE IN LICENSE.txt",
+  "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
