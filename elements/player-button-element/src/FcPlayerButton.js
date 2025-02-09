@@ -52,6 +52,10 @@ export class FcPlayerButton extends LitElement {
         svg {
           fill: var(--fc-player-button-color, black);
         }
+
+        button:focus svg {
+          fill: var(--fc-player-button-focus-color, initial);
+        }
       `,
     ];
   }
