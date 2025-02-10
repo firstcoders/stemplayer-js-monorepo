@@ -157,6 +157,7 @@ export class Workspace extends ResponsiveLitElement {
     duration: { type: Number },
     regions: { type: Boolean },
     cursorPosition: { state: true },
+    lockRegions: { type: Boolean },
   };
 
   constructor() {
@@ -204,7 +205,7 @@ export class Workspace extends ResponsiveLitElement {
           <div class="absolute h100 z999 mask dashed regionArea">
 
               <div
-                class="h100 absolute left w2 z99 left-2 handle"
+                class="h100 absolute left w2 z99 left-2 ${this.lockRegions ? 'noPointerEvents' : 'handle'}"
                 @mousedown=${this.#onLeftHandleMouseDown}
               >
                 <div class="w2 hRow textCenter textXs">
@@ -215,7 +216,7 @@ export class Workspace extends ResponsiveLitElement {
               </div>
 
               <div
-                class="h100 absolute right w2 z99 top right-2 handle"
+                class="h100 absolute right w2 z99 top right-2 ${this.lockRegions ? 'noPointerEvents' : 'handle'}"
                 @mousedown=${this.#onRightHandleMouseDown}
               >
                 <div class="w2 hRow textCenter textXs">
@@ -226,6 +227,7 @@ export class Workspace extends ResponsiveLitElement {
                   @mousedown=${e => e.stopPropagation()}
                   class="hRow w2"
                   type="deselect"
+                  style="${this.lockRegions ? 'display:none' : ''}"
                 ></fc-player-button>
               </div>
             </div>`
@@ -247,6 +249,7 @@ export class Workspace extends ResponsiveLitElement {
   }
 
   #onMouseDown(e) {
+    if (this.lockRegions) return;
     const { offsetX, offsetWidth } = this.resolveOffsets(e);
     this.#mouseDownX = offsetX;
 
@@ -263,6 +266,7 @@ export class Workspace extends ResponsiveLitElement {
 
   #onMouseMove(e) {
     if (!this.regions) return;
+    if (this.lockRegions) return;
 
     const { offsetX, offsetWidth } = this.resolveOffsets(e);
 
@@ -288,6 +292,7 @@ export class Workspace extends ResponsiveLitElement {
   }
 
   #onMouseOut() {
+    if (this.lockRegions) return;
     this.shadowRoot.querySelector('.cursor').style.left = `-10000px`;
   }
 
@@ -322,6 +327,7 @@ export class Workspace extends ResponsiveLitElement {
   }
 
   #handleClick(e) {
+    if (this.lockRegions) return;
     const { offsetX, offsetXRelativeToParent, offsetWidth } =
       this.resolveOffsets(e);
 
@@ -371,6 +377,7 @@ export class Workspace extends ResponsiveLitElement {
    */
   // eslint-disable-next-line consistent-return
   #onHover(e) {
+    if (this.lockRegions) return;
     const { offsetX, offsetWidth } = this.resolveOffsets(e);
     const el = this.shadowRoot.querySelector('.cursor');
 
@@ -431,6 +438,7 @@ export class Workspace extends ResponsiveLitElement {
 
   // Left Handle
   #onLeftHandleMouseDown(e) {
+    if (this.lockRegions) return;
     e.stopPropagation();
     e.preventDefault();
     this.#isDraggingLeftHandle = true;
@@ -443,6 +451,7 @@ export class Workspace extends ResponsiveLitElement {
   }
 
   #onLeftHandleMouseMove = (e) => {
+    if (this.lockRegions) return;
     if (!this.#isDraggingLeftHandle) return;
     const deltaX = e.clientX - this.#handleDragStartX;
     const secondsDelta = deltaX / this.#pixelsPerSecond;
@@ -468,6 +477,7 @@ export class Workspace extends ResponsiveLitElement {
   };
 
   #onLeftHandleMouseUp = (e) => {
+    if (this.lockRegions) return;
     if (this.#isDraggingLeftHandle) {
       // Dispatch while still in dragging mode so that state returns the updated values.
       this.dispatchEvent(
@@ -486,6 +496,7 @@ export class Workspace extends ResponsiveLitElement {
 
   // Right Handle
   #onRightHandleMouseDown(e) {
+    if (this.lockRegions) return;
     e.stopPropagation();
     e.preventDefault();
     this.#isDraggingRightHandle = true;
@@ -498,6 +509,7 @@ export class Workspace extends ResponsiveLitElement {
   }
 
   #onRightHandleMouseMove = (e) => {
+    if (this.lockRegions) return;
     if (!this.#isDraggingRightHandle) return;
     const deltaX = e.clientX - this.#handleDragStartX;
     const secondsDelta = deltaX / this.#pixelsPerSecond;
@@ -516,6 +528,7 @@ export class Workspace extends ResponsiveLitElement {
   };
 
   #onRightHandleMouseUp = (e) => {
+    if (this.lockRegions) return;
     if (this.#isDraggingRightHandle) {
       // Dispatch while still in dragging mode so that state returns the updated values.
       this.dispatchEvent(
@@ -531,5 +544,5 @@ export class Workspace extends ResponsiveLitElement {
       document.removeEventListener('mouseup', this.#onRightHandleMouseUp);
     }
   };
-  
+
 }
