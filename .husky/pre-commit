@@ -1,5 +1,1 @@
-#!/bin/sh
-
-. "$(dirname "$0")/_/husky.sh"
-
 npx lerna run precommit --concurrency 1 --stream
