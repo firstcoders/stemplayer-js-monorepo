@@ -22,7 +22,7 @@
     "test": "lerna run test --stream --concurrency 1",
     "postpublish": "echo \"postpublish...nothing do do\"",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "postinstall": "npx playwright install",
+    "postinstall": "npx playwright install && husky",
     "sam:publish": "lerna run sam:publish --stream",
     "prepare": "husky"
   },
