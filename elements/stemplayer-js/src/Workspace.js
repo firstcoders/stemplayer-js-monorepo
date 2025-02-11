@@ -377,7 +377,7 @@ export class Workspace extends ResponsiveLitElement {
    */
   // eslint-disable-next-line consistent-return
   #onHover(e) {
-    if (this.lockRegions) return;
+    if (this.lockRegions) return undefined;
     const { offsetX, offsetWidth } = this.resolveOffsets(e);
     const el = this.shadowRoot.querySelector('.cursor');
 
@@ -476,7 +476,7 @@ export class Workspace extends ResponsiveLitElement {
     );
   };
 
-  #onLeftHandleMouseUp = (e) => {
+  #onLeftHandleMouseUp = () => {
     if (this.lockRegions) return;
     if (this.#isDraggingLeftHandle) {
       // Dispatch while still in dragging mode so that state returns the updated values.
@@ -527,7 +527,7 @@ export class Workspace extends ResponsiveLitElement {
     );
   };
 
-  #onRightHandleMouseUp = (e) => {
+  #onRightHandleMouseUp = () => {
     if (this.lockRegions) return;
     if (this.#isDraggingRightHandle) {
       // Dispatch while still in dragging mode so that state returns the updated values.
