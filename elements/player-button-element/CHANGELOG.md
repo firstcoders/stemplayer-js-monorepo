@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-beta.1](https://github.com/firstcoders/player-button-element/compare/@firstcoders/player-button-element@1.0.0-beta.0...@firstcoders/player-button-element@1.0.0-beta.1) (2025-02-26)
+
+
+### Features
+
+* **player-button-element:** add focus button color css var ([c336e70](https://github.com/firstcoders/player-button-element/commit/c336e70141998ccfc5d870b42d858cc503493070))
+* **player-button-element:** added collapse ([0cf5cac](https://github.com/firstcoders/player-button-element/commit/0cf5caccf2c33ac651b3684d7396e6addb72de69))
+
+
+
+
+
 # [1.0.0-beta.0](https://github.com/firstcoders/player-button-element/compare/@firstcoders/player-button-element@0.3.1-beta.0...@firstcoders/player-button-element@1.0.0-beta.0) (2025-01-02)
 
 
