@@ -148,6 +148,10 @@ export class FcStemPlayer extends ResponsiveLitElement {
       * Enable locking for the region selection
       */
       lockRegions: { type: Boolean },
+      /**
+      * Max Duration that can be selected in seconds
+      */
+      maxDurationRegions: { type: Number },
     };
   }
 
@@ -176,6 +180,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
     this.zoom = 1;
     this.collapsed = false;
     this.lockRegions = false;
+    this.maxDurationRegions = Infinity;
   }
 
   firstUpdated() {
@@ -413,6 +418,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
           .duration=${this.regionDuration}
           .regions=${this.regions}
           .lockRegions=${this.lockRegions}
+          .maxDurationRegions=${this.maxDurationRegions}
           @region:update=${this.#onRegionUpdate}
           @region:change=${this.#onRegionChange}
           class=${this.collapsed ? 'hidden h0' : ''}
