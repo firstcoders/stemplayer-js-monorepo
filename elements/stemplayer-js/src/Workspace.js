@@ -24,6 +24,8 @@ import backgroundStyles from './styles/backgrounds.js';
 import utilitiesStyles from './styles/utilities.js';
 import formatSeconds from './lib/format-seconds.js';
 
+const MIN_DURATION_SELECTED = 0.1 // in seconds
+
 /**
  * An area that represents the timeline providing functionality to select regions
  */
@@ -158,6 +160,7 @@ export class Workspace extends ResponsiveLitElement {
     regions: { type: Boolean },
     cursorPosition: { state: true },
     lockRegions: { type: Boolean },
+    maxDurationRegions: { type: Number },
   };
 
   constructor() {
@@ -227,7 +230,7 @@ export class Workspace extends ResponsiveLitElement {
                   @mousedown=${e => e.stopPropagation()}
                   class="hRow w2"
                   type="deselect"
-                  style="${this.lockRegions ? 'display:none' : ''}"
+                  style="${this.lockRegions || this.maxDurationRegions !== Infinity ? 'display:none' : ''}"
                 ></fc-player-button>
               </div>
             </div>`
@@ -300,6 +303,10 @@ export class Workspace extends ResponsiveLitElement {
     // Only handle regular region selection if we weren't dragging handles
     if (!this.#isDraggingLeftHandle && !this.#isDraggingRightHandle) {
       // If we're finishing a normal region selection drag, dispatch an event.
+      const { duration } = this.state;
+      if (duration > this.maxDurationRegions) {
+        this.duration = this.maxDurationRegions;
+      }
       if (this.#mouseMoveWidth) {
         this.dispatchEvent(
           new CustomEvent('region:change', {
@@ -458,28 +465,46 @@ export class Workspace extends ResponsiveLitElement {
     let newOffset = this.#initialOffset + secondsDelta;
     // Clamp: newOffset cannot exceed the current right edge.
     const rightEdge = this.#initialOffset + this.#initialDuration;
-    if (newOffset > rightEdge) {
-      newOffset = rightEdge;
+    if ((newOffset + MIN_DURATION_SELECTED) > rightEdge) {
+      this.offset = rightEdge - MIN_DURATION_SELECTED;
+      this.duration = MIN_DURATION_SELECTED;
+      this.dispatchEvent(
+        new CustomEvent('region:change', {
+          detail: this.state,
+          bubbles: true,
+          composed: true,
+        })
+      );
+      // Now clear the dragging flag.
+      this.#isDraggingLeftHandle = false;
+      document.removeEventListener('mousemove', this.#onLeftHandleMouseMove);
+      document.removeEventListener('mouseup', this.#onLeftHandleMouseUp);
+    } else {
+      if (newOffset < 0) {
+        newOffset = 0;
+      }
+      const newDuration = rightEdge - newOffset;
+      this.offset = newOffset;
+      this.duration = newDuration;
+      this.dispatchEvent(
+        new CustomEvent('region:update', {
+          detail: this.state,
+          bubbles: true,
+          composed: true,
+        })
+      );
     }
-    if (newOffset < 0) {
-      newOffset = 0;
-    }
-    const newDuration = rightEdge - newOffset;
-    this.offset = newOffset;
-    this.duration = newDuration;
-    this.dispatchEvent(
-      new CustomEvent('region:update', {
-        detail: this.state,
-        bubbles: true,
-        composed: true,
-      })
-    );
   };
 
   #onLeftHandleMouseUp = () => {
     if (this.lockRegions) return;
     if (this.#isDraggingLeftHandle) {
       // Dispatch while still in dragging mode so that state returns the updated values.
+      if (this.state.duration > this.maxDurationRegions) {
+        const currentEnd = this.offset + this.duration;
+        this.offset = currentEnd - this.maxDurationRegions;
+        this.duration = this.maxDurationRegions;
+      }
       this.dispatchEvent(
         new CustomEvent('region:change', {
           detail: this.state,
@@ -513,23 +538,38 @@ export class Workspace extends ResponsiveLitElement {
     if (!this.#isDraggingRightHandle) return;
     const deltaX = e.clientX - this.#handleDragStartX;
     const secondsDelta = deltaX / this.#pixelsPerSecond;
-    let newDuration = this.#initialDuration + secondsDelta;
-    if (newDuration < 0) {
-      newDuration = 0;
+    const newDuration = this.#initialDuration + secondsDelta;
+    if (newDuration < MIN_DURATION_SELECTED) {
+      this.duration = MIN_DURATION_SELECTED;
+      this.dispatchEvent(
+        new CustomEvent('region:change', {
+          detail: this.state,
+          bubbles: true,
+          composed: true,
+        })
+      );
+      // Now clear the dragging flag.
+      this.#isDraggingRightHandle = false;
+      document.removeEventListener('mousemove', this.#onRightHandleMouseMove);
+      document.removeEventListener('mouseup', this.#onRightHandleMouseUp);
+    } else {
+      this.duration = newDuration;
+      this.dispatchEvent(
+        new CustomEvent('region:update', {
+          detail: this.state,
+          bubbles: true,
+          composed: true,
+        })
+      );
     }
-    this.duration = newDuration;
-    this.dispatchEvent(
-      new CustomEvent('region:update', {
-        detail: this.state,
-        bubbles: true,
-        composed: true,
-      })
-    );
   };
 
   #onRightHandleMouseUp = () => {
     if (this.lockRegions) return;
     if (this.#isDraggingRightHandle) {
+      if (this.state.duration > this.maxDurationRegions) {
+        this.duration = this.maxDurationRegions;
+      }
       // Dispatch while still in dragging mode so that state returns the updated values.
       this.dispatchEvent(
         new CustomEvent('region:change', {
