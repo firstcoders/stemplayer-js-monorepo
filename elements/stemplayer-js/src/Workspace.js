@@ -8,7 +8,7 @@ import backgroundStyles from './styles/backgrounds.js';
 import utilitiesStyles from './styles/utilities.js';
 import formatSeconds from './lib/format-seconds.js';
 
-const MIN_DURATION_SELECTED = 0.1 // in seconds
+const MIN_DURATION_SELECTED = 0.1; // in seconds
 
 /**
  * An area that represents the timeline providing functionality to select regions
@@ -215,7 +215,10 @@ export class Workspace extends ResponsiveLitElement {
                 @mousedown=${e => e.stopPropagation()}
                 class="hRow w2"
                 type="deselect"
-                style="${this.lockRegions || this.maxDurationRegions !== Infinity ? 'display:none' : ''}"
+                style="${this.lockRegions ||
+                this.maxDurationRegions !== Infinity
+                  ? 'display:none'
+                  : ''}"
               ></fc-player-button>
             </div>
           </div>`
@@ -449,7 +452,7 @@ export class Workspace extends ResponsiveLitElement {
     let newOffset = this.#initialOffset + secondsDelta;
     // Clamp: newOffset cannot exceed the current right edge.
     const rightEdge = this.#initialOffset + this.#initialDuration;
-    if ((newOffset + MIN_DURATION_SELECTED) > rightEdge) {
+    if (newOffset + MIN_DURATION_SELECTED > rightEdge) {
       this.offset = rightEdge - MIN_DURATION_SELECTED;
       this.duration = MIN_DURATION_SELECTED;
       this.dispatchEvent(
@@ -457,7 +460,7 @@ export class Workspace extends ResponsiveLitElement {
           detail: this.state,
           bubbles: true,
           composed: true,
-        })
+        }),
       );
       // Now clear the dragging flag.
       this.#isDraggingLeftHandle = false;
@@ -475,7 +478,7 @@ export class Workspace extends ResponsiveLitElement {
           detail: this.state,
           bubbles: true,
           composed: true,
-        })
+        }),
       );
     }
   };
@@ -530,7 +533,7 @@ export class Workspace extends ResponsiveLitElement {
           detail: this.state,
           bubbles: true,
           composed: true,
-        })
+        }),
       );
       // Now clear the dragging flag.
       this.#isDraggingRightHandle = false;
@@ -543,7 +546,7 @@ export class Workspace extends ResponsiveLitElement {
           detail: this.state,
           bubbles: true,
           composed: true,
-        })
+        }),
       );
     }
   };

@@ -149,8 +149,8 @@ export class FcStemPlayer extends ResponsiveLitElement {
        */
       lockRegions: { type: Boolean },
       /**
-      * Max Duration that can be selected in seconds
-      */
+       * Max Duration that can be selected in seconds
+       */
       maxDurationRegions: { type: Number },
     };
   }
