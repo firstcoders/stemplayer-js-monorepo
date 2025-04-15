@@ -262,9 +262,29 @@ export class Workspace extends ResponsiveLitElement {
       offsetX > 0 &&
       offsetX < offsetWidth
     ) {
+      // store pre-change values for rollback
+      const oldMouseMoveWidth = this.#mouseMoveWidth;
+      const oldOffsetX = this.lastOffsetX;
+
+      // update values
       this.lastOffsetX = offsetX;
-      const distance = Math.abs(offsetX - this.#mouseDownX);
-      this.#mouseMoveWidth = distance; // distance > 5 ? distance : undefined;
+      this.#mouseMoveWidth = Math.abs(offsetX - this.#mouseDownX);
+
+      // emit pre-update event
+      const preUpdateEvent = new CustomEvent('region:pre-update', {
+        detail: this.state,
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+      });
+
+      this.dispatchEvent(preUpdateEvent);
+
+      // if pre-update event default is prevented, revert to previous state
+      if (preUpdateEvent.defaultPrevented) {
+        this.#mouseMoveWidth = oldMouseMoveWidth;
+        this.lastOffsetX = oldOffsetX;
+      }
 
       if (this.#mouseMoveWidth) {
         this.dispatchEvent(
@@ -355,6 +375,8 @@ export class Workspace extends ResponsiveLitElement {
     return {
       offset: Math.round((left / pixelsPerSecond) * 100) / 100,
       duration: Math.round((width / pixelsPerSecond) * 100) / 100,
+      direction: coord1 > coord2 ? 'left' : 'right', // left = dragging from right to left and vice versa
+      region: this,
     };
   }
 
