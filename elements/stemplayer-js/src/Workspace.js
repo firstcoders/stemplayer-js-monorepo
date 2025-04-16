@@ -122,6 +122,10 @@ export class Workspace extends ResponsiveLitElement {
           top: 0;
           width: 10px;
         }
+
+        fc-player-button[type='deselect'] {
+          display: var(--stemplayer-js-region-btn-deselect-display, block);
+        }
       `,
     ];
   }
@@ -146,6 +150,14 @@ export class Workspace extends ResponsiveLitElement {
       this.addEventListener('mouseout', e => this.#onMouseOut(e));
       this.#wheelEventHandler = e => this.#onHover(e);
       this.addEventListener('wheel', this.#wheelEventHandler);
+
+      // hide the deselect button if we are in a locked state
+      if (this.lockRegions) {
+        this.style.setProperty(
+          '--stemplayer-js-region-btn-deselect-display',
+          'none',
+        );
+      }
     }, 0);
   }
 
@@ -212,7 +224,6 @@ export class Workspace extends ResponsiveLitElement {
                 @mousedown=${e => e.stopPropagation()}
                 class="hRow w2"
                 type="deselect"
-                style="${this.lockRegions ? 'display:none' : ''}"
               ></fc-player-button>
             </div>
           </div>`
@@ -326,9 +337,12 @@ export class Workspace extends ResponsiveLitElement {
   #onDeselectClick(e) {
     e.stopPropagation();
     e.preventDefault();
+
     this.dispatchEvent(
       new CustomEvent('region:change', {
         detail: { offset: undefined, duration: undefined },
+        bubbles: true,
+        composed: true,
       }),
     );
   }

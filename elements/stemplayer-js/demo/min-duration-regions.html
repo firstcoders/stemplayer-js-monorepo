@@ -92,7 +92,7 @@
       stemplayer.addEventListener('region:change', (e) => {
         const { region } = e.detail;
 
-        if (isOutOfBounds) {
+        if (isOutOfBounds && region) {
           // set to region offset + duration .. unset first to force update lifecycle behavior
           stemplayer.offset = undefined;
           stemplayer.offset = region.offset;

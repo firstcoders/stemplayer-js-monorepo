@@ -5,6 +5,7 @@
     <style>
       body {
         background-color: #333;
+        --stemplayer-js-region-btn-deselect-display: none;
       }
     </style>
   </head>
@@ -13,7 +14,7 @@
       import 'lit';
       import '../stemplayer.js';
     </script>
-    <stemplayer-js style="margin-right: 100px;" regions>
+    <stemplayer-js style="margin-right: 100px;" regions duration="5" offset="5">
       <stemplayer-js-controls
         label="Demo track"
         controls="label progress zoom loop"
