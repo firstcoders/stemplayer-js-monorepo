@@ -105,7 +105,7 @@ export class FcWaveform extends LitElement {
   }
 
   render() {
-    return html`<div class="container"></div>`;
+    return html`<div class="container" aria-label="Waveform container"></div>`;
   }
 
   /**

@@ -408,11 +408,19 @@ export class FcStemPlayer extends ResponsiveLitElement {
   }
 
   #getLargeScreenTpl() {
-    return html`<div class="relative overflowHidden noSelect">
-      <slot name="header" @slotchange=${this.#onSlotChange}></slot>
+    return html`<div
+      class="relative overflowHidden noSelect"
+      aria-label="Large screen player"
+    >
+      <slot
+        name="header"
+        @slotchange=${this.#onSlotChange}
+        aria-label="Header slot"
+      ></slot>
       <div
         class="scrollWrapper relative"
         style="${this.zoom === 1 ? 'overflow-x:hidden' : ''}"
+        aria-label="Scroll wrapper"
       >
         <stemplayer-js-workspace
           ${ref(this.#workspace)}
@@ -424,14 +432,23 @@ export class FcStemPlayer extends ResponsiveLitElement {
           @region:update=${this.#onRegionUpdate}
           @region:change=${this.#onRegionChange}
           class=${this.collapsed ? 'hidden h0' : ''}
+          aria-label="Workspace"
         >
-          <slot class="default" @slotchange=${this.#onSlotChange}></slot>
+          <slot
+            class="default"
+            @slotchange=${this.#onSlotChange}
+            aria-label="Default slot"
+          ></slot>
         </stemplayer-js-workspace>
       </div>
-      <slot name="footer" @slotchange=${this.#onSlotChange}></slot>
+      <slot
+        name="footer"
+        @slotchange=${this.#onSlotChange}
+        aria-label="Footer slot"
+      ></slot>
       ${this.isLoading
-        ? html`<fc-mask>
-            <fc-loader></fc-loader></fc-icon>
+        ? html`<fc-mask aria-label="Loading mask">
+            <fc-loader aria-label="Loading spinner"></fc-loader>
           </fc-mask>`
         : ''}
     </div>`;

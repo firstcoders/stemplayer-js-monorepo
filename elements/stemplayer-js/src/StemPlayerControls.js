@@ -116,7 +116,12 @@ export class FcStemPlayerControls extends WaveformHostMixin(
 
   #getLargeScreenTpl() {
     return html`<stemplayer-js-row>
-      <div slot="controls" class="dFlex h100">
+      <div
+        slot="controls"
+        class="dFlex h100"
+        role="group"
+        aria-label="Player controls"
+      >
         ${this.#renderControl('playpause', true)} ${this.#renderControl('loop')}
         ${this.#renderControl('label', this.label) ||
         html`<div class="flex1"></div>`}
@@ -125,10 +130,15 @@ export class FcStemPlayerControls extends WaveformHostMixin(
           this.#renderControl('waveform') || this.#renderControl('progress'),
         )}
       </div>
-      <div slot="flex" class="h100">
+      <div slot="flex" class="h100" aria-label="Waveform or progress bar">
         ${this.#renderControl('waveform') || this.#renderControl('progress')}
       </div>
-      <div slot="end" class="h100 dFlex">
+      <div
+        slot="end"
+        class="h100 dFlex"
+        role="group"
+        aria-label="Additional controls"
+      >
         ${this.#renderControl(
           'duration',
           this.#renderControl('waveform') || this.#renderControl('progress'),

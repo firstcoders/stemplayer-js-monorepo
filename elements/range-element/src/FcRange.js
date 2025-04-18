@@ -185,6 +185,9 @@ export class FcRange extends LitElement {
       @change=${this.#handleChange}
       @input=${this.#handleInput}
       aria-label=${this.label}
+      aria-valuemin=${this.min}
+      aria-valuemax=${this.max}
+      aria-valuenow=${this.value || 0}
     />`;
   }
 
