@@ -47,6 +47,12 @@ export class FcLoader extends LitElement {
   }
 
   render() {
-    return html`<div class="loader"></div>`;
+    return html`<div
+      class="loader"
+      role="status"
+      aria-label="Loading"
+      aria-live="polite"
+      aria-busy="true"
+    ></div>`;
   }
 }

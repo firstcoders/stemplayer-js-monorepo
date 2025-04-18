@@ -110,10 +110,13 @@ export class FcSlider extends LitElement {
       aria-valuemax=${this.max}
       aria-valuemin=${this.min}
       aria-valuenow=${this.value}
+      aria-orientation="horizontal"
       class="w100 h100 hoverBgAccent focusBgAccent alignMiddle"
       @click=${this.#handleClick}
     >
-      <span class="w100 truncate noPointerEvents"><slot></slot></span>
+      <span class="w100 truncate noPointerEvents" aria-hidden="true"
+        ><slot></slot
+      ></span>
       <div class="handle noPointerEvents"></div>
     </div>`;
   }

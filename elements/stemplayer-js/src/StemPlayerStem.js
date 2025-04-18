@@ -224,27 +224,36 @@ export class FcStemPlayerStem extends WaveformHostMixin(ResponsiveLitElement) {
     const styles = this.getComputedWaveformStyles();
 
     return html`<stemplayer-js-row>
-      <div slot="controls" class="dFlex h100">
+      <div
+        slot="controls"
+        class="dFlex h100"
+        role="group"
+        aria-label="Stem controls"
+      >
         <fc-player-button
           class="w2 overflowHidden"
           @click=${this.solo === 'on' ? this.#onUnSoloClick : this.#onSoloClick}
           .title=${this.solo === 'on' ? 'Disable solo' : 'Solo'}
           .type=${this.solo === 'on' ? 'unsolo' : 'solo'}
+          aria-label=${this.solo === 'on' ? 'Disable solo' : 'Enable solo'}
         ></fc-player-button>
         <fc-player-button
           class="w2 overflowHidden"
           @click=${this.#toggleMute}
           .title="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
           type="${this.muted || this.volume === 0 ? 'unmute' : 'mute'}"
+          aria-label="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
         ></fc-player-button>
         <fc-range
-          class="w2 "
+          class="w2"
           label="volume"
           @change=${e => this.#handleVolume(e.detail / 100)}
           .value=${this.volume * 100}
+          aria-label="Volume control"
         ></fc-range>
         <div
           class="flex1 px4 truncate noPointerEvents textCenter flexNoShrink textSm"
+          aria-hidden="true"
         >
           ${this.label}
         </div>
@@ -259,9 +268,7 @@ export class FcStemPlayerStem extends WaveformHostMixin(ResponsiveLitElement) {
               .scaleY=${this.volume}
               .progressColor=${styles.waveProgressColor}
               .waveColor=${styles.waveColor}
-              .barWidth=${styles.barWidth}
-              .barGap=${styles.barGap}
-              .pixelRatio=${styles.devicePixelRatio}
+              aria-label="Waveform display"
             ></fc-waveform>
           `
         : ''}
