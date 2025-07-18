@@ -729,6 +729,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@firstcoders/stemplayer-js-monorepo@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@firstcoders/stemplayer-js-monorepo@workspace:."
+  dependencies:
+    "@commitlint/cli": "npm:^19.7.1"
+    "@commitlint/config-conventional": "npm:^19.7.1"
+    "@commitlint/config-lerna-scopes": "npm:^19.7.0"
+    husky: "npm:^9.1.6"
+    lerna: "npm:^8.1.8"
+  languageName: unknown
+  linkType: soft
+
 "@firstcoders/waveform-element@npm:^1.0.0-beta.1, @firstcoders/waveform-element@workspace:elements/waveform-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/waveform-element@workspace:elements/waveform-element"
@@ -745,18 +757,6 @@ __metadata:
     lint-staged: "npm:^15.2.10"
     lit: "npm:^3.2.1"
     prettier: "npm:^3.3.3"
-  languageName: unknown
-  linkType: soft
-
-"@firstcoders/webcomponents@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@firstcoders/webcomponents@workspace:."
-  dependencies:
-    "@commitlint/cli": "npm:^19.7.1"
-    "@commitlint/config-conventional": "npm:^19.7.1"
-    "@commitlint/config-lerna-scopes": "npm:^19.7.0"
-    husky: "npm:^9.1.6"
-    lerna: "npm:^8.1.8"
   languageName: unknown
   linkType: soft
 
