@@ -13,18 +13,35 @@
 
     <script type="module">
       import { html, render } from 'lit';
+      import * as Tone from "tone";
       import '../stemplayer.js';
 
       const audioCtx = new AudioContext();
 
-      const biquadFilter = audioCtx.createBiquadFilter();
-      biquadFilter.type = 'lowpass';
-      biquadFilter.frequency.setValueAtTime(200, audioCtx.currentTime + 1);
-      biquadFilter.connect(audioCtx.destination);
+      Tone.setContext(audioCtx);
+
+      // Create a Tone.js gain node as the entry point (this has proper Web Audio API input)
+      const toneInput = new Tone.Gain(1);
+
+      // Create Tone.js filter and pitch shift
+      const filter = new Tone.Filter({
+        frequency: 90000,
+        type: "lowpass"
+      });
+
+      const pitchShift = new Tone.PitchShift({
+        pitch: -2 // Transpose down 7 semitones (a perfect fifth)
+      });
+
+      // Connect Tone.js nodes: toneInput -> filter -> pitchShift -> destination
+      toneInput.connect(filter);
+      filter.connect(pitchShift);
+      pitchShift.toDestination();
+
 
       render(
         html`
-        <stemplayer-js .audioContext=${audioCtx} .destination=${biquadFilter}>
+        <stemplayer-js .audioContext=${audioCtx} .destination=${toneInput.input}>
           <stemplayer-js-controls
             slot="header"
             label="Demo track"

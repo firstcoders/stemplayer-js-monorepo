@@ -124,9 +124,11 @@ export class FcStemPlayerControls extends WaveformHostMixin(
           'time',
           this.#renderControl('waveform') || this.#renderControl('progress'),
         )}
+        <slot name="controls"></slot>
       </div>
       <div slot="flex" class="h100">
         ${this.#renderControl('waveform') || this.#renderControl('progress')}
+        <slot name="flex"></slot>
       </div>
       <div slot="end" class="h100 dFlex">
         ${this.#renderControl(
@@ -137,6 +139,7 @@ export class FcStemPlayerControls extends WaveformHostMixin(
           ? html`${this.#renderControl('zoom')}
             ${this.#renderControl('download')}${this.#renderControl('collapse')}`
           : ''}
+        <slot name="end"></slot>
       </div>
     </stemplayer-js-row>`;
   }

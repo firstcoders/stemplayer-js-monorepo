@@ -204,6 +204,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.25.6, @babel/runtime@npm:^7.27.6":
+  version: 7.28.2
+  resolution: "@babel/runtime@npm:7.28.2"
+  checksum: 10/a0965fbdd6aaa40709290923bbe05e1c4314021f0cef608eb1d69f04f717c41829e50a53d79c4a0f461512b4be9b3c0190dc19387b219bcdaacdd793b2fe1b8a
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.25.9":
   version: 7.25.9
   resolution: "@babel/template@npm:7.25.9"
@@ -1970,6 +1977,7 @@ __metadata:
     lint-staged: "npm:^15.2.10"
     lit: "npm:^3.2.1"
     prettier: "npm:^3.3.3"
+    tone: "npm:15.1.22"
   languageName: unknown
   linkType: soft
 
@@ -3054,6 +3062,16 @@ __metadata:
   version: 0.4.0
   resolution: "asynckit@npm:0.4.0"
   checksum: 10/3ce727cbc78f69d6a4722517a58ee926c8c21083633b1d3fdf66fd688f6c127a53a592141bd4866f9b63240a86e9d8e974b13919450bd17fa33c2d22c4558ad8
+  languageName: node
+  linkType: hard
+
+"automation-events@npm:^7.0.9":
+  version: 7.1.11
+  resolution: "automation-events@npm:7.1.11"
+  dependencies:
+    "@babel/runtime": "npm:^7.27.6"
+    tslib: "npm:^2.8.1"
+  checksum: 10/feb5ca72c8a314da2a12dcfd6c5f952c6b5be13f1782b44540cc56ceae382b08a686185537d16992c586aad39947fcb4cbefdce5a9a8499cd5aff97a591aa3df
   languageName: node
   linkType: hard
 
@@ -10592,6 +10610,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"standardized-audio-context@npm:^25.3.70":
+  version: 25.3.77
+  resolution: "standardized-audio-context@npm:25.3.77"
+  dependencies:
+    "@babel/runtime": "npm:^7.25.6"
+    automation-events: "npm:^7.0.9"
+    tslib: "npm:^2.7.0"
+  checksum: 10/bff6b535585f00fe898fe465aa76907fabd14fff43de2f5ccced6d8445aba756eb44baffc3fe434c476927f1bbeda1c5e1633525fecb2c39d8151da86fdbb3e6
+  languageName: node
+  linkType: hard
+
 "statuses@npm:2.0.1":
   version: 2.0.1
   resolution: "statuses@npm:2.0.1"
@@ -10998,6 +11027,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tone@npm:15.1.22":
+  version: 15.1.22
+  resolution: "tone@npm:15.1.22"
+  dependencies:
+    standardized-audio-context: "npm:^25.3.70"
+    tslib: "npm:^2.3.1"
+  checksum: 10/d703fce6b96b8aa435afbbe78decb45c32a5acb9b5be76edfc5838a810dbb46197ff01ed53e0d82b39368d7f2fccbc5afe7564b43ad3cb5224b968d293326ea4
+  languageName: node
+  linkType: hard
+
 "tr46@npm:^5.0.0":
   version: 5.0.0
   resolution: "tr46@npm:5.0.0"
@@ -11051,7 +11090,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2":
+"tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.6.2, tslib@npm:^2.7.0, tslib@npm:^2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
