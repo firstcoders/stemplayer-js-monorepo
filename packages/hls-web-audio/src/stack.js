@@ -1,9 +1,33 @@
+/* eslint-disable max-classes-per-file */
+/**
+ * Node class for the linked list
+ */
+class StackNode {
+  constructor(element) {
+    this.element = element;
+    this.next = null;
+    this.prev = null;
+  }
+}
+
 export default class {
   /**
-   * @property {Array} elements - The ordered elements that jointly compose this HLS track
+   * @property {StackNode|null} head - The first node in the linked list
    * @private
    */
-  elements = [];
+  #head = null;
+
+  /**
+   * @property {StackNode|null} tail - The last node in the linked list
+   * @private
+   */
+  #tail = null;
+
+  /**
+   * @property {Number} length - The number of elements in the stack
+   * @private
+   */
+  #length = 0;
 
   /**
    * @property {Number} startPointer - an internal pointer pointing to where the start of the next element is
@@ -11,12 +35,12 @@ export default class {
   startPointer;
 
   /**
-   * @property {Number} startPointer - the initial start time, if not 0
+   * @property {Number} initialStartTime - the initial start time, if not 0
    */
   initialStartTime;
 
   /**
-   * @property {Number} nextMarginSeconds - a marin, in seconds, that controls a rolling window that checks whether a segment is nearly next
+   * @property {Number} nextMarginSeconds - a margin, in seconds, that controls a rolling window that checks whether a segment is nearly next
    */
   nextMarginSeconds;
 
@@ -36,10 +60,16 @@ export default class {
    */
   destroy() {
     // destroy all elements
-    this.elements.forEach((element) => element.destroy());
+    let current = this.#head;
+    while (current) {
+      current.element.destroy();
+      current = current.next;
+    }
 
-    // remove references
-    this.elements = [];
+    // clear references
+    this.#head = null;
+    this.#tail = null;
+    this.#length = 0;
   }
 
   /**
@@ -52,8 +82,20 @@ export default class {
       // initialise start time of element
       s.start = this.startPointer;
 
-      // push to stack
-      this.elements.push(s);
+      // create new node
+      const node = new StackNode(s);
+
+      // add to linked list
+      if (!this.#head) {
+        this.#head = node;
+        this.#tail = node;
+      } else {
+        this.#tail.next = node;
+        node.prev = this.#tail;
+        this.#tail = node;
+      }
+
+      this.#length += 1;
 
       // increment start pointer
       this.startPointer += s.duration;
@@ -61,13 +103,31 @@ export default class {
   }
 
   /**
+   * Get the node at a given time
+   * @param {Number} t - the time
+   * @returns {StackNode|null}
+   * @private
+   */
+  #getNodeAt(t) {
+    let current = this.#head;
+    while (current) {
+      const { element } = current;
+      if (t >= element.start && t <= element.end) {
+        return current;
+      }
+      current = current.next;
+    }
+    return null;
+  }
+
+  /**
    * Try to get the next element that is not ready
    * @returns {Object|undefined}
    */
   consume(timeframe) {
-    const iCurrent = this.getIndexAt(timeframe.currentTime);
-    const current = this.elements[iCurrent];
-    const next = this.elements[iCurrent + 1];
+    const currentNode = this.#getNodeAt(timeframe.currentTime);
+    const current = currentNode?.element;
+    const next = currentNode?.next?.element;
 
     const getNextElement = () => {
       if (current && !current.$inTransit && !current.isReady) {
@@ -134,7 +194,7 @@ export default class {
    * @returns {Object} The first element
    */
   get first() {
-    return this.elements[0];
+    return this.#head?.element;
   }
 
   /**
@@ -142,7 +202,9 @@ export default class {
    */
   disconnectAll() {
     // disconnect all elements. A new set will need to be resheduled
-    this.elements.forEach((element) => {
+    let current = this.#head;
+    while (current) {
+      const { element } = current;
       // cancel any loading in progress
       element.cancel();
 
@@ -151,14 +213,16 @@ export default class {
 
       // ensure element is again available for consumption
       this.ack(element);
-    });
+
+      current = current.next;
+    }
   }
 
   /**
    * Get the length of the stack
    */
   get length() {
-    return this.elements.length;
+    return this.#length;
   }
 
   /**
@@ -167,7 +231,17 @@ export default class {
    * @returns
    */
   getIndexAt(t) {
-    return this.elements.findIndex((s) => t >= s.start && t <= s.end);
+    let current = this.#head;
+    let index = 0;
+    while (current) {
+      const { element } = current;
+      if (t >= element.start && t <= element.end) {
+        return index;
+      }
+      current = current.next;
+      index += 1;
+    }
+    return -1;
   }
 
   /**
@@ -176,7 +250,7 @@ export default class {
    * @returns
    */
   getAt(t) {
-    return this.elements.find((s) => t >= s.start && t <= s.end);
+    return this.#getNodeAt(t)?.element;
   }
 
   /**
@@ -186,15 +260,22 @@ export default class {
   recalculateStartTimes() {
     this.startPointer = this.initialStartTime;
 
-    this.elements.forEach((s, i) => {
-      const start = this.elements[i - 1]?.end || this.startPointer;
+    let current = this.#head;
+    let prevElement = null;
+
+    while (current) {
+      const { element } = current;
+      const start = prevElement?.end || this.startPointer;
 
       // initialise start time of element
-      s.start = start;
+      element.start = start;
 
       // increment start pointer
-      this.startPointer += s.duration;
-    });
+      this.startPointer += element.duration;
+
+      prevElement = element;
+      current = current.next;
+    }
   }
 
   /**
