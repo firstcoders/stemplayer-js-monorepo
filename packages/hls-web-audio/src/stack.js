@@ -1,14 +1,4 @@
-/* eslint-disable max-classes-per-file */
-/**
- * Node class for the linked list
- */
-class StackNode {
-  constructor(element) {
-    this.element = element;
-    this.next = null;
-    this.prev = null;
-  }
-}
+import StackNode from './StackNode.js';
 
 export default class {
   /**
@@ -251,6 +241,31 @@ export default class {
    */
   getAt(t) {
     return this.#getNodeAt(t)?.element;
+  }
+
+  /**
+   * Get the node at a given time (public version for internal use)
+   * @param {Number} t - the time
+   * @returns {StackNode|null}
+   */
+  getNodeAt(t) {
+    return this.#getNodeAt(t);
+  }
+
+  /**
+   * Find a node by the segment object itself
+   * @param {Segment} segment - the segment to find
+   * @returns {StackNode|null}
+   */
+  getNodeByElement(segment) {
+    let current = this.#head;
+    while (current) {
+      if (current.element === segment) {
+        return current;
+      }
+      current = current.next;
+    }
+    return null;
   }
 
   /**

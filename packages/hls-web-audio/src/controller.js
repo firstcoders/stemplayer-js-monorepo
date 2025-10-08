@@ -11,6 +11,13 @@ import Timeframe from './timeframe.js';
  */
 class Controller extends Observer {
   /**
+   * Timeout handle for end detection
+   * @var {Number|null}
+   * @private
+   */
+  #endTimeout = null;
+
+  /**
    * @property {Integer|undefined} adjustedStart - A number inidicating where, relative to the audioContext.currentTime the hypothetical time t=0 would be. Depending on seeking, this can be a negative number.
    * @example
    * t = 10 9 8 7 6 5 4 3 2 1 0 1 2 3 4 5 6 7 8 9 10
@@ -68,8 +75,13 @@ class Controller extends Observer {
 
     // store the handler so that we can remove it
     this.onStateChange = () => {
-      if (this.ac.state === 'running') this.tick();
-      else this.untick();
+      if (this.ac.state === 'running') {
+        this.tick();
+        this.#scheduleEndTimeout();
+      } else {
+        this.untick();
+        this.#clearEndTimeout();
+      }
     };
 
     this.ac.addEventListener('statechange', this.onStateChange);
@@ -92,6 +104,9 @@ class Controller extends Observer {
   destroy() {
     // stop time
     this.untick();
+
+    // clear end timeout
+    this.#clearEndTimeout();
 
     // remove references
     this.hls = [];
@@ -173,11 +188,6 @@ class Controller extends Observer {
     // Prevent multiple ticks running concurrently
     if (this.tTick) this.untick();
 
-    // Detect if we're reached the end
-    if (this.currentTime > this.offset + this.playDuration) {
-      return this.end();
-    }
-
     this.fireEvent('timeupdate', {
       t: this.currentTime,
       pct: this.pct,
@@ -251,6 +261,38 @@ class Controller extends Observer {
   }
 
   /**
+   * Schedule a timeout to automatically end playback when duration is reached
+   * @private
+   */
+  #scheduleEndTimeout() {
+    // Clear any existing end timeout
+    this.#clearEndTimeout();
+
+    // Only schedule if we have a valid duration and are not at the end
+    if (this.playDuration && this.currentTime < this.offset + this.playDuration) {
+      const remainingTime = (this.offset + this.playDuration - this.currentTime) * 1000;
+
+      // Only schedule if there's meaningful time remaining (> 10ms to avoid timing issues)
+      if (remainingTime > 10) {
+        this.#endTimeout = setTimeout(() => {
+          this.end();
+        }, remainingTime);
+      }
+    }
+  }
+
+  /**
+   * Clear the scheduled end timeout
+   * @private
+   */
+  #clearEndTimeout() {
+    if (this.#endTimeout) {
+      clearTimeout(this.#endTimeout);
+      this.#endTimeout = null;
+    }
+  }
+
+  /**
    * Duration is max duration of all tracks being controlled by this controller
    *
    * @returns {Int} - The max of the duration of the hls tracks that are controlled by this controller
@@ -280,6 +322,11 @@ class Controller extends Observer {
       throw new TypeError('The property "playDuration" must be of type number');
 
     this.durationOverride = duration;
+
+    // Reschedule end timeout when duration changes
+    if (this.ac.state === 'running') {
+      this.#scheduleEndTimeout();
+    }
 
     this.notifyUpdated('playDuration', this.playDuration);
   }
@@ -313,6 +360,12 @@ class Controller extends Observer {
       throw new TypeError('The property "offset" must be of type number');
 
     this.#offset = offset;
+
+    // Reschedule end timeout when offset changes
+    if (this.ac.state === 'running') {
+      this.#scheduleEndTimeout();
+    }
+
     this.notifyUpdated('offset', this.offset);
   }
 
@@ -387,6 +440,12 @@ class Controller extends Observer {
    */
   fixAdjustedStart(t) {
     this.adjustedStart = this.ac.currentTime - t;
+
+    // Reschedule end timeout for new position
+    if (this.ac.state === 'running') {
+      this.#scheduleEndTimeout();
+    }
+
     this.fireEvent('seek', {
       t: this.currentTime,
       pct: this.pct,
