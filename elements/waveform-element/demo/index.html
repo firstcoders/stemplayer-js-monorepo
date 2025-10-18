@@ -24,9 +24,24 @@
 
     <h1>Sizing</h1>
 
-    <h5>Scaley</h5>
+    <h5>With Progress</h5>
     <fc-waveform
+      id="waveform"
       src="./assets/waveforms/106 BELL_05.3.json"
+      progress-color="rgba(255, 0, 0, 0.8)"
+      progress="0"
     ></fc-waveform>
+
+    <button onclick="updateProgress()">Test Progress</button>
+
+    <script>
+      let currentProgress = 0;
+      function updateProgress() {
+        const waveform = document.getElementById('waveform');
+        currentProgress += 0.1;
+        if (currentProgress > 1) currentProgress = 0;
+        waveform.progress = currentProgress;
+      }
+    </script>
   </body>
 </html>

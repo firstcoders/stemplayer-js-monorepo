@@ -10,6 +10,10 @@ import Peaks from './lib/Peaks.js';
  * @see https://github.com/bbc/audiowaveform
  *
  * @cssprop [--fc-waveform-min-height="25px"]
+ *
+ * @prop {string} waveColor - The color of the waveform
+ * @prop {string} progressColor - The color of the progress overlay
+ * @prop {number} progress - The progress value between 0 and 1
  */
 export class FcWaveform extends LitElement {
   static get styles() {
@@ -32,11 +36,13 @@ export class FcWaveform extends LitElement {
   static properties = {
     src: { type: String },
     waveColor: { type: String },
+    progressColor: { type: String },
     barGap: { type: Number },
     barWidth: { type: Number },
     scaleY: { type: Number },
     pixelRatio: { type: Number },
     peaks: { type: Object },
+    progress: { type: Number },
 
     /**
      * Padding reduces the maximum waveform height to create a padding effect
@@ -47,10 +53,12 @@ export class FcWaveform extends LitElement {
   constructor() {
     super();
     this.waveColor = 'white';
+    this.progressColor = 'rgba(255, 255, 255, 0.5)';
     this.barGap = 2;
     this.barWidth = 2;
     this.pixelRatio = 2;
     this.padding = 0.1;
+    this.progress = 0;
 
     this.addEventListener('click', e => {
       this.dispatchEvent(
@@ -93,9 +101,17 @@ export class FcWaveform extends LitElement {
       if (propName === 'scaleY' || propName === 'peaks') {
         this.drawPeaks();
       }
+      if (propName === 'progress') {
+        this.#updateProgress();
+      }
       if (
-        ['waveColor', 'barGap', 'barWidth', 'pixelRatio'].indexOf(propName) !==
-        -1
+        [
+          'waveColor',
+          'progressColor',
+          'barGap',
+          'barWidth',
+          'pixelRatio',
+        ].indexOf(propName) !== -1
       ) {
         // updating any of these properties requires a new drawer
         this.#destroyDrawer();
@@ -168,6 +184,7 @@ export class FcWaveform extends LitElement {
         normalize: false,
         pixelRatio: this.pixelRatio || 2,
         waveColor: this.waveColor,
+        progressColor: this.progressColor,
         cursorWidth: 1,
         dragSelection: false,
       },
@@ -197,6 +214,20 @@ export class FcWaveform extends LitElement {
   }
 
   /**
+   * Updates the progress using the canvas-based progress system
+   * @private
+   */
+  #updateProgress() {
+    if (!this.drawer || this.progress === undefined) return;
+
+    // Normalize progress to 0-1 range
+    const normalizedProgress = Math.max(0, Math.min(1, this.progress));
+
+    // Use the drawer's built-in progress method for efficient canvas rendering
+    this.drawer.progress(normalizedProgress);
+  }
+
+  /**
    * (re)-draw the waveform
    */
   drawPeaks() {
@@ -219,6 +250,9 @@ export class FcWaveform extends LitElement {
       );
 
       this.drawer.drawPeaks(peaks);
+
+      // Update progress after drawing peaks
+      this.#updateProgress();
 
       // non bubbling event
       this.dispatchEvent(new Event('draw'));
