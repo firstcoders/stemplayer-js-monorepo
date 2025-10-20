@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: 'Type of release'
+        description: "Type of release"
         required: true
-        default: 'prerelease'
+        default: "prerelease"
         type: choice
         options:
           - prerelease
@@ -19,30 +19,30 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: 'Use NodeJS 22'
+      - name: "Use NodeJS 22"
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install latest Yarn
-        run: corepack enable yarn && yarn set version berry
+        run: corepack enable yarn && yarn set version 4.10.3
 
       # https://dev.to/mpocock1/how-to-cache-nodemodules-in-github-actions-with-yarn-24eh
       - uses: actions/cache@v4
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('yarn.lock') }}
 
-      - name: 'Install dependencies'
+      - name: "Install dependencies"
         run: yarn install
 
-      - name: 'Version and publish'
+      - name: "Version and publish"
         env:
           GH_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
