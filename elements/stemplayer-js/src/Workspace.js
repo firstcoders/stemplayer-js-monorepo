@@ -166,12 +166,15 @@ export class Workspace extends ResponsiveLitElement {
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
       if (propName === 'offset') {
-        this.style.setProperty('--offset', Math.floor(this.offset * 100) / 100);
+        this.style.setProperty(
+          '--offset',
+          Math.floor(this.offset * 1000) / 1000,
+        );
       }
       if (propName === 'duration') {
         this.style.setProperty(
           '--duration',
-          Math.floor(this.duration * 100) / 100,
+          Math.floor(this.duration * 1000) / 1000,
         );
       }
     });
@@ -251,6 +254,8 @@ export class Workspace extends ResponsiveLitElement {
     }
 
     this.#mouseDownTime = new Date();
+
+    console.log(this.#mouseDownX);
   }
 
   #onMouseMove(e) {
@@ -389,7 +394,7 @@ export class Workspace extends ResponsiveLitElement {
         new CustomEvent('region:seek', {
           bubbles: true,
           composed: true,
-          detail: Math.floor((offsetX / offsetWidth) * 100) / 100,
+          detail: offsetX / offsetWidth,
         }),
       );
     }
@@ -439,7 +444,7 @@ export class Workspace extends ResponsiveLitElement {
     el.style.left = `${Math.floor(offsetX)}px`;
 
     this.cursorPosition =
-      Math.floor((offsetX / offsetWidth) * this.totalDuration * 10) / 10;
+      Math.floor((offsetX / offsetWidth) * this.totalDuration * 1000) / 1000;
 
     this.dispatchEvent(
       new CustomEvent('region:hover', {
