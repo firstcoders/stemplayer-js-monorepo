@@ -254,8 +254,6 @@ export class Workspace extends ResponsiveLitElement {
     }
 
     this.#mouseDownTime = new Date();
-
-    console.log(this.#mouseDownX);
   }
 
   #onMouseMove(e) {

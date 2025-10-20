@@ -35,7 +35,6 @@ export const WaveformHostMixin = superClass =>
         // get some stuff that is not styled by css from css vars anyway (for nice theming)
         if (!this.#computedStyle) {
           this.#computedStyle = getComputedStyle(this);
-          console.debug('Computed waveform styles from CSS vars');
           setTimeout(() => {
             this.#computedStyle = null;
           }, 1000);
