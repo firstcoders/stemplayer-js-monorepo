@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-beta.2](https://github.com/firstcoders/waveform-element/compare/@firstcoders/waveform-element@1.0.0-beta.1...@firstcoders/waveform-element@1.0.0-beta.2) (2025-10-20)
+
+
+### Features
+
+* **waveform-element:** set progress in waveform element ([63c5721](https://github.com/firstcoders/waveform-element/commit/63c572170d76a31226f003c175643c67756ea930))
+
+
+
+
+
 # [1.0.0-beta.1](https://github.com/firstcoders/waveform-element/compare/@firstcoders/waveform-element@1.0.0-beta.0...@firstcoders/waveform-element@1.0.0-beta.1) (2025-02-26)
 
 **Note:** Version bump only for package @firstcoders/waveform-element
