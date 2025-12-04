@@ -615,7 +615,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/hls-web-audio@npm:^2.5.0-beta.4, @firstcoders/hls-web-audio@workspace:packages/hls-web-audio":
+"@firstcoders/hls-web-audio@npm:^2.5.0, @firstcoders/hls-web-audio@workspace:packages/hls-web-audio":
   version: 0.0.0-use.local
   resolution: "@firstcoders/hls-web-audio@workspace:packages/hls-web-audio"
   dependencies:
@@ -634,7 +634,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/loader-element@npm:^1.0.0-beta.2, @firstcoders/loader-element@workspace:elements/loader-element":
+"@firstcoders/loader-element@npm:^1.0.0, @firstcoders/loader-element@workspace:elements/loader-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/loader-element@workspace:elements/loader-element"
   dependencies:
@@ -653,7 +653,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/mask-element@npm:^1.0.0-beta.2, @firstcoders/mask-element@workspace:elements/mask-element":
+"@firstcoders/mask-element@npm:^1.0.0, @firstcoders/mask-element@workspace:elements/mask-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/mask-element@workspace:elements/mask-element"
   dependencies:
@@ -672,7 +672,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/player-button-element@npm:^1.0.0-beta.2, @firstcoders/player-button-element@workspace:elements/player-button-element":
+"@firstcoders/player-button-element@npm:^1.0.0, @firstcoders/player-button-element@workspace:elements/player-button-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/player-button-element@workspace:elements/player-button-element"
   dependencies:
@@ -691,7 +691,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/range-element@npm:^1.0.0-beta.2, @firstcoders/range-element@workspace:elements/range-element":
+"@firstcoders/range-element@npm:^1.0.0, @firstcoders/range-element@workspace:elements/range-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/range-element@workspace:elements/range-element"
   dependencies:
@@ -710,7 +710,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/slider-element@npm:^1.0.0-beta.2, @firstcoders/slider-element@workspace:elements/slider-element":
+"@firstcoders/slider-element@npm:^1.0.0, @firstcoders/slider-element@workspace:elements/slider-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/slider-element@workspace:elements/slider-element"
   dependencies:
@@ -741,7 +741,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@firstcoders/waveform-element@npm:^1.0.0-beta.3, @firstcoders/waveform-element@workspace:elements/waveform-element":
+"@firstcoders/waveform-element@npm:^1.0.0, @firstcoders/waveform-element@workspace:elements/waveform-element":
   version: 0.0.0-use.local
   resolution: "@firstcoders/waveform-element@workspace:elements/waveform-element"
   dependencies:
@@ -1969,13 +1969,13 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.26.8"
     "@custom-elements-manifest/analyzer": "npm:^0.10.3"
-    "@firstcoders/hls-web-audio": "npm:^2.5.0-beta.4"
-    "@firstcoders/loader-element": "npm:^1.0.0-beta.2"
-    "@firstcoders/mask-element": "npm:^1.0.0-beta.2"
-    "@firstcoders/player-button-element": "npm:^1.0.0-beta.2"
-    "@firstcoders/range-element": "npm:^1.0.0-beta.2"
-    "@firstcoders/slider-element": "npm:^1.0.0-beta.2"
-    "@firstcoders/waveform-element": "npm:^1.0.0-beta.3"
+    "@firstcoders/hls-web-audio": "npm:^2.5.0"
+    "@firstcoders/loader-element": "npm:^1.0.0"
+    "@firstcoders/mask-element": "npm:^1.0.0"
+    "@firstcoders/player-button-element": "npm:^1.0.0"
+    "@firstcoders/range-element": "npm:^1.0.0"
+    "@firstcoders/slider-element": "npm:^1.0.0"
+    "@firstcoders/waveform-element": "npm:^1.0.0"
     "@open-wc/eslint-config": "npm:^12.0.3"
     "@open-wc/testing": "npm:^4.0.0"
     "@web/dev-server": "npm:^0.4.5"
