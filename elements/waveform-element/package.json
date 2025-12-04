@@ -24,8 +24,8 @@
   "scripts": {
     "analyze": "cem analyze --litelement",
     "start": "web-dev-server",
-    "lint": "eslint --ext .js,.html . --ignore-path .gitignore && prettier \"**/*.js\" --check --ignore-path .gitignore",
-    "format": "eslint --ext .js,.html . --fix --ignore-path .gitignore && prettier \"**/*.js\" --write --ignore-path .gitignore",
+    "lint": "eslint --ext .js,.html . --ignore-path .gitignore --ignore-pattern 'vendor/**' && prettier \"**/*.js\" \"!vendor/**\" --check --ignore-path .gitignore",
+    "format": "eslint --ext .js,.html . --fix --ignore-path .gitignore --ignore-pattern 'vendor/**' && prettier \"**/*.js\" \"!vendor/**\" --write --ignore-path .gitignore",
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
     "prepublishOnly": "npm run analyze"
