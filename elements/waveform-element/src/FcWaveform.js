@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit';
 import createDrawer from './lib/createDrawer.js';
-import onResize from './lib/on-resize.js';
+import ResizeCoordinator from './lib/ResizeCoordinator.js';
 import Peaks from './lib/Peaks.js';
 import debounce from './lib/debounce.js';
 
@@ -22,6 +22,8 @@ export class FcWaveform extends LitElement {
   #isDrawing = false;
 
   #debouncedDrawPeaks;
+
+  #adjustedPeaks = null;
 
   static get styles() {
     return css`
@@ -89,7 +91,7 @@ export class FcWaveform extends LitElement {
     super.connectedCallback();
 
     setTimeout(() => {
-      this.onResizeCallback = onResize(
+      this.onResizeCallback = ResizeCoordinator.observe(
         this.shadowRoot.firstElementChild,
         () => {
           // Use debounced version to prevent excessive redraws during resize
@@ -109,7 +111,14 @@ export class FcWaveform extends LitElement {
       if (propName === 'src') {
         if (this.src && this.src !== oldValue) this.#loadPeaks();
       }
-      if (propName === 'scaleY' || propName === 'peaks') {
+      if (
+        propName === 'scaleY' ||
+        propName === 'peaks' ||
+        propName === 'padding'
+      ) {
+        // Recalculate adjusted peaks when any dependency changes
+        this.#calculateAdjustedPeaks();
+
         if (propName === 'peaks') {
           this.#updateWidth();
         }
@@ -221,6 +230,22 @@ export class FcWaveform extends LitElement {
   }
 
   /**
+   * Calculates and caches the adjusted peaks based on scaleY and padding
+   * @private
+   */
+  #calculateAdjustedPeaks() {
+    if (!this.peaks) {
+      this.#adjustedPeaks = null;
+      return;
+    }
+
+    const { scaleY } = this;
+    this.#adjustedPeaks = this.peaks.data.map(
+      e => e * (scaleY !== undefined ? scaleY : 1) * (1 - this.padding),
+    );
+  }
+
+  /**
    * Updates the width of the element based on peaks duration and pixels per second
    * @private
    */
@@ -294,15 +319,16 @@ export class FcWaveform extends LitElement {
         return;
       }
 
-      const { scaleY } = this;
-      const peaks = this.peaks.data.map(
-        e => e * (scaleY !== undefined ? scaleY : 1) * (1 - this.padding),
-      );
+      // Use cached adjusted peaks
+      if (!this.#adjustedPeaks) {
+        this.#isDrawing = false;
+        return;
+      }
 
       // Use requestAnimationFrame for optimal rendering
       await new Promise(resolve => {
         requestAnimationFrame(() => {
-          this.drawer.drawPeaks(peaks);
+          this.drawer.drawPeaks(this.#adjustedPeaks);
 
           // Update progress after drawing peaks
           this.#updateProgress();
@@ -328,12 +354,10 @@ export class FcWaveform extends LitElement {
   }
 
   get adjustedPeaks() {
-    const { scaleY, peaks } = this;
-
-    if (peaks) {
+    if (this.#adjustedPeaks && this.peaks) {
       return new Peaks({
-        ...peaks,
-        data: peaks.data.map(e => e * (scaleY !== undefined ? scaleY : 1)),
+        ...this.peaks,
+        data: this.#adjustedPeaks,
         normalize: false,
       });
     }
