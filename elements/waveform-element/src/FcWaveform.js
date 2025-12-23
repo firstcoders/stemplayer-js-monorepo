@@ -1,6 +1,7 @@
 import { html, LitElement, css } from 'lit';
 import createDrawer from './lib/createDrawer.js';
 import ResizeCoordinator from './lib/ResizeCoordinator.js';
+import StyleUpdateBatcher from './lib/StyleUpdateBatcher.js';
 import Peaks from './lib/Peaks.js';
 import debounce from './lib/debounce.js';
 
@@ -261,7 +262,9 @@ export class FcWaveform extends LitElement {
     // Only update if width has actually changed
     if (this.style.width !== newWidth) {
       this.#isUpdatingWidth = true;
-      this.style.width = newWidth;
+
+      // Batch style update to prevent layout thrashing with multiple waveforms
+      StyleUpdateBatcher.queueUpdate(this, { width: newWidth });
 
       // Reset flag after a short delay to allow resize to settle
       setTimeout(() => {
