@@ -1,6 +1,6 @@
 import { css, html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { ResponsiveLitElement } from './ResponsiveLitElement.js';
+import { ResponsiveConsumerLitElement } from './ResponsiveConsumerLitElement.js';
 import spacingStyles from './styles/spacing.js';
 import typographyStyles from './styles/typography.js';
 import gridStyles from './styles/grid.js';
@@ -11,7 +11,7 @@ import formatSeconds from './lib/format-seconds.js';
 /**
  * An area that represents the timeline providing functionality to select regions
  */
-export class Workspace extends ResponsiveLitElement {
+export class Workspace extends ResponsiveConsumerLitElement {
   #horizonEl = createRef();
 
   /**
