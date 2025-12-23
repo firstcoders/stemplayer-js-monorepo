@@ -2,6 +2,7 @@ import { html, LitElement, css } from 'lit';
 import createDrawer from './lib/createDrawer.js';
 import onResize from './lib/on-resize.js';
 import Peaks from './lib/Peaks.js';
+import debounce from './lib/debounce.js';
 
 /**
  * A simple waveform element that can render a waveform based on a data structure
@@ -17,6 +18,10 @@ import Peaks from './lib/Peaks.js';
  */
 export class FcWaveform extends LitElement {
   #isUpdatingWidth = false;
+
+  #isDrawing = false;
+
+  #debouncedDrawPeaks;
 
   static get styles() {
     return css`
@@ -62,6 +67,9 @@ export class FcWaveform extends LitElement {
     this.padding = 0.1;
     this.progress = 0;
 
+    // Debounce drawPeaks to prevent excessive redraws during rapid changes
+    this.#debouncedDrawPeaks = debounce(() => this.#performDraw(), 16); // ~60fps
+
     this.addEventListener('click', e => {
       this.dispatchEvent(
         new CustomEvent('waveform:seek', {
@@ -84,7 +92,8 @@ export class FcWaveform extends LitElement {
       this.onResizeCallback = onResize(
         this.shadowRoot.firstElementChild,
         () => {
-          this.drawPeaks();
+          // Use debounced version to prevent excessive redraws during resize
+          this.#debouncedDrawPeaks();
         },
       );
     }, 0);
@@ -197,16 +206,9 @@ export class FcWaveform extends LitElement {
 
     this.drawer.init();
 
-    // the drawer needs to stabilise rendering first. We deduce if it has by checking the width
-    await new Promise(done => {
-      let x = 0;
-      const i = setInterval(() => {
-        if (x > 10 || this.drawer.width > 0) {
-          clearInterval(i);
-          done();
-          x += 1;
-        }
-      }, 100);
+    // Wait for next frame to ensure drawer is mounted in DOM
+    await new Promise(resolve => {
+      requestAnimationFrame(resolve);
     });
   }
 
@@ -258,40 +260,71 @@ export class FcWaveform extends LitElement {
   }
 
   /**
-   * (re)-draw the waveform
+   * (re)-draw the waveform (schedules a debounced draw)
    */
   drawPeaks() {
     if (!this.peaks) return;
-
-    if (this.drawPeaksAnimFrame) cancelAnimationFrame(this.drawPeaksAnimFrame);
-
     if (this.clientWidth === 0) return;
 
-    this.drawPeaksAnimFrame = requestAnimationFrame(() => {
-      if (!this.drawer) this.createDrawer();
+    // Schedule a debounced draw
+    this.#debouncedDrawPeaks();
+  }
+
+  /**
+   * Performs the actual drawing operation
+   * @private
+   */
+  async #performDraw() {
+    if (!this.peaks || this.clientWidth === 0) return;
+
+    // Prevent concurrent draws
+    if (this.#isDrawing) return;
+
+    this.#isDrawing = true;
+
+    try {
+      // Ensure drawer is created and ready
+      if (!this.drawer) {
+        await this.createDrawer();
+      }
+
+      // Skip if drawer still not ready
+      if (!this.drawer) {
+        this.#isDrawing = false;
+        return;
+      }
 
       const { scaleY } = this;
       const peaks = this.peaks.data.map(
         e => e * (scaleY !== undefined ? scaleY : 1) * (1 - this.padding),
       );
 
-      this.drawer.drawPeaks(peaks);
+      // Use requestAnimationFrame for optimal rendering
+      await new Promise(resolve => {
+        requestAnimationFrame(() => {
+          this.drawer.drawPeaks(peaks);
 
-      // Update progress after drawing peaks
-      this.#updateProgress();
+          // Update progress after drawing peaks
+          this.#updateProgress();
 
-      // non bubbling event
-      this.dispatchEvent(new Event('draw'));
+          // non bubbling event
+          this.dispatchEvent(new Event('draw'));
 
-      // composed event, bubbles past shadow doms
-      this.dispatchEvent(
-        new CustomEvent('waveform:draw', {
-          bubbles: true,
-          composed: true,
-          detail: this,
-        }),
-      );
-    });
+          // composed event, bubbles past shadow doms
+          this.dispatchEvent(
+            new CustomEvent('waveform:draw', {
+              bubbles: true,
+              composed: true,
+              detail: this,
+            }),
+          );
+
+          resolve();
+        });
+      });
+    } finally {
+      this.#isDrawing = false;
+    }
   }
 
   get adjustedPeaks() {
