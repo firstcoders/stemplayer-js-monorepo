@@ -16,6 +16,8 @@ import Peaks from './lib/Peaks.js';
  * @prop {number} progress - The progress value between 0 and 1
  */
 export class FcWaveform extends LitElement {
+  #isUpdatingWidth = false;
+
   static get styles() {
     return css`
       :host {
@@ -99,6 +101,9 @@ export class FcWaveform extends LitElement {
         if (this.src && this.src !== oldValue) this.#loadPeaks();
       }
       if (propName === 'scaleY' || propName === 'peaks') {
+        if (propName === 'peaks') {
+          this.#updateWidth();
+        }
         this.drawPeaks();
       }
       if (propName === 'progress') {
@@ -214,6 +219,31 @@ export class FcWaveform extends LitElement {
   }
 
   /**
+   * Updates the width of the element based on peaks duration and pixels per second
+   * @private
+   */
+  #updateWidth() {
+    if (!this.peaks || this.clientWidth === 0) return;
+
+    // Prevent resize loops
+    if (this.#isUpdatingWidth) return;
+
+    const defaultPixelsPerSecond = this.clientWidth / this.peaks.duration;
+    const newWidth = `calc(var(--fc-waveform-pixels-per-second, ${defaultPixelsPerSecond}) * ${this.peaks.duration}px)`;
+
+    // Only update if width has actually changed
+    if (this.style.width !== newWidth) {
+      this.#isUpdatingWidth = true;
+      this.style.width = newWidth;
+
+      // Reset flag after a short delay to allow resize to settle
+      setTimeout(() => {
+        this.#isUpdatingWidth = false;
+      }, 50);
+    }
+  }
+
+  /**
    * Updates the progress using the canvas-based progress system
    * @private
    */
@@ -237,13 +267,9 @@ export class FcWaveform extends LitElement {
 
     if (this.clientWidth === 0) return;
 
-    // set the width of the element
-    const defaultPixelsPerSecond = this.clientWidth / this.peaks.duration;
-    this.style.width = `calc(var(--fc-waveform-pixels-per-second, ${defaultPixelsPerSecond}) * ${this.peaks.duration}px)`;
-
-    if (!this.drawer) this.createDrawer();
-
     this.drawPeaksAnimFrame = requestAnimationFrame(() => {
+      if (!this.drawer) this.createDrawer();
+
       const { scaleY } = this;
       const peaks = this.peaks.data.map(
         e => e * (scaleY !== undefined ? scaleY : 1) * (1 - this.padding),
