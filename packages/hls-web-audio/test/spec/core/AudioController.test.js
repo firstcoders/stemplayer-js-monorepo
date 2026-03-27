@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from '@bundled-es-modules/chai';
 import sinon from 'sinon';
-import Controller from '../../src/controller';
-import HLS from '../../src/hls';
+import Controller from '../../../src/core/AudioController.js';
+import HLS from '../../../src/track/HLS.js';
 
 describe('controller', () => {
   describe('#constructor', () => {

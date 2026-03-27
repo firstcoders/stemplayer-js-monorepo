@@ -1,7 +1,7 @@
-import Controller from './controller.js';
-import Segment from './io/AudioSegment.js';
-import Stack from './stack.js';
-import parseM3u8 from './lib/parseM3u8.js';
+import Controller from '../core/AudioController.js';
+import Segment from '../io/AudioSegment.js';
+import Stack from './Stack.js';
+import parseM3u8 from '../lib/parseM3u8.js';
 
 class HLS {
   /**

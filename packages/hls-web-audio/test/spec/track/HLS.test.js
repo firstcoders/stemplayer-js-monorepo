@@ -1,7 +1,7 @@
 import { expect } from '@bundled-es-modules/chai';
 import sinon from 'sinon';
-import HLS from '../../src/hls';
-import Controller from '../../src/controller';
+import HLS from '../../../src/track/HLS.js';
+import Controller from '../../../src/core/AudioController.js';
 
 describe('hls', () => {
   describe('#constructor', () => {

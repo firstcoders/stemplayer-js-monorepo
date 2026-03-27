@@ -1,7 +1,7 @@
 import { expect } from '@bundled-es-modules/chai';
 import sinon from 'sinon';
-import Stack from '../../src/stack';
-import Timeframe from '../../src/timeframe';
+import Stack from '../../../src/track/Stack.js';
+import Timeframe from '../../../src/core/Timeframe.js';
 
 let stack;
 

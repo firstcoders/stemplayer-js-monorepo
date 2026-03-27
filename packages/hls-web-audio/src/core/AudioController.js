@@ -1,9 +1,9 @@
-import Observer from './observer.js';
-import AudioContext from './lib/audio-context.js';
-import { fadeIn, fadeOut } from './lib/fade.js';
-import isIOS from './lib/isIOS';
-import unmuteAudioContext from './lib/unmuteAudioContext.js';
-import Timeframe from './timeframe.js';
+import Observer from './Observer.js';
+import AudioContext from '../lib/audio-context.js';
+import { fadeIn, fadeOut } from '../lib/fade.js';
+import isIOS from '../lib/isIOS';
+import unmuteAudioContext from '../lib/unmuteAudioContext.js';
+import Timeframe from './Timeframe.js';
 
 /**
  * A controller is used to control the playback of one or more HLS tracks
