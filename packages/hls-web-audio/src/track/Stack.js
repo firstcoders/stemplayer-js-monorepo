@@ -1,4 +1,4 @@
-export default class {
+export default class Stack {
   /**
    * @property {Array} elements - The ordered elements that jointly compose this HLS track
    * @private
@@ -11,119 +11,43 @@ export default class {
   startPointer;
 
   /**
-   * @property {Number} startPointer - the initial start time, if not 0
+   * @property {Number} initialStartTime - the initial start time, if not 0
    */
   initialStartTime;
-
-  /**
-   * @property {Number} nextMarginSeconds - a marin, in seconds, that controls a rolling window that checks whether a segment is nearly next
-   */
-  nextMarginSeconds;
 
   /**
    * @property {Number|undefined} - a duration set externally rather than derived from loaded audio
    */
   #duration;
 
-  constructor({ start = 0, nextMarginSeconds = 5 } = {}) {
+  /**
+   * Cached last known index for quick retrieval
+   * @private
+   */
+  #lastIdx = undefined;
+
+  constructor({ start = 0 } = {}) {
     this.initialStartTime = start;
     this.startPointer = start;
-    this.nextMarginSeconds = nextMarginSeconds;
   }
 
   /**
    * Destructor
    */
   destroy() {
-    // destroy all elements
     this.elements.forEach((element) => element.destroy());
-
-    // remove references
     this.elements = [];
   }
 
   /**
    * Add elements to the stack
-   *
-   * @param  {...any} element
    */
   push(...element) {
     element.forEach((s) => {
-      // initialise start time of element
       s.start = this.startPointer;
-
-      // push to stack
       this.elements.push(s);
-
-      // increment start pointer
       this.startPointer += s.duration;
     });
-  }
-
-  /**
-   * Try to get the next element that is not ready
-   * @returns {Object|undefined}
-   */
-  consume(timeframe) {
-    const iCurrent = this.getIndexAt(timeframe.currentTime);
-    const current = this.elements[iCurrent];
-    const next = this.elements[iCurrent + 1];
-
-    // Evict segment caches that are no longer physically required in the window
-    this.#evictOldCaches(iCurrent);
-
-    const getNextElement = () => {
-      if (current && !current.$inTransit && !current.isReady) {
-        return current;
-      }
-
-      // do not schedule next unless current is ready
-      if (!current?.isReady) return undefined;
-
-      // ensure the next is in the play window (<timeframe.end)
-      if (next && next.start < timeframe.end && !next.$inTransit && !next.isReady) {
-        return next;
-      }
-
-      return undefined;
-    };
-
-    const element = getNextElement();
-
-    if (element) {
-      // store a signpost that we're currently $inTransit the element
-      // so that it wont be loaded again by the next timeupdate event, while it is still being prepared
-      element.$inTransit = true;
-    }
-
-    return element;
-  }
-
-  /**
-   * Ack an element, freeing it up for future consumption
-   *
-   * @param {Object} element
-   */
-  ack(element) {
-    element.$inTransit = false;
-  }
-
-  /**
-   * Cleans up audio buffers outside the nearby playback window to preserve memory
-   * @param {Number} iCurrent - index of the currently playing element
-   * @private
-   */
-  #evictOldCaches(iCurrent) {
-    if (iCurrent === -1) return;
-
-    // We only keep a window of ~5 segments (-2, +3 relative to current)
-    for (let i = 0; i < this.elements.length; i += 1) {
-      if (Math.abs(i - iCurrent) > 3) {
-        if (this.elements[i].isLoaded && !this.elements[i].isReady) {
-          this.elements[i].unloadCache();
-        }
-      }
-    }
   }
 
   /**
@@ -135,8 +59,6 @@ export default class {
 
   /**
    * Get the total duration
-   *
-   * @returns {Number|undefined}
    */
   get duration() {
     return this.#duration || this.audioDuration;
@@ -144,8 +66,6 @@ export default class {
 
   /**
    * Manually set the duration
-   *
-   * @param {Number} duration - the duration
    */
   set duration(duration) {
     this.#duration = duration;
@@ -159,18 +79,21 @@ export default class {
   }
 
   /**
-   * Handles a controller's "seek" event
+   * Ack an element, freeing it up for future consumption
+   *
+   * @param {Object} element
+   */
+  ack(element) {
+    element.$inTransit = false;
+  }
+
+  /**
+   * Disconnects all active or loading elements
    */
   disconnectAll() {
-    // disconnect all elements. A new set will need to be resheduled
     this.elements.forEach((element) => {
-      // cancel any loading in progress
-      element.cancel();
-
-      // disconnect any connected audio nodes
-      if (element.isReady) element.disconnect();
-
-      // ensure element is again available for consumption
+      if (element.cancel) element.cancel();
+      if (element.isReady && element.disconnect) element.disconnect();
       this.ack(element);
     });
   }
@@ -181,12 +104,6 @@ export default class {
   get length() {
     return this.elements.length;
   }
-
-  /**
-   * Cached last known index for quick retrieval
-   * @private
-   */
-  #lastIdx = undefined;
 
   /**
    * Get the index of the current element using a cached fast path or binary search
@@ -216,8 +133,6 @@ export default class {
       const s = this.elements[mid];
 
       if (t >= s.start && t <= s.end) {
-        // Since segments are contiguous, end of one is start of next.
-        // Let's resolve boundary overlap correctly (prefer left if exact start).
         if (t === s.start && mid > 0 && this.elements[mid - 1].end >= t) {
           this.#lastIdx = mid - 1;
           return mid - 1;
@@ -248,18 +163,13 @@ export default class {
 
   /**
    * Recalculates the start times, taking into account any later adjustments from learning the real durations
-   * of a segment after decoding the audio data.
    */
   recalculateStartTimes() {
     this.startPointer = this.initialStartTime;
 
     this.elements.forEach((s, i) => {
       const start = this.elements[i - 1]?.end || this.startPointer;
-
-      // initialise start time of element
       s.start = start;
-
-      // increment start pointer
       this.startPointer += s.duration;
     });
   }
@@ -269,7 +179,6 @@ export default class {
    */
   set start(start) {
     this.initialStartTime = start;
-    this.disconnectAll();
     this.recalculateStartTimes();
   }
 
@@ -279,7 +188,6 @@ export default class {
 
   set offset(offset) {
     this._offset = offset;
-    this.disconnectAll();
   }
 
   get offset() {

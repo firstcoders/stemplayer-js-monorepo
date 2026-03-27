@@ -1,17 +1,8 @@
 import { expect } from '@bundled-es-modules/chai';
 import sinon from 'sinon';
 import Stack from '../../../src/track/Stack.js';
-import Timeframe from '../../../src/core/Timeframe.js';
 
 let stack;
-
-const timeframe = new Timeframe({
-  adjustedStart: 0,
-  adjustedEnd: 10,
-  currentTime: 0,
-  playDuration: 10,
-  offset: 0,
-});
 
 describe('stack', () => {
   beforeEach(() => {
@@ -49,72 +40,14 @@ describe('stack', () => {
     });
   });
 
-  describe('#consume()', () => {
-    beforeEach(() => {
-      stack.currentTime = 0;
-    });
-
-    describe('if #current is not ready and #current is not in transit', () => {
-      it('return the current element', () => {
-        const element = stack.consume(timeframe);
-
-        expect(element.start).equal(0);
-        expect(element.$inTransit);
-      });
-    });
-
-    describe('if #current is ready and #next is not in ready', () => {
-      it('return the next element', () => {
-        stack.elements[0].isReady = true;
-
-        const element = stack.consume(timeframe);
-
-        expect(element.start).equal(1.1);
-        expect(element.$inTransit);
-      });
-    });
-
-    describe('if #current is in transit and #next is not ready', () => {
-      it('return the next element', () => {
-        stack.consume(timeframe);
-        const next = stack.consume(timeframe);
-
-        expect(next).equal(undefined);
-      });
-    });
-
-    describe('if #current is ready and #next is ready', () => {
-      it('returns undefined', () => {
-        stack.elements[0].isReady = true;
-        stack.elements[1].isReady = true;
-
-        const element = stack.consume(timeframe);
-
-        expect(element === undefined);
-      });
-    });
-
-    // describe('if #loop is true and no #next is present', () => {
-    //   it('return the first element', () => {
-    //     stack.loop = true;
-    //     stack.currentTime = 6;
-
-    //     stack.consume(timeframe); // get current
-    //     const next = stack.consume(timeframe);
-
-    //     expect(next !== stack.first);
-    //     expect(next.$inTransit);
-    //   });
-    // });
-  });
-
   describe('#ack()', () => {
     beforeEach(() => {
       stack.currentTime = 0;
     });
 
     it('marks the element as not in transit so that it could be re-delivered on a next call to #consume', () => {
-      const element = stack.consume(timeframe);
+      const element = stack.elements[0];
+      element.$inTransit = true;
 
       expect(element.$inTransit);
 
