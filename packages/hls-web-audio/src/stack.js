@@ -69,6 +69,9 @@ export default class {
     const current = this.elements[iCurrent];
     const next = this.elements[iCurrent + 1];
 
+    // Evict segment caches that are no longer physically required in the window
+    this.#evictOldCaches(iCurrent);
+
     const getNextElement = () => {
       if (current && !current.$inTransit && !current.isReady) {
         return current;
@@ -103,6 +106,24 @@ export default class {
    */
   ack(element) {
     element.$inTransit = false;
+  }
+
+  /**
+   * Cleans up audio buffers outside the nearby playback window to preserve memory
+   * @param {Number} iCurrent - index of the currently playing element
+   * @private
+   */
+  #evictOldCaches(iCurrent) {
+    if (iCurrent === -1) return;
+
+    // We only keep a window of ~5 segments (-2, +3 relative to current)
+    for (let i = 0; i < this.elements.length; i += 1) {
+      if (Math.abs(i - iCurrent) > 3) {
+        if (this.elements[i].isLoaded && !this.elements[i].isReady) {
+          this.elements[i].unloadCache();
+        }
+      }
+    }
   }
 
   /**

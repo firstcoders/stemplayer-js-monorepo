@@ -2,7 +2,6 @@ class Segment {
   #sourceNode;
   #arrayBuffer;
   #audioBuffer;
-  #cacheClearTimeout;
 
   /**
    * @param {Object} param - The params
@@ -26,7 +25,6 @@ class Segment {
     // cleanup
     this.#arrayBuffer = null;
     this.#audioBuffer = null;
-    if (this.#cacheClearTimeout) clearTimeout(this.#cacheClearTimeout);
     // this.#sourceNode = null; // reference is cleared on disconnect
   }
 
@@ -75,8 +73,6 @@ class Segment {
   async connect({ destination, ac, start, offset, stop }) {
     if (this.#sourceNode) throw new Error('Cannot connect a segment twice');
 
-    if (this.#cacheClearTimeout) clearTimeout(this.#cacheClearTimeout);
-
     if (!this.#audioBuffer) {
       if (!this.#arrayBuffer) throw new Error('Cannot connect. No audio data in buffer.');
       this.#audioBuffer = await ac.decodeAudioData(this.#arrayBuffer);
@@ -118,14 +114,14 @@ class Segment {
 
       // remove reference
       this.#sourceNode = null;
-
-      // schedule the cleanup of the cache
-      // we dont do this immediately so that if the sement is re-scheduled soon after it can benefit
-      // from an already decoded audio buffer. However we do need to clean it eventually for memory management.
-      this.#cacheClearTimeout = setTimeout(() => {
-        this.#audioBuffer = undefined;
-      }, 10000);
     }
+  }
+
+  /**
+   * Free completely decoded audio buffer to release memory pressure
+   */
+  unloadCache() {
+    this.#audioBuffer = undefined;
   }
 
   /**
