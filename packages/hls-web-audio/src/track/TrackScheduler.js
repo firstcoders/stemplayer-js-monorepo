@@ -50,7 +50,7 @@ export default class TrackScheduler {
       });
 
       this.#scheduleNotBefore = segment.end - segment.duration / 2;
-      this.stack.recalculateStartTimes();
+      this.stack.recalculateStartTimes(currentIndex);
     } catch (err) {
       if (err.name !== 'AbortError') {
         this.track.controller?.notify('error', err);
@@ -83,12 +83,19 @@ export default class TrackScheduler {
   evictOldCaches(iCurrent) {
     if (iCurrent === -1) return;
 
-    for (let i = 0; i < this.stack.elements.length; i += 1) {
-      if (Math.abs(i - iCurrent) > 3) {
-        if (this.stack.elements[i].isLoaded && !this.stack.elements[i].isReady) {
-          this.stack.elements[i].unloadCache();
-        }
+    // Fast O(1) sliding window eviction. 
+    // We only attempt to clean up bounds exactly slightly outside the target play window.
+    const lookbehind = iCurrent - 4;
+    const lookahead = iCurrent + 4;
+
+    const evictQueue = [];
+    if (this.stack.elements[lookbehind]) evictQueue.push(this.stack.elements[lookbehind]);
+    if (this.stack.elements[lookahead]) evictQueue.push(this.stack.elements[lookahead]);
+
+    evictQueue.forEach(segment => {
+      if (segment && segment.isLoaded && !segment.isReady) {
+        segment.unloadCache();
       }
-    }
+    });
   }
 }

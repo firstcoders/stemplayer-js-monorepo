@@ -162,16 +162,21 @@ export default class Stack {
   }
 
   /**
-   * Recalculates the start times, taking into account any later adjustments from learning the real durations
+   * Recalculates the start times from a specific index forward, reducing total array loops
    */
-  recalculateStartTimes() {
-    this.startPointer = this.initialStartTime;
+  recalculateStartTimes(fromIndex = 0) {
+    if (fromIndex === 0) {
+      this.startPointer = this.initialStartTime;
+    } else {
+      this.startPointer = this.elements[fromIndex - 1]?.end || this.initialStartTime;
+    }
 
-    this.elements.forEach((s, i) => {
+    for (let i = fromIndex; i < this.elements.length; i += 1) {
+      const s = this.elements[i];
       const start = this.elements[i - 1]?.end || this.startPointer;
       s.start = start;
-      this.startPointer += s.duration;
-    });
+      this.startPointer = start + s.duration;
+    }
   }
 
   /**
