@@ -12,8 +12,8 @@ export default class Track {
     this.controller = controller || new Controller();
     this.controller.observe(this);
 
-    this.eTimeUpdate = this.controller.on('timeupdate', () => this.onTimeUpdate());
     this.eSeek = this.controller.on('seek', () => this.onSeek());
+    this.eStart = this.controller.on('start', () => this.runSchedulePass());
     this.ePlayDuration = this.controller.on('playDuration', () => this.#reset());
     this.eOffset = this.controller.on('offset', () => this.#reset());
 
@@ -47,9 +47,9 @@ export default class Track {
     this.controller.unobserve(this);
     this.controller = null;
 
-    this.eTimeUpdate.un();
     this.eOffset.un();
     this.ePlayDuration.un();
+    this.eStart.un();
     this.eSeek.un();
 
     this.stack.destroy();
@@ -81,10 +81,6 @@ export default class Track {
   get shouldAndCanPlay() {
     const current = this.stack.getAt(this.controller.currentTime);
     return !current || current?.isReady;
-  }
-
-  onTimeUpdate() {
-    this.scheduler.runSchedulePass(this.controller.currentTimeframe);
   }
 
   async onSeek() {

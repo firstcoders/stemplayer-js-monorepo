@@ -3,7 +3,8 @@ export default class PlaybackEngine {
     this.controller = controller;
     this.isBuffering = false;
     this.desiredState = 'suspended';
-    this.tTick = null;
+    this.tUiNext = null;
+    this.tEngineNext = null;
     this.refreshRate = controller.refreshRate || 250;
   }
 
@@ -32,9 +33,39 @@ export default class PlaybackEngine {
   }
 
   tick() {
-    if (this.tTick) this.untick();
+    this.untick();
 
-    if (this.controller.currentTime > this.controller.offset + this.controller.playDuration) {
+    // The logic tick: check bounds and buffering gracefully
+    this._engineTick();
+    
+    // The UI tick: continuously update the visual slider as fast as the monitor allows, or strictly capped in Background
+    this._uiTick();
+  }
+
+  _uiTick() {
+    this.controller.fireEvent('timeupdate', {
+      t: this.controller.currentTime,
+      pct: this.controller.pct,
+      remaining: this.controller.remaining,
+      act: this.controller.ac.currentTime,
+    });
+
+    if (this.controller.ac.state === 'running' || this.isBuffering) {
+      if (typeof window !== 'undefined' && window.requestAnimationFrame) {
+         this.tUiNext = window.requestAnimationFrame(() => this._uiTick());
+      } else {
+         this.tUiNext = setTimeout(() => this._uiTick(), this.refreshRate);
+      }
+    }
+  }
+
+  _engineTick() {
+    if (this.tEngineNext) clearTimeout(this.tEngineNext);
+    this.tEngineNext = null;
+
+    const t = this.controller.currentTime;
+    
+    if (t > this.controller.offset + this.controller.playDuration) {
       return this.controller.end();
     }
 
@@ -46,21 +77,45 @@ export default class PlaybackEngine {
       this.bufferingEnd();
     }
 
-    this.controller.fireEvent('timeupdate', {
-      t: this.controller.currentTime,
-      pct: this.controller.pct,
-      remaining: this.controller.remaining,
-      act: this.controller.ac.currentTime,
-    });
-
+    // Determine when the engine should wake up next.
     if (this.controller.ac.state === 'running' || this.isBuffering) {
-      this.tTick = setTimeout(() => this.tick(), this.refreshRate);
+      let waitMs = 250; 
+      if (!this.isBuffering) {
+         // calculate time until the end of the timeline
+         let timeToNextCheck = (this.controller.offset + this.controller.playDuration) - t;
+         
+         // OR until the current ready segments end
+         for (const track of this.controller.tracks) {
+             const seg = track.stack.getAt(t);
+             if (seg && seg.isReady) {
+                 const timeToSegEnd = seg.end - t;
+                 if (timeToSegEnd < timeToNextCheck) {
+                     timeToNextCheck = timeToSegEnd;
+                 }
+             }
+         }
+         waitMs = (timeToNextCheck * 1000) - 10;
+      } else {
+         // If buffering, poll reasonably fast to unpause immediately when data arrives
+         waitMs = 100;
+      }
+      
+      waitMs = Math.max(50, waitMs);
+      this.tEngineNext = setTimeout(() => this._engineTick(), waitMs);
     }
   }
 
   untick() {
-    if (this.tTick) clearTimeout(this.tTick);
-    this.tTick = null;
+    if (this.tUiNext) {
+      if (typeof window !== 'undefined' && window.cancelAnimationFrame) {
+        window.cancelAnimationFrame(this.tUiNext);
+      }
+      clearTimeout(this.tUiNext);
+    }
+    if (this.tEngineNext) clearTimeout(this.tEngineNext);
+    
+    this.tUiNext = null;
+    this.tEngineNext = null;
   }
 
   bufferingStart() {
