@@ -126,7 +126,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
   static properties = {
     totalDuration: { type: Number },
     offset: { type: Number },
-    duration: { type: Number },
+    regionDuration: { type: Number },
     regions: { type: Boolean },
     cursorPosition: { state: true },
     lockRegions: { type: Boolean },
@@ -180,10 +180,10 @@ export class Workspace extends ResponsiveConsumerLitElement {
           Math.floor(this.offset * 1000) / 1000,
         );
       }
-      if (propName === 'duration') {
+      if (propName === 'regionDuration') {
         this.style.setProperty(
           '--duration',
-          Math.floor(this.duration * 1000) / 1000,
+          Math.floor(this.regionDuration * 1000) / 1000,
         );
       }
     });
@@ -192,7 +192,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
   render() {
     return html`<div>
       <div class="z99 noPointerEvents h100 absolute"></div>
-      ${this.regions && this.offset > 0 && this.duration > 0
+      ${this.regions && this.offset > 0 && this.regionDuration > 0
         ? html` <div
             class="absolute h100 z999 mask dashed regionArea"
             @mousedown=${this.#onRegionMouseDown}
@@ -216,7 +216,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
             >
               <div class="handle left"></div>
               <div class="w2 hRow textCenter textXs">
-                ${formatSeconds(this.offset + this.duration)}
+                ${formatSeconds(this.offset + this.regionDuration)}
               </div>
               <fc-player-button
                 @click=${this.#onDeselectClick}
@@ -294,9 +294,9 @@ export class Workspace extends ResponsiveConsumerLitElement {
             newOffset = 0.0001; // nearly 0, due to a check offset > 0 above in render
           }
 
-          if (newOffset + this.duration > this.totalDuration) {
+          if (newOffset + this.regionDuration > this.totalDuration) {
             // prevent dragging past the end
-            newOffset = this.totalDuration - this.duration;
+            newOffset = this.totalDuration - this.regionDuration;
           }
 
           this.offset = newOffset;
@@ -362,7 +362,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
         new CustomEvent('region:change', {
           detail: {
             offset: this.offset,
-            duration: this.duration,
+            duration: this.regionDuration,
             region: this,
           },
           bubbles: true,
@@ -505,7 +505,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
 
       const left = Math.round(this.pixelsPerSecond * this.offset * 1000) / 1000;
       const width =
-        Math.round(this.pixelsPerSecond * this.duration * 1000) / 1000;
+        Math.round(this.pixelsPerSecond * this.regionDuration * 1000) / 1000;
       const right2 = left + width;
 
       if (isRightHandle) {

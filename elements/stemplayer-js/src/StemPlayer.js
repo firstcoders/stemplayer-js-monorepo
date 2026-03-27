@@ -457,7 +457,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
           ${ref(this.#workspace)}
           .totalDuration=${this.audioDuration}
           .offset=${this.regionOffset}
-          .duration=${this.regionDuration}
+          .regionDuration=${this.regionDuration}
           .regions=${this.regions}
           .lockRegions=${this.lockRegions}
           .pixelsPerSecond=${this.pixelsPerSecond}
