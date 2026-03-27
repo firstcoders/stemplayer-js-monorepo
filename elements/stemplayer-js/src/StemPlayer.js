@@ -448,6 +448,8 @@ export class FcStemPlayer extends ResponsiveLitElement {
         class="scrollWrapper relative"
         style="${this.zoom === 1 ? 'overflow-x:hidden' : ''}"
       >
+        <slot class="default" @slotchange=${this.#onSlotChange}></slot>
+
         <stemplayer-js-workspace
           ${ref(this.#workspace)}
           .totalDuration=${this.audioDuration}
@@ -459,9 +461,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
           @region:update=${this.#onRegionUpdate}
           @region:change=${this.#onRegionChange}
           class=${this.collapsed ? 'hidden h0' : ''}
-        >
-          <slot class="default" @slotchange=${this.#onSlotChange}></slot>
-        </stemplayer-js-workspace>
+        ></stemplayer-js-workspace>
       </div>
       <slot name="footer" @slotchange=${this.#onSlotChange}></slot>
       ${this.isLoading

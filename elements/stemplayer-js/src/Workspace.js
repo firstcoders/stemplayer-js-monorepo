@@ -48,7 +48,10 @@ export class Workspace extends ResponsiveConsumerLitElement {
           display: block;
           width: var(--stemplayer-js-workspace-width, fit-content);
           min-width: 100%;
-          position: relative;
+          position: absolute;
+          top: 0; left: 0; bottom: 0;
+          pointer-events: none;
+          z-index: 10;
         }
 
         .mask {
@@ -86,6 +89,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
         }
 
         .regionArea {
+          pointer-events: auto;
           margin-left: var(--stemplayer-js-row-controls-width);
           margin-right: var(--stemplayer-js-row-end-width);
           left: calc(
@@ -102,6 +106,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
 
         .lRowControls {
           left: var(--stemplayer-js-row-controls-width);
+          pointer-events: auto;
         }
 
         .handle {
@@ -237,8 +242,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
           >
         </div>
       </div>
-      <slot></slot>
-      <div class="lRowControls rRowEnd absolute" ${ref(this.#horizonEl)}></div>
+      <div class="lRowControls rRowEnd absolute h100 top bottom" ${ref(this.#horizonEl)}></div>
     </div>`;
   }
 
