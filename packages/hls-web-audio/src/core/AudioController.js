@@ -1,5 +1,5 @@
 import Observer from './Observer.js';
-import AudioContext from '../lib/audio-context.js';
+import AudioContext from '../lib/AudioContext.js';
 import { fadeIn, fadeOut } from '../lib/fade.js';
 import isIOS from '../lib/isIOS.js';
 import unmuteAudioContext from '../lib/unmuteAudioContext.js';
