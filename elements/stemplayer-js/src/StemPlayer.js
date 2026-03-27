@@ -730,16 +730,10 @@ export class FcStemPlayer extends ResponsiveLitElement {
 
   #recalculatePixelsPerSecond() {
     requestAnimationFrame(() => {
-      const firstStem = this.stemComponents[0];
-      if (firstStem) {
-        const nonFlexWidth = firstStem.nonFlexWidth !== undefined 
-          ? firstStem.nonFlexWidth 
-          : firstStem.row?.nonFlexWidth; // fallback just in case
-          
-        const pps =
-          ((this.clientWidth - nonFlexWidth) /
-            this.#controller.duration) *
-          this.zoom;
+      const waveformWidth = this.#workspace.value?.waveformWidth;
+
+      if (waveformWidth > 0 && this.#controller.duration > 0) {
+        const pps = (waveformWidth / this.#controller.duration) * this.zoom;
 
         if (pps) {
           this.pixelsPerSecond = pps;

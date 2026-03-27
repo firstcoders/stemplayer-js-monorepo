@@ -41,7 +41,6 @@ export class FcStemPlayerControls extends WaveformHostMixin(
         }
 
         .stem-row {
-          display: block;
           position: relative;
           line-height: var(--stemplayer-js-row-height, 4.5rem);
           height: var(--stemplayer-js-row-height, 4.5rem);
@@ -335,6 +334,7 @@ export class FcStemPlayerControls extends WaveformHostMixin(
 
       return html`
         <fc-waveform
+          class="dBlock h100 w100"
           .peaks=${this.peaks}
           .duration=${this.duration}
           .progress=${this.currentPct}
@@ -398,11 +398,5 @@ export class FcStemPlayerControls extends WaveformHostMixin(
     const from = v ? 'collapse' : 'collapse:toggled';
     const to = v ? 'collapse:toggled' : 'collapse';
     this.controls = this.controls.join(' ').replace(from, to).split(' ');
-  }
-
-  get nonFlexWidth() {
-    const controlsWidth = this.shadowRoot.querySelector('.wControls')?.clientWidth || 0;
-    const endWidth = this.shadowRoot.querySelector('.wEnd')?.clientWidth || 0;
-    return controlsWidth + endWidth;
   }
 }

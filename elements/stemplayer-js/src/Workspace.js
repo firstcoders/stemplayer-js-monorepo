@@ -49,7 +49,9 @@ export class Workspace extends ResponsiveConsumerLitElement {
           width: var(--stemplayer-js-workspace-width, fit-content);
           min-width: 100%;
           position: absolute;
-          top: 0; left: 0; bottom: 0;
+          top: 0;
+          left: 0;
+          bottom: 0;
           pointer-events: none;
           z-index: 10;
         }
@@ -242,7 +244,10 @@ export class Workspace extends ResponsiveConsumerLitElement {
           >
         </div>
       </div>
-      <div class="lRowControls rRowEnd absolute h100 top bottom" ${ref(this.#horizonEl)}></div>
+      <div
+        class="lRowControls rRowEnd absolute h100 top bottom"
+        ${ref(this.#horizonEl)}
+      ></div>
     </div>`;
   }
 
@@ -440,6 +445,10 @@ export class Workspace extends ResponsiveConsumerLitElement {
       direction: coord1 > coord2 ? 'left' : 'right', // left = dragging from right to left and vice versa
       region: this,
     };
+  }
+
+  get waveformWidth() {
+    return this.#horizonEl.value?.clientWidth || 0;
   }
 
   /**

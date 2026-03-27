@@ -34,7 +34,6 @@ export class FcStemPlayerStem extends WaveformHostMixin(
         }
 
         .stem-row {
-          display: block;
           position: relative;
           line-height: var(--stemplayer-js-row-height, 4.5rem);
           height: var(--stemplayer-js-row-height, 4.5rem);
@@ -386,11 +385,5 @@ export class FcStemPlayerStem extends WaveformHostMixin(
    */
   get waveformComponent() {
     return this.shadowRoot?.querySelector('fc-waveform');
-  }
-
-  get nonFlexWidth() {
-    const controlsWidth = this.shadowRoot.querySelector('.wControls')?.clientWidth || 0;
-    const endWidth = this.shadowRoot.querySelector('.wEnd')?.clientWidth || 0;
-    return controlsWidth + endWidth;
   }
 }
