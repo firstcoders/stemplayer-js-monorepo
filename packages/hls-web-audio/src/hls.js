@@ -1,5 +1,5 @@
 import Controller from './controller.js';
-import Segment from './segment.js';
+import Segment from './io/AudioSegment.js';
 import Stack from './stack.js';
 import parseM3u8 from './lib/parseM3u8.js';
 
