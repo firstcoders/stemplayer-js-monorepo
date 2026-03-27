@@ -18,10 +18,10 @@ export default class TrackScheduler {
       return;
     }
 
-    const currentIndex = this.stack.getIndexAt(timeframe.currentTime);
-    this.evictOldCaches(currentIndex);
+    const currentSegment = this.stack.getAt(timeframe.currentTime);
+    this.evictOldCaches(currentSegment);
 
-    const segments = this.getNextSegments(timeframe, currentIndex);
+    const segments = this.getNextSegments(timeframe, currentSegment);
     if (!segments.length) return;
 
     // Immediately mark them as in-transit to prevent concurrent runSchedulePass calls
@@ -33,14 +33,14 @@ export default class TrackScheduler {
     for (const segment of segments) {
       // Re-check just in case they were ready'd or disconnected externally
       if (!segment.isReady) {
-        await this.scheduleAt(timeframe, segment, currentIndex);
+        await this.scheduleAt(timeframe, segment);
       } else {
         segment.$inTransit = false;
       }
     }
   }
 
-  async scheduleAt(timeframe, segment, currentIndex) {
+  async scheduleAt(timeframe, segment) {
     try {
       this.track.controller?.notify('loading-start', this.track);
       // Let scheduleAt strictly rely on the caller setting it, but re-assert just in case
@@ -63,7 +63,7 @@ export default class TrackScheduler {
       });
 
       this.#scheduleNotBefore = segment.end - segment.duration / 2;
-      this.stack.recalculateStartTimes(currentIndex);
+      this.stack.recalculateStartTimes(segment);
     } catch (err) {
       if (err.name !== 'AbortError') {
         this.track.controller?.notify('error', err);
@@ -74,44 +74,49 @@ export default class TrackScheduler {
     }
   }
 
-  getNextSegments(timeframe, iCurrent) {
-    if (iCurrent === -1) return [];
+  getNextSegments(timeframe, currentSegment) {
+    if (!currentSegment) return [];
 
     const segments = [];
-    const elements = this.stack.elements;
 
     // We want to fetch everything within the bounding box of current time + lookahead window (10s)
     // but constrain it strictly below the timeframe's intended boundary.
     const lookaheadWindow = timeframe.currentTime + 10;
 
-    for (let i = iCurrent; i < elements.length; i++) {
-      const segment = elements[i];
-      if (!segment) continue;
-
-      // Always allow the current index to load. For subsequent ones, restrict by lookahead window.
-      if (i > iCurrent && segment.start > Math.min(lookaheadWindow, timeframe.end)) {
+    let segment = currentSegment;
+    while (segment) {
+      // Always allow the current segment to load. For subsequent ones, restrict by lookahead window.
+      if (segment !== currentSegment && segment.start > Math.min(lookaheadWindow, timeframe.end)) {
         break; // Stop looking once outside of the buffering window
       }
 
       if (!segment.$inTransit && !segment.isReady) {
         segments.push(segment);
       }
+
+      segment = segment.next;
     }
 
     return segments;
   }
 
-  evictOldCaches(iCurrent) {
-    if (iCurrent === -1) return;
+  evictOldCaches(currentSegment) {
+    if (!currentSegment) return;
 
-    // Fast O(1) sliding window eviction.
-    // We only attempt to clean up bounds exactly slightly outside the target play window.
-    const lookbehind = iCurrent - 4;
-    const lookahead = iCurrent + 4;
-
+    // Fast eviction. We only attempt to clean up bounds exactly slightly outside the target play window.
     const evictQueue = [];
-    if (this.stack.elements[lookbehind]) evictQueue.push(this.stack.elements[lookbehind]);
-    if (this.stack.elements[lookahead]) evictQueue.push(this.stack.elements[lookahead]);
+
+    let lookbehind = currentSegment;
+    for (let i = 0; i < 4; i++) {
+      if (lookbehind) lookbehind = lookbehind.prev;
+    }
+    if (lookbehind) evictQueue.push(lookbehind);
+
+    let lookahead = currentSegment;
+    for (let i = 0; i < 4; i++) {
+      if (lookahead) lookahead = lookahead.next;
+    }
+    if (lookahead) evictQueue.push(lookahead);
 
     evictQueue.forEach((segment) => {
       if (segment && segment.isLoaded && !segment.isReady) {

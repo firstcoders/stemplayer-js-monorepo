@@ -34,9 +34,9 @@ describe('stack', () => {
     });
 
     it('sets the correct start time', () => {
-      expect(stack.elements[0].start).equal(0);
-      expect(stack.elements[1].start).equal(1.1);
-      expect(Math.round(stack.elements[2].start * 10) / 10).equal(3.3);
+      expect(stack.head.start).equal(0);
+      expect(stack.head.next.start).equal(1.1);
+      expect(Math.round(stack.head.next.next.start * 10) / 10).equal(3.3);
     });
   });
 
@@ -46,7 +46,7 @@ describe('stack', () => {
     });
 
     it('marks the element as not in transit so that it could be re-delivered on a next call to #consume', () => {
-      const element = stack.elements[0];
+      const element = stack.head;
       element.$inTransit = true;
 
       expect(element.$inTransit);
@@ -81,62 +81,62 @@ describe('stack', () => {
 
   describe('#disconnectAll()', () => {
     beforeEach(() => {
-      stack.elements[0].cancel = sinon.spy();
-      stack.elements[1].cancel = sinon.spy();
-      stack.elements[2].cancel = sinon.spy();
-      stack.elements[0].disconnect = sinon.spy();
-      stack.elements[1].disconnect = sinon.spy();
-      stack.elements[2].disconnect = sinon.spy();
+      stack.head.cancel = sinon.spy();
+      stack.head.next.cancel = sinon.spy();
+      stack.head.next.next.cancel = sinon.spy();
+      stack.head.disconnect = sinon.spy();
+      stack.head.next.disconnect = sinon.spy();
+      stack.head.next.next.disconnect = sinon.spy();
     });
 
     it('cancels any elements that are loading', () => {
       stack.disconnectAll();
 
-      expect(stack.elements[0].cancel.calledOnce);
-      expect(stack.elements[1].cancel.calledOnce);
-      expect(stack.elements[2].cancel.calledOnce);
+      expect(stack.head.cancel.calledOnce);
+      expect(stack.head.next.cancel.calledOnce);
+      expect(stack.head.next.next.cancel.calledOnce);
     });
 
     it('disconnects any elements that are ready', () => {
-      stack.elements[0].isReady = true;
-      stack.elements[1].isReady = false;
-      stack.elements[2].isReady = true;
+      stack.head.isReady = true;
+      stack.head.next.isReady = false;
+      stack.head.next.next.isReady = true;
 
       stack.disconnectAll();
 
-      expect(stack.elements[0].disconnect.calledOnce);
-      expect(!stack.elements[1].disconnect.calledOnce);
-      expect(stack.elements[2].disconnect.calledOnce);
+      expect(stack.head.disconnect.calledOnce);
+      expect(!stack.head.next.disconnect.calledOnce);
+      expect(stack.head.next.next.disconnect.calledOnce);
     });
 
     it('acks any elements that are in transit', () => {
-      stack.elements[0].$inTransit = true;
+      stack.head.$inTransit = true;
 
       stack.disconnectAll();
 
-      expect(stack.elements[0].$inTransit === false);
+      expect(stack.head.$inTransit === false);
     });
 
     it('preserves loading elements if they are close to the target timeframe', () => {
-      stack.elements[0].start = 10;
-      stack.elements[0].$inTransit = true;
+      stack.head.start = 10;
+      stack.head.$inTransit = true;
 
       const timeframe = { currentTime: 12 }; // within 15 seconds
       stack.disconnectAll(timeframe);
 
-      expect(stack.elements[0].cancel.called).to.be.false;
-      expect(stack.elements[0].$inTransit).to.be.true; // did not ack
+      expect(stack.head.cancel.called).to.be.false;
+      expect(stack.head.$inTransit).to.be.true; // did not ack
     });
 
     it('cancels loading elements if they are far from the target timeframe', () => {
-      stack.elements[0].start = 10;
-      stack.elements[0].$inTransit = true;
+      stack.head.start = 10;
+      stack.head.$inTransit = true;
 
       const timeframe = { currentTime: 30 }; // further than 15 seconds
       stack.disconnectAll(timeframe);
 
-      expect(stack.elements[0].cancel.calledOnce).to.be.true;
-      expect(stack.elements[0].$inTransit).to.be.false; // acked
+      expect(stack.head.cancel.calledOnce).to.be.true;
+      expect(stack.head.$inTransit).to.be.false; // acked
     });
   });
 
@@ -146,22 +146,13 @@ describe('stack', () => {
     });
   });
 
-  describe('#getAt()', () => {
-    it('returns element at a time t', () => {
-      expect(stack.getAt(1.0)).equal(stack.elements[0]);
-      expect(stack.getAt(2.3)).equal(stack.elements[1]);
-      expect(stack.getAt(4.5)).equal(stack.elements[2]);
-      expect(stack.getAt(9.9));
-    });
+  describe('#getAt()', () => { 
+    it('returns element at a time t', () => { 
+      expect(stack.getAt(1.0)).equal(stack.head); 
+      expect(stack.getAt(2.3)).equal(stack.head.next); 
+      expect(stack.getAt(4.5)).equal(stack.head.next.next); 
+      expect(stack.getAt(9.9)).equal(undefined); 
+    }); 
   });
 
-  describe('#getIndexAt()', () => {
-    it('returns the index of the element at a time t', () => {
-      expect(stack.getIndexAt(1.0)).equal(0);
-      expect(stack.getIndexAt(2.3)).equal(1);
-      expect(stack.getIndexAt(4.5)).equal(2);
-      expect(stack.getIndexAt(9.9)).equal(-1);
-      expect(stack.getIndexAt(-100)).equal(-1);
-    });
-  });
 });

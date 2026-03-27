@@ -1,202 +1,138 @@
 export default class Stack {
-  /**
-   * @property {Array} elements - The ordered elements that jointly compose this HLS track
-   * @private
-   */
-  elements = [];
+  head = null;
+  tail = null;
+  length = 0;
 
-  /**
-   * @property {Number} startPointer - an internal pointer pointing to where the start of the next element is
-   */
   startPointer;
-
-  /**
-   * @property {Number} initialStartTime - the initial start time, if not 0
-   */
   initialStartTime;
-
-  /**
-   * @property {Number|undefined} - a duration set externally rather than derived from loaded audio
-   */
   #duration;
 
-  /**
-   * Cached last known index for quick retrieval
-   * @private
-   */
-  #lastIdx = undefined;
+  #lastAccessed = null;
 
   constructor({ start = 0 } = {}) {
     this.initialStartTime = start;
     this.startPointer = start;
   }
 
-  /**
-   * Destructor
-   */
   destroy() {
-    this.elements.forEach((element) => element.destroy());
-    this.elements = [];
+    let current = this.head;
+    while (current) {
+      if (current.destroy) current.destroy();
+      current = current.next;
+    }
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+    this.#lastAccessed = null;
   }
 
-  /**
-   * Add elements to the stack
-   */
-  push(...element) {
-    element.forEach((s) => {
+  push(...elements) {
+    elements.forEach((s) => {
       s.start = this.startPointer;
-      this.elements.push(s);
       this.startPointer += s.duration;
+
+      s.prev = this.tail;
+      s.next = null;
+
+      if (!this.head) {
+        this.head = s;
+        this.tail = s;
+      } else {
+        this.tail.next = s;
+        this.tail = s;
+      }
+      this.length += 1;
     });
   }
 
-  /**
-   * The default duration as defined by the audio segments
-   */
   get audioDuration() {
     return this.startPointer;
   }
 
-  /**
-   * Get the total duration
-   */
   get duration() {
     return this.#duration || this.audioDuration;
   }
 
-  /**
-   * Manually set the duration
-   */
   set duration(duration) {
     this.#duration = duration;
   }
 
-  /**
-   * @returns {Object} The first element
-   */
   get first() {
-    return this.elements[0];
+    return this.head;
   }
 
-  /**
-   * Ack an element, freeing it up for future consumption
-   *
-   * @param {Object} element
-   */
   ack(element) {
     element.$inTransit = false;
   }
 
-  /**
-   * Disconnects all active or loading elements
-   */
   disconnectAll(timeframe = null) {
-    this.elements.forEach((element) => {
+    let current = this.head;
+    while (current) {
       let cancelLoad = true;
 
       // When seeking, don't abort downloads that are near the new timeframe.
-      if (timeframe && element.$inTransit && element.start !== undefined) {
-        const startDist = Math.abs(element.start - timeframe.currentTime);
+      if (timeframe && current.$inTransit && current.start !== undefined) {
+        const startDist = Math.abs(current.start - timeframe.currentTime);
         if (startDist <= 15) {
           cancelLoad = false;
         }
       }
 
-      if (element.isReady && element.disconnect) {
-        element.disconnect();
+      if (current.isReady && current.disconnect) {
+        current.disconnect();
       }
 
       if (cancelLoad) {
-        if (element.cancel) element.cancel();
-        this.ack(element);
+        if (current.cancel) current.cancel();
+        this.ack(current);
       }
-    });
-  }
 
-  /**
-   * Get the length of the stack
-   */
-  get length() {
-    return this.elements.length;
-  }
-
-  /**
-   * Get the index of the current element using a cached fast path or binary search
-   * @param {Number} t - the time
-   * @returns {Number} the index
-   */
-  getIndexAt(t) {
-    if (this.#lastIdx !== undefined && this.elements[this.#lastIdx]) {
-      const s = this.elements[this.#lastIdx];
-      // Fast path: still in same segment
-      if (t >= s.start && t < s.end) return this.#lastIdx;
-
-      // Fast path: advanced to next segment (most common during sequential playback)
-      const next = this.elements[this.#lastIdx + 1];
-      if (next && t >= next.start && t < next.end) {
-        this.#lastIdx += 1;
-        return this.#lastIdx;
-      }
+      current = current.next;
     }
-
-    // Binary search for generic seeking
-    let low = 0;
-    let high = this.elements.length - 1;
-
-    while (low <= high) {
-      const mid = Math.floor((low + high) / 2);
-      const s = this.elements[mid];
-
-      if (t >= s.start && t <= s.end) {
-        if (t === s.start && mid > 0 && this.elements[mid - 1].end >= t) {
-          this.#lastIdx = mid - 1;
-          return mid - 1;
-        }
-        this.#lastIdx = mid;
-        return mid;
-      }
-
-      if (t < s.start) {
-        high = mid - 1;
-      } else {
-        low = mid + 1;
-      }
-    }
-
-    return -1;
   }
 
-  /**
-   * Get the current element
-   * @param {Number} t - the time
-   * @returns {Object|undefined}
-   */
   getAt(t) {
-    const idx = this.getIndexAt(t);
-    return idx !== -1 ? this.elements[idx] : undefined;
-  }
+    let current = this.#lastAccessed || this.head;
+    if (!current) return undefined;
 
-  /**
-   * Recalculates the start times from a specific index forward, reducing total array loops
-   */
-  recalculateStartTimes(fromIndex = 0) {
-    if (fromIndex === 0) {
-      this.startPointer = this.initialStartTime;
+    if (t < current.start) {
+      while (current && t < current.start) {
+        current = current.prev;
+      }
     } else {
-      this.startPointer = this.elements[fromIndex - 1]?.end || this.initialStartTime;
+      while (current && t >= current.end) {
+        current = current.next;
+      }
     }
 
-    for (let i = fromIndex; i < this.elements.length; i += 1) {
-      const s = this.elements[i];
-      const start = this.elements[i - 1]?.end || this.startPointer;
-      s.start = start;
-      this.startPointer = start + s.duration;
+    if (current && t >= current.start && t < current.end) {
+      this.#lastAccessed = current;
+      return current;
+    }
+
+    return undefined;
+  }
+
+  recalculateStartTimes(fromSegment = this.head) {
+    if (!fromSegment) {
+      this.startPointer = this.initialStartTime;
+      return;
+    }
+
+    if (fromSegment === this.head) {
+      this.startPointer = this.initialStartTime;
+    } else if (fromSegment.prev) {
+      this.startPointer = fromSegment.prev.end || this.initialStartTime;
+    }
+
+    let current = fromSegment;
+    while (current) {
+      current.start = this.startPointer;
+      this.startPointer = current.start + current.duration;
+      current = current.next;
     }
   }
 
-  /**
-   * @deprecated
-   */
   set start(start) {
     this.initialStartTime = start;
     this.recalculateStartTimes();
