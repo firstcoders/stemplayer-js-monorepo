@@ -88,7 +88,7 @@ export default class Track {
   }
 
   async onSeek() {
-    this.stack.disconnectAll();
+    this.stack.disconnectAll(this.controller.currentTimeframe);
     this.scheduler.runSchedulePass(this.controller.currentTimeframe, true);
   }
 

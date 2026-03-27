@@ -51,7 +51,8 @@ export default class SegmentBuffer {
 
   getAudioBuffer(ac) {
     if (this.#audioBuffer) return Promise.resolve(this.#audioBuffer);
-    if (!this.#arrayBuffer) return Promise.reject(new Error('Cannot connect. No audio data in buffer.'));
+    if (!this.#arrayBuffer)
+      return Promise.reject(new Error('Cannot connect. No audio data in buffer.'));
 
     // Tier 2 Cache allocation
     return ac.decodeAudioData(this.#arrayBuffer.slice(0)).then((audioBuffer) => {

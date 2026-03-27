@@ -90,11 +90,26 @@ export default class Stack {
   /**
    * Disconnects all active or loading elements
    */
-  disconnectAll() {
+  disconnectAll(timeframe = null) {
     this.elements.forEach((element) => {
-      if (element.cancel) element.cancel();
-      if (element.isReady && element.disconnect) element.disconnect();
-      this.ack(element);
+      let cancelLoad = true;
+
+      // When seeking, don't abort downloads that are near the new timeframe.
+      if (timeframe && element.$inTransit && element.start !== undefined) {
+        const startDist = Math.abs(element.start - timeframe.currentTime);
+        if (startDist <= 15) {
+          cancelLoad = false;
+        }
+      }
+
+      if (element.isReady && element.disconnect) {
+        element.disconnect();
+      }
+
+      if (cancelLoad) {
+        if (element.cancel) element.cancel();
+        this.ack(element);
+      }
     });
   }
 

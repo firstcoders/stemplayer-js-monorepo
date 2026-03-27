@@ -116,6 +116,28 @@ describe('stack', () => {
 
       expect(stack.elements[0].$inTransit === false);
     });
+
+    it('preserves loading elements if they are close to the target timeframe', () => {
+      stack.elements[0].start = 10;
+      stack.elements[0].$inTransit = true;
+
+      const timeframe = { currentTime: 12 }; // within 15 seconds
+      stack.disconnectAll(timeframe);
+
+      expect(stack.elements[0].cancel.called).to.be.false;
+      expect(stack.elements[0].$inTransit).to.be.true; // did not ack
+    });
+
+    it('cancels loading elements if they are far from the target timeframe', () => {
+      stack.elements[0].start = 10;
+      stack.elements[0].$inTransit = true;
+
+      const timeframe = { currentTime: 30 }; // further than 15 seconds
+      stack.disconnectAll(timeframe);
+
+      expect(stack.elements[0].cancel.calledOnce).to.be.true;
+      expect(stack.elements[0].$inTransit).to.be.false; // acked
+    });
   });
 
   describe('#length', () => {

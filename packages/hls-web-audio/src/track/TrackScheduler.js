@@ -67,11 +67,11 @@ export default class TrackScheduler {
 
     const segments = [];
     const elements = this.stack.elements;
-    
-// We want to fetch everything within the bounding box of current time + lookahead window (10s)
+
+    // We want to fetch everything within the bounding box of current time + lookahead window (10s)
     // but constrain it strictly below the timeframe's intended boundary.
     const lookaheadWindow = timeframe.currentTime + 10;
-    
+
     for (let i = iCurrent; i < elements.length; i++) {
       const segment = elements[i];
       if (!segment) continue;
