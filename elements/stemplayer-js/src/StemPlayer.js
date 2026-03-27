@@ -1,5 +1,7 @@
 import { html, css } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { ContextProvider } from '@lit/context';
+import { playerStateContext } from './contexts.js';
 import Controller from '@firstcoders/hls-web-audio/controller.js';
 import Peaks from '@firstcoders/waveform-element/Peaks.js';
 import { ResponsiveLitElement } from './ResponsiveLitElement.js';
@@ -174,6 +176,9 @@ export class FcStemPlayer extends ResponsiveLitElement {
   /** @private */
   #nLoading = 0;
 
+  /** @private */
+  #playerStateProvider;
+
   constructor() {
     super();
 
@@ -191,6 +196,32 @@ export class FcStemPlayer extends ResponsiveLitElement {
     this.collapsed = false;
     this.lockRegions = false;
     this.pixelsPerSecond = 0;
+
+    this.playerState = {
+      currentTime: 0,
+      currentPct: 0,
+      duration: 0,
+      isPlaying: false,
+      loop: false,
+      collapsed: false,
+      peaks: null,
+    };
+
+    // Set up context provider
+    this.#playerStateProvider = new ContextProvider(this, {
+      context: playerStateContext,
+      initialValue: this.playerState,
+    });
+  }
+
+  /**
+   * Updates multiple player state properties at once and provides them to consumers
+   * @param {Object} props 
+   * @private
+   */
+  #updatePlayerState(props) {
+    this.playerState = { ...this.playerState, ...props };
+    this.#playerStateProvider.setValue(this.playerState);
   }
 
   firstUpdated() {
@@ -276,7 +307,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
 
     controller.on('timeupdate', ({ t, pct }) => {
       requestAnimationFrame(() => {
-        this.#updateChildren({
+        this.#updatePlayerState({
           currentTime: t,
           currentPct: pct,
         });
@@ -284,21 +315,21 @@ export class FcStemPlayer extends ResponsiveLitElement {
     });
 
     controller.on('end', () => {
-      this.#updateChildren({
+      this.#updatePlayerState({
         currentTime: 0,
         currentPct: 0,
       });
     });
 
     controller.on('seek', ({ t, pct }) => {
-      this.#updateChildren({
+      this.#updatePlayerState({
         currentTime: t,
         currentPct: pct,
       });
     });
 
     controller.on('duration', duration => {
-      this.#updateChildren({
+      this.#updatePlayerState({
         duration,
       });
 
@@ -318,14 +349,14 @@ export class FcStemPlayer extends ResponsiveLitElement {
     });
 
     controller.on('start', () => {
-      this.#updateChildren({
+      this.#updatePlayerState({
         duration: controller.duration,
         isPlaying: true,
       });
     });
 
     controller.on('pause', () => {
-      this.#updateChildren({ isPlaying: false });
+      this.#updatePlayerState({ isPlaying: false });
     });
 
     this.addEventListener('resize', () => {
@@ -361,7 +392,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
         this.#controller.loop = this.loop;
 
         // notify the controls component of the change
-        this.#updateChildren({
+        this.#updatePlayerState({
           loop: this.loop,
         });
       }
@@ -474,7 +505,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
 
   #onToggleCollapse() {
     this.collapsed = !this.collapsed;
-    this.#updateChildren({ collapsed: this.collapsed });
+    this.#updatePlayerState({ collapsed: this.collapsed });
   }
 
   /**
@@ -555,12 +586,8 @@ export class FcStemPlayer extends ResponsiveLitElement {
       ...this.stemComponents.map(c => c.peaks).filter(e => !!e),
     );
 
-    // pass the combined peaks to the controls component
-    this.slottedElements
-      .filter(el => el instanceof ControlComponent)
-      .forEach(el => {
-        el.peaks = peaks;
-      });
+    // Provide the combined peaks to all consumers
+    this.#updatePlayerState({ peaks });
 
     this.dispatchEvent(
       new CustomEvent('peaks', {
@@ -666,14 +693,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
   /**
    * @private
    */
-  #updateChildren(props) {
-    this.slottedElements.forEach(el => {
-      if (el instanceof StemComponent || el instanceof ControlComponent)
-        Object.keys(props).forEach(key => {
-          el[key] = props[key];
-        });
-    });
-  }
+
 
   #onRegionChange(e) {
     const { offset, duration } = e.detail;
