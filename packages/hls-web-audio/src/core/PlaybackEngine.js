@@ -85,7 +85,7 @@ export default class PlaybackEngine {
 
   untick() {
     if (this.tEngineNext) clearTimeout(this.tEngineNext);
-    
+
     this.tEngineNext = null;
   }
 

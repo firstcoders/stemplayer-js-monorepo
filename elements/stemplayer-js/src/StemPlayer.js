@@ -299,10 +299,15 @@ export class FcStemPlayer extends ResponsiveLitElement {
       });
 
       this.dispatchEvent(
-        new CustomEvent('timeupdate', { 
-          detail: { t, pct, remaining: controller.remaining, act: controller.ac?.currentTime }, 
-          bubbles: true 
-        })
+        new CustomEvent('timeupdate', {
+          detail: {
+            t,
+            pct,
+            remaining: controller.remaining,
+            act: controller.ac?.currentTime,
+          },
+          bubbles: true,
+        }),
       );
 
       if (controller.state === 'running' || controller.isBuffering) {
@@ -360,10 +365,15 @@ export class FcStemPlayer extends ResponsiveLitElement {
       });
       // Ensure we fire a single timeupdate on seek so UI renders exactly the seeked position immediately
       this.dispatchEvent(
-        new CustomEvent('timeupdate', { 
-          detail: { t, pct, remaining: controller.remaining, act: controller.ac?.currentTime }, 
-          bubbles: true 
-        })
+        new CustomEvent('timeupdate', {
+          detail: {
+            t,
+            pct,
+            remaining: controller.remaining,
+            act: controller.ac?.currentTime,
+          },
+          bubbles: true,
+        }),
       );
     });
 

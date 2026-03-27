@@ -47,7 +47,7 @@ describe('controller', () => {
         beforeEach(() => {
           controller = new Controller();
           originalTick = controller.engine._engineTick;
-          controller.engine._engineTick = function() {
+          controller.engine._engineTick = function () {
             ticks++;
             originalTick.apply(this, arguments);
           };
@@ -159,7 +159,7 @@ describe('controller', () => {
     it('stops ticking', async () => {
       let ticks = 0;
       let originalTick = controller.engine._engineTick;
-      controller.engine._engineTick = function() {
+      controller.engine._engineTick = function () {
         ticks += 1;
         if (originalTick) originalTick.apply(this, arguments);
       };
@@ -357,13 +357,13 @@ describe('controller', () => {
       it('schedules the "tick" timeout', async () => {
         let called = false;
         let originalTick = controller.engine._engineTick;
-        controller.engine._engineTick = function() {
+        controller.engine._engineTick = function () {
           called = true;
           if (originalTick) originalTick.apply(this, arguments);
         };
-        
+
         controller.play();
-        
+
         await new Promise((done) => setTimeout(done, 100));
 
         expect(called).to.be.true;
@@ -402,7 +402,7 @@ describe('controller', () => {
     it('stops the "tick" timeout', async () => {
       let ticks = 0;
       let originalTick = controller.engine._engineTick;
-      controller.engine._engineTick = function() {
+      controller.engine._engineTick = function () {
         ticks += 1;
         if (originalTick) originalTick.apply(this, arguments);
       };
