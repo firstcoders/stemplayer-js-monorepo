@@ -162,21 +162,67 @@ export default class {
   }
 
   /**
-   * Get the index of the current element
+   * Cached last known index for quick retrieval
+   * @private
+   */
+  #lastIdx = undefined;
+
+  /**
+   * Get the index of the current element using a cached fast path or binary search
    * @param {Number} t - the time
-   * @returns
+   * @returns {Number} the index
    */
   getIndexAt(t) {
-    return this.elements.findIndex((s) => t >= s.start && t <= s.end);
+    if (this.#lastIdx !== undefined && this.elements[this.#lastIdx]) {
+      const s = this.elements[this.#lastIdx];
+      // Fast path: still in same segment
+      if (t >= s.start && t < s.end) return this.#lastIdx;
+
+      // Fast path: advanced to next segment (most common during sequential playback)
+      const next = this.elements[this.#lastIdx + 1];
+      if (next && t >= next.start && t < next.end) {
+        this.#lastIdx += 1;
+        return this.#lastIdx;
+      }
+    }
+
+    // Binary search for generic seeking
+    let low = 0;
+    let high = this.elements.length - 1;
+
+    while (low <= high) {
+      const mid = Math.floor((low + high) / 2);
+      const s = this.elements[mid];
+
+      if (t >= s.start && t <= s.end) {
+        // Since segments are contiguous, end of one is start of next.
+        // Let's resolve boundary overlap correctly (prefer left if exact start).
+        if (t === s.start && mid > 0 && this.elements[mid - 1].end >= t) {
+          this.#lastIdx = mid - 1;
+          return mid - 1;
+        }
+        this.#lastIdx = mid;
+        return mid;
+      }
+
+      if (t < s.start) {
+        high = mid - 1;
+      } else {
+        low = mid + 1;
+      }
+    }
+
+    return -1;
   }
 
   /**
    * Get the current element
    * @param {Number} t - the time
-   * @returns
+   * @returns {Object|undefined}
    */
   getAt(t) {
-    return this.elements.find((s) => t >= s.start && t <= s.end);
+    const idx = this.getIndexAt(t);
+    return idx !== -1 ? this.elements[idx] : undefined;
   }
 
   /**
@@ -213,7 +259,6 @@ export default class {
   set offset(offset) {
     this._offset = offset;
     this.disconnectAll();
-    this.recalculateStartTimes();
   }
 
   get offset() {

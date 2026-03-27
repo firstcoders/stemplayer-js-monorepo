@@ -364,8 +364,10 @@ class Controller extends Observer {
     });
   }
 
+  #timeframe = new Timeframe();
+
   get currentTimeframe() {
-    return new Timeframe({
+    return this.#timeframe.update({
       adjustedStart: this.adjustedStart,
       adjustedEnd: this.adjustedEnd,
       currentTime: this.currentTime,

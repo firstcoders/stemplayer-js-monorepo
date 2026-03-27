@@ -26,6 +26,7 @@ class Segment {
     // cleanup
     this.#arrayBuffer = null;
     this.#audioBuffer = null;
+    if (this.#cacheClearTimeout) clearTimeout(this.#cacheClearTimeout);
     // this.#sourceNode = null; // reference is cleared on disconnect
   }
 
