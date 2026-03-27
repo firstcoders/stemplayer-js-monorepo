@@ -257,11 +257,6 @@ export class FcStemPlayer extends ResponsiveLitElement {
 
     this.addEventListener('waveform:draw', this.#onWaveformDraw);
 
-    this.addEventListener('nonflexwidth-change', () => {
-      // Recalculate pixels per second when row non-flex width changes
-      this.#debouncedRecalculatePixelsPerSecond();
-    });
-
     const handleSeek = e => {
       controller.pct = e.detail;
     };
@@ -735,9 +730,14 @@ export class FcStemPlayer extends ResponsiveLitElement {
 
   #recalculatePixelsPerSecond() {
     requestAnimationFrame(() => {
-      if (this.stemComponents[0]?.row) {
+      const firstStem = this.stemComponents[0];
+      if (firstStem) {
+        const nonFlexWidth = firstStem.nonFlexWidth !== undefined 
+          ? firstStem.nonFlexWidth 
+          : firstStem.row?.nonFlexWidth; // fallback just in case
+          
         const pps =
-          ((this.clientWidth - this.stemComponents[0].row.nonFlexWidth) /
+          ((this.clientWidth - nonFlexWidth) /
             this.#controller.duration) *
           this.zoom;
 

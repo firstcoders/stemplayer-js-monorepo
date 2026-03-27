@@ -39,6 +39,36 @@ export class FcStemPlayerControls extends WaveformHostMixin(
           --stemplayer-js-row-controls-background-color: transparent;
           --stemplayer-js-row-end-background-color: transparent;
         }
+
+        .stem-row {
+          display: block;
+          position: relative;
+          line-height: var(--stemplayer-js-row-height, 4.5rem);
+          height: var(--stemplayer-js-row-height, 4.5rem);
+          user-select: none;
+        }
+
+        .wControls {
+          width: var(--stemplayer-js-row-controls-width);
+        }
+
+        .wEnd {
+          min-width: var(--stemplayer-js-row-end-width);
+        }
+
+        .bgControls {
+          background-color: var(
+            --stemplayer-js-row-controls-background-color,
+            black
+          );
+        }
+
+        .bgEnd {
+          background-color: var(
+            --stemplayer-js-row-end-background-color,
+            black
+          );
+        }
       `,
     ];
   }
@@ -115,8 +145,8 @@ export class FcStemPlayerControls extends WaveformHostMixin(
   }
 
   #getLargeScreenTpl() {
-    return html`<stemplayer-js-row>
-      <div slot="controls" class="dFlex h100">
+    return html`<div class="stem-row dFlex h100">
+      <div class="wControls stickLeft bgControls z999 dFlex h100">
         ${this.#renderControl('playpause', true)} ${this.#renderControl('loop')}
         ${this.#renderControl('label', this.label) ||
         html`<div class="flex1"></div>`}
@@ -125,10 +155,10 @@ export class FcStemPlayerControls extends WaveformHostMixin(
           this.#renderControl('waveform') || this.#renderControl('progress'),
         )}
       </div>
-      <div slot="flex" class="h100">
+      <div class="flex1 h100">
         ${this.#renderControl('waveform') || this.#renderControl('progress')}
       </div>
-      <div slot="end" class="h100 dFlex">
+      <div class="wEnd stickRight bgEnd z99 dFlex h100">
         ${this.#renderControl(
           'duration',
           this.#renderControl('waveform') || this.#renderControl('progress'),
@@ -138,11 +168,11 @@ export class FcStemPlayerControls extends WaveformHostMixin(
             ${this.#renderControl('download')}${this.#renderControl('collapse')}`
           : ''}
       </div>
-    </stemplayer-js-row>`;
+    </div>`;
   }
 
   #getSmallScreenTpl() {
-    return html`<stemplayer-js-row displayMode="sm">
+    return html`<div class="stem-row dFlex h100 overflowHidden">
       <fc-player-button
         class="w2 flexNoShrink"
         .disabled=${!this.duration}
@@ -178,7 +208,7 @@ export class FcStemPlayerControls extends WaveformHostMixin(
       <div class="w2 op75 textCenter textXs">
         <span class="p2">${formatSeconds(this.duration)}</span>
       </div>
-    </stemplayer-js-row>`;
+    </div>`;
   }
 
   /**
@@ -368,5 +398,11 @@ export class FcStemPlayerControls extends WaveformHostMixin(
     const from = v ? 'collapse' : 'collapse:toggled';
     const to = v ? 'collapse:toggled' : 'collapse';
     this.controls = this.controls.join(' ').replace(from, to).split(' ');
+  }
+
+  get nonFlexWidth() {
+    const controlsWidth = this.shadowRoot.querySelector('.wControls')?.clientWidth || 0;
+    const endWidth = this.shadowRoot.querySelector('.wEnd')?.clientWidth || 0;
+    return controlsWidth + endWidth;
   }
 }
