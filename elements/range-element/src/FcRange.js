@@ -40,7 +40,7 @@ export class FcRange extends LitElement {
         [type='range']::-webkit-slider-runnable-track {
           cursor: default;
           height: 0.188rem;
-          transition: all 0.2s ease;
+          
           width: 100%;
           box-shadow:
             0rem 0rem 0rem rgba(0, 0, 0, 0.2),
@@ -76,7 +76,7 @@ export class FcRange extends LitElement {
             0 0 0rem rgba(13, 13, 13, 0.2);
           cursor: default;
           height: 0.188rem;
-          transition: all 0.2s ease;
+          
           width: 100%;
           background: grey;
           border: 0rem solid #cfd8dc;
@@ -105,7 +105,7 @@ export class FcRange extends LitElement {
         [type='range']::-ms-track {
           cursor: default;
           height: 0.188rem;
-          transition: all 0.2s ease;
+          
           width: 100%;
           background: transparent;
           border-color: transparent;

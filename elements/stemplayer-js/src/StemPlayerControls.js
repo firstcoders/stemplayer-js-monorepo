@@ -201,6 +201,7 @@ export class FcStemPlayerControls extends WaveformHostMixin(
         label="progress"
         class="focusBgBrand px1 flex1 flexNoShrink"
         .value=${this.currentPct * 100}
+        .step=${0.001}
         @input=${this.#handleSeeking}
         @change=${this.#debouncedHandleSeek}
       ></fc-range>
@@ -325,6 +326,7 @@ export class FcStemPlayerControls extends WaveformHostMixin(
         label="progress"
         class="focusBgBrand px1 dBlock h100"
         .value=${this.currentPct * 100}
+        .step=${0.001}
         @input=${this.#handleSeeking}
         @change=${this.#debouncedHandleSeek}
       ></fc-range>`;
