@@ -179,6 +179,9 @@ export class FcStemPlayer extends ResponsiveLitElement {
   /** @private */
   #playerStateProvider;
 
+  /** @private */
+  #lastPeaksData = [];
+
   constructor() {
     super();
 
@@ -587,9 +590,28 @@ export class FcStemPlayer extends ResponsiveLitElement {
    * @private
    */
   #mergePeaks() {
-    const peaks = Peaks.combine(
-      ...this.stemComponents.map(c => c.peaks).filter(e => !!e),
-    );
+    const childPeaks = this.stemComponents.map(c => c.peaks).filter(e => !!e);
+    
+    // Check if the underlying peak data has actually changed
+    const currentData = childPeaks.map(p => p.data);
+    let changed = currentData.length !== this.#lastPeaksData.length;
+    
+    if (!changed) {
+      for (let i = 0; i < currentData.length; i++) {
+        if (currentData[i] !== this.#lastPeaksData[i]) {
+          changed = true;
+          break;
+        }
+      }
+    }
+
+    if (!changed) {
+      return; // Skip expensive combine & re-render cycle
+    }
+
+    this.#lastPeaksData = currentData;
+
+    const peaks = Peaks.combine(...childPeaks);
 
     // Provide the combined peaks to all consumers
     this.#updatePlayerState({ peaks });
