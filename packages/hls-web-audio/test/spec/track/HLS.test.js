@@ -96,8 +96,8 @@ describe('hls', () => {
       const { controller } = hls;
       hls.destroy();
 
-      // TODO, #controller.hls is/should be private(?), so we shouldnt mess with it. Test in another way.
-      expect(controller.hls.indexOf(hls)).equal(-1);
+      // TODO, #controller.tracks is/should be private(?), so we shouldnt mess with it. Test in another way.
+      expect(controller.tracks.indexOf(hls)).equal(-1);
     });
 
     it('destroys the stack', async () => {

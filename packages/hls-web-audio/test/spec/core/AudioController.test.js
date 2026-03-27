@@ -191,11 +191,11 @@ describe('controller', () => {
     });
 
     it('removes any references to hls instances', () => {
-      expect(controller.hls.length).greaterThan(0);
+      expect(controller.tracks.length).greaterThan(0);
 
       controller.destroy();
 
-      expect(controller.hls.length).equal(0);
+      expect(controller.tracks.length).equal(0);
     });
 
     describe('when the controller created the audioContext', () => {
@@ -241,10 +241,10 @@ describe('controller', () => {
 
     describe('when a hls track is not yet observed', () => {
       it('is obseved by the controller', () => {
-        expect(controller.hls.length).equal(0);
+        expect(controller.tracks.length).equal(0);
         controller.observe(hls);
-        expect(controller.hls.length).equal(1);
-        expect(controller.hls[0]).equal(hls);
+        expect(controller.tracks.length).equal(1);
+        expect(controller.tracks[0]).equal(hls);
       });
     });
 
@@ -255,8 +255,8 @@ describe('controller', () => {
 
       it('not observed twice', () => {
         controller.observe(hls);
-        expect(controller.hls.length).equal(1);
-        expect(controller.hls[0]).equal(hls);
+        expect(controller.tracks.length).equal(1);
+        expect(controller.tracks[0]).equal(hls);
       });
     });
   });
@@ -273,7 +273,7 @@ describe('controller', () => {
     describe('when a hls track is not yet observed', () => {
       it('does nothing', () => {
         controller.unobserve(hls);
-        expect(controller.hls.length).equal(0);
+        expect(controller.tracks.length).equal(0);
       });
     });
     describe('when a hls track is obseved', () => {
@@ -282,9 +282,9 @@ describe('controller', () => {
       });
 
       it('unobserves the hls track', () => {
-        expect(controller.hls.length).equal(1);
+        expect(controller.tracks.length).equal(1);
         controller.unobserve(hls);
-        expect(controller.hls.length).equal(0);
+        expect(controller.tracks.length).equal(0);
       });
     });
   });

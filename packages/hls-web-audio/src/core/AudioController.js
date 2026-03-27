@@ -25,7 +25,7 @@ class Controller extends Observer {
    * @property {Array} hls - The HLS tracks being controlled by this controller
    * @private
    */
-  hls = [];
+  tracks = [];
 
   #offset = 0;
 
@@ -94,7 +94,7 @@ class Controller extends Observer {
     this.untick();
 
     // remove references
-    this.hls = [];
+    this.tracks = [];
 
     // disconect volume
     this.gainNode.disconnect();
@@ -117,7 +117,7 @@ class Controller extends Observer {
    * @param {HLS} hls - An instance of a HLS track
    */
   observe(hls) {
-    if (this.hls.indexOf(hls) === -1) this.hls.push(hls);
+    if (this.tracks.indexOf(hls) === -1) this.tracks.push(hls);
   }
 
   /**
@@ -125,7 +125,7 @@ class Controller extends Observer {
    * @param {HLS} hls - An instance of a HLS track
    */
   unobserve(hls) {
-    this.hls.splice(this.hls.indexOf(hls), 1);
+    this.tracks.splice(this.tracks.indexOf(hls), 1);
     this.notifyUpdated('duration', this.duration);
   }
 
@@ -261,7 +261,7 @@ class Controller extends Observer {
 
     const max = Math.max.apply(
       null,
-      this.hls.map((hls) => hls.end).filter((duration) => !!duration),
+      this.tracks.map((hls) => hls.end).filter((duration) => !!duration),
     );
 
     // store the previously calculated value
@@ -457,11 +457,11 @@ class Controller extends Observer {
    * Whether the controller can play the current segments of all the hls tracks under it's control
    */
   get canPlay() {
-    return !this.hls.find((hls) => !hls.shouldAndCanPlay);
+    return !this.tracks.find((hls) => !hls.shouldAndCanPlay);
   }
 
   get isSeeking() {
-    return !!this.hls.find((hls) => hls.isSeeking);
+    return !!this.tracks.find((hls) => hls.isSeeking);
   }
 
   /**
