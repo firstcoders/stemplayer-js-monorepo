@@ -73,6 +73,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
           background-color: transparent;
           height: 100%;
           top: 0;
+          left: 0;
           width: 1px;
           padding: 0;
           margin: 0;
@@ -80,6 +81,8 @@ export class Workspace extends ResponsiveConsumerLitElement {
           border-style: dashed;
           opacity: 0;
           margin-left: var(--stemplayer-js-row-controls-width);
+          transform: translateX(var(--cursor-x, -10000px));
+          will-change: transform;
         }
 
         .regionArea {
@@ -129,6 +132,9 @@ export class Workspace extends ResponsiveConsumerLitElement {
     lockRegions: { type: Boolean },
     pixelsPerSecond: { type: Number },
   };
+
+  #hoverRafId = null;
+  #mouseMoveRafId = null;
 
   constructor() {
     super();
@@ -263,71 +269,77 @@ export class Workspace extends ResponsiveConsumerLitElement {
     if (!this.regions) return;
     if (this.lockRegions) return;
 
-    const { offsetX, offsetWidth } = this.resolveOffsets(e);
-
-    if (
-      this.#mouseDownX !== undefined &&
-      offsetX > 0 &&
-      offsetX < offsetWidth
-    ) {
-      // store pre-change values for rollback
-      const oldMouseMoveWidth = this.#mouseMoveWidth;
-      const oldOffsetX = this.lastOffsetX;
-
-      // is dragging a region
-      if (this.isDraggingRegion) {
-        const distance = offsetX - this.#mouseDownX;
-        let newOffset = this.offset + distance / this.pixelsPerSecond;
-
-        if (newOffset <= 0) {
-          newOffset = 0.0001; // nearly 0, due to a check offset > 0 above in render
-        }
-
-        if (newOffset + this.duration > this.totalDuration) {
-          // prevent dragging past the end
-          newOffset = this.totalDuration - this.duration;
-        }
-
-        this.offset = newOffset;
-        this.#mouseDownX = offsetX;
-      }
-      // is dragging a handle or creating new region
-      else {
-        this.lastOffsetX = offsetX;
-        this.#mouseMoveWidth = Math.abs(offsetX - this.#mouseDownX);
-      }
-
-      // emit pre-update event
-      const preUpdateEvent = new CustomEvent('region:pre-update', {
-        detail: this.dragState,
-        bubbles: true,
-        composed: true,
-        cancelable: true,
-      });
-
-      this.dispatchEvent(preUpdateEvent);
-
-      // if pre-update event default is prevented, revert to previous state
-      if (preUpdateEvent.defaultPrevented) {
-        this.#mouseMoveWidth = oldMouseMoveWidth;
-        this.lastOffsetX = oldOffsetX;
-      }
-
-      if (this.#mouseMoveWidth) {
-        this.dispatchEvent(
-          new CustomEvent('region:update', {
-            detail: this.dragState,
-            bubbles: true,
-            composed: true,
-          }),
-        );
-      }
+    if (this.#mouseMoveRafId) {
+      cancelAnimationFrame(this.#mouseMoveRafId);
     }
+
+    this.#mouseMoveRafId = requestAnimationFrame(() => {
+      const { offsetX, offsetWidth } = this.resolveOffsets(e);
+
+      if (
+        this.#mouseDownX !== undefined &&
+        offsetX > 0 &&
+        offsetX < offsetWidth
+      ) {
+        // store pre-change values for rollback
+        const oldMouseMoveWidth = this.#mouseMoveWidth;
+        const oldOffsetX = this.lastOffsetX;
+
+        // is dragging a region
+        if (this.isDraggingRegion) {
+          const distance = offsetX - this.#mouseDownX;
+          let newOffset = this.offset + distance / this.pixelsPerSecond;
+
+          if (newOffset <= 0) {
+            newOffset = 0.0001; // nearly 0, due to a check offset > 0 above in render
+          }
+
+          if (newOffset + this.duration > this.totalDuration) {
+            // prevent dragging past the end
+            newOffset = this.totalDuration - this.duration;
+          }
+
+          this.offset = newOffset;
+          this.#mouseDownX = offsetX;
+        }
+        // is dragging a handle or creating new region
+        else {
+          this.lastOffsetX = offsetX;
+          this.#mouseMoveWidth = Math.abs(offsetX - this.#mouseDownX);
+        }
+
+        // emit pre-update event
+        const preUpdateEvent = new CustomEvent('region:pre-update', {
+          detail: this.dragState,
+          bubbles: true,
+          composed: true,
+          cancelable: true,
+        });
+
+        this.dispatchEvent(preUpdateEvent);
+
+        // if pre-update event default is prevented, revert to previous state
+        if (preUpdateEvent.defaultPrevented) {
+          this.#mouseMoveWidth = oldMouseMoveWidth;
+          this.lastOffsetX = oldOffsetX;
+        }
+
+        if (this.#mouseMoveWidth) {
+          this.dispatchEvent(
+            new CustomEvent('region:update', {
+              detail: this.dragState,
+              bubbles: true,
+              composed: true,
+            }),
+          );
+        }
+      }
+    });
   }
 
   #onMouseOut() {
     if (this.lockRegions) return;
-    this.shadowRoot.querySelector('.cursor').style.left = `-10000px`;
+    this.style.setProperty('--cursor-x', `-10000px`);
   }
 
   #onMouseUp() {
@@ -433,26 +445,31 @@ export class Workspace extends ResponsiveConsumerLitElement {
   #onHover(e) {
     if (this.lockRegions) return;
 
-    const { offsetX, offsetWidth } = this.resolveOffsets(e);
-    const el = this.shadowRoot.querySelector('.cursor');
-
-    if (offsetX < 0 || offsetX > offsetWidth) {
-      el.style.left = `-10000px`;
-      return;
+    if (this.#hoverRafId) {
+      cancelAnimationFrame(this.#hoverRafId);
     }
 
-    el.style.left = `${Math.floor(offsetX)}px`;
+    this.#hoverRafId = requestAnimationFrame(() => {
+      const { offsetX, offsetWidth } = this.resolveOffsets(e);
 
-    this.cursorPosition =
-      Math.floor((offsetX / offsetWidth) * this.totalDuration * 1000) / 1000;
+      if (offsetX < 0 || offsetX > offsetWidth) {
+        this.style.setProperty('--cursor-x', `-10000px`);
+        return;
+      }
 
-    this.dispatchEvent(
-      new CustomEvent('region:hover', {
-        detail: this.dragState,
-        bubbles: true,
-        composed: true,
-      }),
-    );
+      this.style.setProperty('--cursor-x', `${Math.floor(offsetX)}px`);
+
+      this.cursorPosition =
+        Math.floor((offsetX / offsetWidth) * this.totalDuration * 1000) / 1000;
+
+      this.dispatchEvent(
+        new CustomEvent('region:hover', {
+          detail: this.dragState,
+          bubbles: true,
+          composed: true,
+        }),
+      );
+    });
   }
 
   resolveOffsets(e) {
