@@ -21,14 +21,15 @@ export default class TrackScheduler {
     const currentIndex = this.stack.getIndexAt(timeframe.currentTime);
     this.evictOldCaches(currentIndex);
 
-    await this.scheduleAt(timeframe, currentIndex);
+    const segments = this.getNextSegments(timeframe, currentIndex);
+    if (!segments.length) return;
+
+    for (const segment of segments) {
+      await this.scheduleAt(timeframe, segment, currentIndex);
+    }
   }
 
-  async scheduleAt(timeframe, currentIndex) {
-    const segment = this.getNextSegment(timeframe, currentIndex);
-
-    if (!segment) return;
-
+  async scheduleAt(timeframe, segment, currentIndex) {
     try {
       this.track.controller?.notify('loading-start', this.track);
       segment.$inTransit = true;
@@ -61,29 +62,37 @@ export default class TrackScheduler {
     }
   }
 
-  getNextSegment(timeframe, iCurrent) {
-    if (iCurrent === -1) return undefined;
+  getNextSegments(timeframe, iCurrent) {
+    if (iCurrent === -1) return [];
 
-    const current = this.stack.elements[iCurrent];
-    const next = this.stack.elements[iCurrent + 1];
+    const segments = [];
+    const elements = this.stack.elements;
+    
+// We want to fetch everything within the bounding box of current time + lookahead window (10s)
+    // but constrain it strictly below the timeframe's intended boundary.
+    const lookaheadWindow = timeframe.currentTime + 10;
+    
+    for (let i = iCurrent; i < elements.length; i++) {
+      const segment = elements[i];
+      if (!segment) continue;
 
-    if (current && !current.$inTransit && !current.isReady) {
-      return current;
+      // Always allow the current index to load. For subsequent ones, restrict by lookahead window.
+      if (i > iCurrent && segment.start > Math.min(lookaheadWindow, timeframe.end)) {
+        break; // Stop looking once outside of the buffering window
+      }
+
+      if (!segment.$inTransit && !segment.isReady) {
+        segments.push(segment);
+      }
     }
 
-    if (!current?.isReady) return undefined;
-
-    if (next && next.start < timeframe.end && !next.$inTransit && !next.isReady) {
-      return next;
-    }
-
-    return undefined;
+    return segments;
   }
 
   evictOldCaches(iCurrent) {
     if (iCurrent === -1) return;
 
-    // Fast O(1) sliding window eviction. 
+    // Fast O(1) sliding window eviction.
     // We only attempt to clean up bounds exactly slightly outside the target play window.
     const lookbehind = iCurrent - 4;
     const lookahead = iCurrent + 4;
@@ -92,7 +101,7 @@ export default class TrackScheduler {
     if (this.stack.elements[lookbehind]) evictQueue.push(this.stack.elements[lookbehind]);
     if (this.stack.elements[lookahead]) evictQueue.push(this.stack.elements[lookahead]);
 
-    evictQueue.forEach(segment => {
+    evictQueue.forEach((segment) => {
       if (segment && segment.isLoaded && !segment.isReady) {
         segment.unloadCache();
       }

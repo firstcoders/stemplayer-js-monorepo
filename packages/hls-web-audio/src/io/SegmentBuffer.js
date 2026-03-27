@@ -49,18 +49,21 @@ export default class SegmentBuffer {
     this.loadHandle = null;
   }
 
-  async getAudioBuffer(ac) {
-    if (this.#audioBuffer) return this.#audioBuffer;
-    if (!this.#arrayBuffer) throw new Error('Cannot connect. No audio data in buffer.');
+  getAudioBuffer(ac) {
+    if (this.#audioBuffer) return Promise.resolve(this.#audioBuffer);
+    if (!this.#arrayBuffer) return Promise.reject(new Error('Cannot connect. No audio data in buffer.'));
 
-    this.#audioBuffer = await ac.decodeAudioData(this.#arrayBuffer);
-    this.#arrayBuffer = null;
-    return this.#audioBuffer;
+    // Tier 2 Cache allocation
+    return ac.decodeAudioData(this.#arrayBuffer.slice(0)).then((audioBuffer) => {
+      this.#audioBuffer = audioBuffer;
+      return this.#audioBuffer;
+    });
   }
 
   unload() {
     this.#audioBuffer = undefined;
-    this.#arrayBuffer = undefined;
+    // We intentionally keep the arrayBuffer to prevent re-fetching over the network
+    // if the user seeks backwards.
   }
 
   get isLoaded() {
