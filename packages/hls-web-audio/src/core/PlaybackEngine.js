@@ -38,6 +38,14 @@ export default class PlaybackEngine {
       return this.controller.end();
     }
 
+    const needsBuffering = this.controller.tracks.some((track) => !track.shouldAndCanPlay);
+
+    if (needsBuffering && !this.isBuffering) {
+      this.bufferingStart();
+    } else if (!needsBuffering && this.isBuffering) {
+      this.bufferingEnd();
+    }
+
     this.controller.fireEvent('timeupdate', {
       t: this.controller.currentTime,
       pct: this.controller.pct,
@@ -45,7 +53,7 @@ export default class PlaybackEngine {
       act: this.controller.ac.currentTime,
     });
 
-    if (this.controller.ac.state === 'running') {
+    if (this.controller.ac.state === 'running' || this.isBuffering) {
       this.tTick = setTimeout(() => this.tick(), this.refreshRate);
     }
   }
