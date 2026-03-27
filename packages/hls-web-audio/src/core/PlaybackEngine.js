@@ -3,9 +3,7 @@ export default class PlaybackEngine {
     this.controller = controller;
     this.isBuffering = false;
     this.desiredState = 'suspended';
-    this.tUiNext = null;
     this.tEngineNext = null;
-    this.refreshRate = controller.refreshRate || 250;
   }
 
   async play() {
@@ -37,26 +35,6 @@ export default class PlaybackEngine {
 
     // The logic tick: check bounds and buffering gracefully
     this._engineTick();
-
-    // The UI tick: continuously update the visual slider as fast as the monitor allows, or strictly capped in Background
-    this._uiTick();
-  }
-
-  _uiTick() {
-    this.controller.fireEvent('timeupdate', {
-      t: this.controller.currentTime,
-      pct: this.controller.pct,
-      remaining: this.controller.remaining,
-      act: this.controller.ac.currentTime,
-    });
-
-    if (this.controller.ac.state === 'running' || this.isBuffering) {
-      if (typeof window !== 'undefined' && window.requestAnimationFrame) {
-        this.tUiNext = window.requestAnimationFrame(() => this._uiTick());
-      } else {
-        this.tUiNext = setTimeout(() => this._uiTick(), this.refreshRate);
-      }
-    }
   }
 
   _engineTick() {
@@ -106,15 +84,8 @@ export default class PlaybackEngine {
   }
 
   untick() {
-    if (this.tUiNext) {
-      if (typeof window !== 'undefined' && window.cancelAnimationFrame) {
-        window.cancelAnimationFrame(this.tUiNext);
-      }
-      clearTimeout(this.tUiNext);
-    }
     if (this.tEngineNext) clearTimeout(this.tEngineNext);
-
-    this.tUiNext = null;
+    
     this.tEngineNext = null;
   }
 

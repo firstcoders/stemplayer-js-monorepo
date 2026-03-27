@@ -280,12 +280,47 @@ export class FcStemPlayer extends ResponsiveLitElement {
       }
     });
 
-    ['timeupdate', 'end', 'seek', 'start', 'pause'].forEach(event => {
+    ['end', 'seek', 'start', 'pause', 'pause-end'].forEach(event => {
       controller.on(event, args => {
         this.dispatchEvent(
           new CustomEvent(event, { detail: args, bubbles: true }),
         );
       });
+    });
+
+    let tUiNext;
+    const uiTick = () => {
+      const t = controller.currentTime;
+      const pct = controller.pct;
+
+      this.#updatePlayerState({
+        currentTime: t,
+        currentPct: pct,
+      });
+
+      this.dispatchEvent(
+        new CustomEvent('timeupdate', { 
+          detail: { t, pct, remaining: controller.remaining, act: controller.ac?.currentTime }, 
+          bubbles: true 
+        })
+      );
+
+      if (controller.state === 'running' || controller.isBuffering) {
+        tUiNext = requestAnimationFrame(uiTick);
+      }
+    };
+
+    controller.on('start', () => {
+      if (tUiNext) cancelAnimationFrame(tUiNext);
+      tUiNext = requestAnimationFrame(uiTick);
+    });
+
+    controller.on('pause-end', () => {
+      if (controller.state === 'running' && !tUiNext) {
+        tUiNext = requestAnimationFrame(uiTick);
+      }
+      this.isLoading = false;
+      this.dispatchEvent(new Event('loading-end'));
     });
 
     controller.on('pause-start', () => {
@@ -299,29 +334,23 @@ export class FcStemPlayer extends ResponsiveLitElement {
       this.dispatchEvent(new Event('loading-start'));
     });
 
-    controller.on('pause-end', () => {
-      this.isLoading = false;
-      this.dispatchEvent(new Event('loading-end'));
-    });
-
-    controller.on('error', err =>
-      this.dispatchEvent(new ErrorEvent('error', err)),
-    );
-
-    controller.on('timeupdate', ({ t, pct }) => {
-      requestAnimationFrame(() => {
-        this.#updatePlayerState({
-          currentTime: t,
-          currentPct: pct,
-        });
-      });
+    controller.on('error', err => {
+      if (tUiNext) cancelAnimationFrame(tUiNext);
+      this.dispatchEvent(new ErrorEvent('error', err));
     });
 
     controller.on('end', () => {
+      if (tUiNext) cancelAnimationFrame(tUiNext);
+      tUiNext = undefined;
       this.#updatePlayerState({
         currentTime: 0,
         currentPct: 0,
       });
+    });
+
+    controller.on('pause', () => {
+      if (tUiNext) cancelAnimationFrame(tUiNext);
+      tUiNext = undefined;
     });
 
     controller.on('seek', ({ t, pct }) => {
@@ -329,6 +358,13 @@ export class FcStemPlayer extends ResponsiveLitElement {
         currentTime: t,
         currentPct: pct,
       });
+      // Ensure we fire a single timeupdate on seek so UI renders exactly the seeked position immediately
+      this.dispatchEvent(
+        new CustomEvent('timeupdate', { 
+          detail: { t, pct, remaining: controller.remaining, act: controller.ac?.currentTime }, 
+          bubbles: true 
+        })
+      );
     });
 
     controller.on('duration', duration => {

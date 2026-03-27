@@ -42,9 +42,19 @@ describe('controller', () => {
       describe('ac#onstatechange', () => {
         let controller;
         let ticks = 0;
+        let originalTick;
 
         beforeEach(() => {
           controller = new Controller();
+          originalTick = controller.engine._engineTick;
+          controller.engine._engineTick = function() {
+            ticks++;
+            originalTick.apply(this, arguments);
+          };
+        });
+
+        afterEach(() => {
+          if (controller && controller.engine) controller.engine._engineTick = originalTick;
         });
 
         it('starts ticking when the audiocontext starts', async () => {
@@ -53,8 +63,7 @@ describe('controller', () => {
           await controller.ac.resume();
 
           await new Promise((done) => {
-            controller.on('timeupdate', done);
-            ticks += 1;
+            setTimeout(done, 50);
           });
 
           expect(ticks > 0).to.be.true;
@@ -149,9 +158,11 @@ describe('controller', () => {
 
     it('stops ticking', async () => {
       let ticks = 0;
-      controller.on('timeupdate', () => {
+      let originalTick = controller.engine._engineTick;
+      controller.engine._engineTick = function() {
         ticks += 1;
-      });
+        if (originalTick) originalTick.apply(this, arguments);
+      };
 
       await controller.play();
 
@@ -170,6 +181,7 @@ describe('controller', () => {
       });
 
       expect(ticksBeforeDestroy).equal(ticks);
+      controller.engine._engineTick = originalTick;
     });
 
     it('disconnects the gainNode', () => {
@@ -343,13 +355,19 @@ describe('controller', () => {
       });
 
       it('schedules the "tick" timeout', async () => {
+        let called = false;
+        let originalTick = controller.engine._engineTick;
+        controller.engine._engineTick = function() {
+          called = true;
+          if (originalTick) originalTick.apply(this, arguments);
+        };
+        
         controller.play();
-        const result = await new Promise((done) => {
-          controller.on('timeupdate', done);
-        });
+        
+        await new Promise((done) => setTimeout(done, 100));
 
-        expect(typeof result.t === 'number');
-        expect(typeof result.pct === 'number');
+        expect(called).to.be.true;
+        controller.engine._engineTick = originalTick;
       });
     });
   });
@@ -383,9 +401,11 @@ describe('controller', () => {
     // it no longer stops the tick timeout
     it('stops the "tick" timeout', async () => {
       let ticks = 0;
-      controller.on('timeupdate', () => {
+      let originalTick = controller.engine._engineTick;
+      controller.engine._engineTick = function() {
         ticks += 1;
-      });
+        if (originalTick) originalTick.apply(this, arguments);
+      };
 
       // wait for a few ticks
       await new Promise((done) => {
@@ -404,6 +424,7 @@ describe('controller', () => {
 
       // check that no more ticks happened after pause
       expect(ticksBeforePause).equal(ticks);
+      controller.engine._engineTick = originalTick;
     });
   });
 

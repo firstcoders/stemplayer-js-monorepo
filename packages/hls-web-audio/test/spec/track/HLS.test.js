@@ -28,16 +28,6 @@ describe('hls', () => {
       expect(controller.observe.calledOnceWith(hls));
     });
 
-    it('subscribes to #controller timeupdate event', () => {
-      const controller = new Controller();
-      const hls = new HLS({ controller });
-      hls.runSchedulePass = sinon.spy();
-
-      controller.fireEvent('timeupdate');
-
-      expect(hls.runSchedulePass.calledOnce);
-    });
-
     it('subscribes to #controller seek event', () => {
       const controller = new Controller();
       const hls = new HLS({ controller });
