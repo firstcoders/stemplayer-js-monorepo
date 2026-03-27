@@ -78,21 +78,34 @@ export default class TrackScheduler {
     if (!currentSegment) return [];
 
     const segments = [];
-
-    // We want to fetch everything within the bounding box of current time + lookahead window (10s)
-    // but constrain it strictly below the timeframe's intended boundary.
-    const lookaheadWindow = timeframe.currentTime + 10;
+    const LOOKAHEAD_DURATION_SECONDS = 10;
 
     let segment = currentSegment;
-    while (segment) {
-      // Always allow the current segment to load. For subsequent ones, restrict by lookahead window.
-      if (segment !== currentSegment && segment.start > Math.min(lookaheadWindow, timeframe.end)) {
-        break; // Stop looking once outside of the buffering window
+    let accumulatedLookahead = 0;
+
+    while (segment && accumulatedLookahead < LOOKAHEAD_DURATION_SECONDS) {
+      // If we crossed the timeframe boundary, wrap around or stop
+      if (segment.start >= timeframe.end) {
+        if (timeframe.loop) {
+          // Logically loop around to the timeframe start
+          segment = this.stack.getAt(timeframe.start);
+          if (!segment) break; // safety fallback
+        } else {
+          break; // Stop looking once outside of the buffering window
+        }
       }
 
-      if (!segment.$inTransit && !segment.isReady) {
+      if (!segment.$inTransit && !segment.isReady && !segments.includes(segment)) {
         segments.push(segment);
       }
+
+      // Increment our window by the duration (relative), measuring only what's left for the current segment
+      const segmentDurationLeft =
+        segment === currentSegment
+          ? Math.max(0, segment.end - timeframe.currentTime)
+          : segment.duration;
+
+      accumulatedLookahead += segmentDurationLeft;
 
       segment = segment.next;
     }
