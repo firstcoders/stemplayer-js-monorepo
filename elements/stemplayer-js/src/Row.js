@@ -132,9 +132,8 @@ export class Row extends LitElement {
    */
   #updateNonFlexWidth() {
     try {
-      const controlsWidth = this.shadowRoot
-        .querySelector('div.wControls')
-        ?.clientWidth;
+      const controlsWidth =
+        this.shadowRoot.querySelector('div.wControls')?.clientWidth;
       const endWidth = this.shadowRoot.querySelector('div.wEnd')?.clientWidth;
 
       if (controlsWidth !== undefined && endWidth !== undefined) {

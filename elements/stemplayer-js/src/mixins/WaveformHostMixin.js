@@ -22,7 +22,7 @@ export const WaveformHostMixin = superClass =>
 
     connectedCallback() {
       super.connectedCallback();
-      
+
       // Set up resize observer to invalidate cache when component size changes
       if (!this.#resizeObserver) {
         this.#resizeObserver = new ResizeObserver(() => {
@@ -30,13 +30,13 @@ export const WaveformHostMixin = superClass =>
           this.#cachedWaveformStyles = null;
         });
       }
-      
+
       this.#resizeObserver.observe(this);
     }
 
     disconnectedCallback() {
       super.disconnectedCallback();
-      
+
       if (this.#resizeObserver) {
         this.#resizeObserver.disconnect();
       }
@@ -72,8 +72,9 @@ export const WaveformHostMixin = superClass =>
 
           this.#cachedWaveformStyles = {
             waveColor:
-              computedStyle.getPropertyValue('--stemplayer-js-waveform-color') ||
-              waveform.waveColor,
+              computedStyle.getPropertyValue(
+                '--stemplayer-js-waveform-color',
+              ) || waveform.waveColor,
             progressColor:
               computedStyle.getPropertyValue(
                 '--stemplayer-js-waveform-progress-color',

@@ -219,7 +219,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
 
   /**
    * Updates multiple player state properties at once and provides them to consumers
-   * @param {Object} props 
+   * @param {Object} props
    * @private
    */
   #updatePlayerState(props) {
@@ -591,11 +591,11 @@ export class FcStemPlayer extends ResponsiveLitElement {
    */
   #mergePeaks() {
     const childPeaks = this.stemComponents.map(c => c.peaks).filter(e => !!e);
-    
+
     // Check if the underlying peak data has actually changed
     const currentData = childPeaks.map(p => p.data);
     let changed = currentData.length !== this.#lastPeaksData.length;
-    
+
     if (!changed) {
       for (let i = 0; i < currentData.length; i++) {
         if (currentData[i] !== this.#lastPeaksData[i]) {
@@ -720,7 +720,6 @@ export class FcStemPlayer extends ResponsiveLitElement {
   /**
    * @private
    */
-
 
   #onRegionChange(e) {
     const { offset, duration } = e.detail;
