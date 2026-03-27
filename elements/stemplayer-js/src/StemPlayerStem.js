@@ -1,5 +1,5 @@
 import { html, css } from 'lit';
-import HLS from '@firstcoders/hls-web-audio/hls.js';
+import HLS from '@firstcoders/hls-web-audio/track/HLS.js';
 import { ResponsiveConsumerLitElement } from './ResponsiveConsumerLitElement.js';
 import { WaveformHostMixin } from './mixins/WaveformHostMixin.js';
 import gridStyles from './styles/grid.js';

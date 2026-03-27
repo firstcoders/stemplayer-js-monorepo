@@ -2,7 +2,7 @@ import { html, css } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { ContextProvider } from '@lit/context';
 import { playerStateContext } from './contexts.js';
-import Controller from '@firstcoders/hls-web-audio/controller.js';
+import Controller from '@firstcoders/hls-web-audio/core/AudioController.js';
 import Peaks from '@firstcoders/waveform-element/Peaks.js';
 import { ResponsiveLitElement } from './ResponsiveLitElement.js';
 import { FcStemPlayerControls as ControlComponent } from './StemPlayerControls.js';
