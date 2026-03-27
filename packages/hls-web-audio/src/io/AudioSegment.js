@@ -1,15 +1,12 @@
-import SegmentLoader from './SegmentLoader.js';
+import SegmentBuffer from './SegmentBuffer.js';
+import SegmentPlayer from './SegmentPlayer.js';
 
 class AudioSegment {
-  #sourceNode;
-  #arrayBuffer;
-  #audioBuffer;
-  #loader;
-
   constructor({ src, duration, fetchOptions = {} }) {
-    this.src = src;
     this.duration = duration;
-    this.fetchOptions = fetchOptions;
+
+    this.buffer = new SegmentBuffer(src, fetchOptions);
+    this.player = new SegmentPlayer();
   }
 
   destroy() {
@@ -19,92 +16,51 @@ class AudioSegment {
   }
 
   load() {
-    if (this.fetchFailed) return { promise: Promise.reject(new Error('Fetch failed')) };
-
-    this.#loader = new SegmentLoader();
-    this.loading = true;
-
-    const promise = this.#loader
-      .load(this.src, this.fetchOptions)
-      .then((arrayBuffer) => {
-        this.#arrayBuffer = arrayBuffer;
-      })
-      .catch((err) => {
-        if (err.name !== 'AbortError') {
-          this.fetchFailed = true;
-        }
-        throw err;
-      })
-      .finally(() => {
-        this.loading = false;
-        this.loadHandle = undefined;
-        this.#loader = null;
-      });
-
-    this.loadHandle = {
-      promise,
-      cancel: () => this.cancel(),
-    };
-
-    return this.loadHandle;
+    return this.buffer.load();
   }
 
   async connect({ destination, ac, start, offset, stop }) {
-    if (this.#sourceNode) throw new Error('Cannot connect a segment twice');
+    const audioBuffer = await this.buffer.getAudioBuffer(ac);
 
-    if (!this.#audioBuffer) {
-      if (!this.#arrayBuffer) throw new Error('Cannot connect. No audio data in buffer.');
-      this.#audioBuffer = await ac.decodeAudioData(this.#arrayBuffer);
-    }
+    this.duration = audioBuffer.duration;
 
-    this.#arrayBuffer = null;
-    this.duration = this.#audioBuffer.duration;
-
-    this.#sourceNode = ac.createBufferSource();
-    this.#sourceNode.buffer = this.#audioBuffer;
-    this.#sourceNode.connect(destination);
-
-    this.#sourceNode.onended = () => setTimeout(() => this.disconnect(), 0);
-
-    this.#sourceNode.start(start, offset);
-    this.#sourceNode.stop(stop);
+    await this.player.connect({
+      ac,
+      audioBuffer,
+      destination,
+      start,
+      offset,
+      stop,
+      onEnded: () => setTimeout(() => this.disconnect(), 0),
+    });
   }
 
   disconnect() {
-    const sourceNode = this.#sourceNode;
-    if (sourceNode) {
-      sourceNode.disconnect();
-      sourceNode.stop();
-      sourceNode.onended = () => {};
-      try {
-        sourceNode.buffer = null;
-      } catch (ex) {
-        // Ignored
-      }
-      this.#sourceNode = null;
-    }
+    this.player.disconnect();
   }
 
   unloadCache() {
-    this.#audioBuffer = undefined;
-    this.#arrayBuffer = undefined;
+    this.buffer.unload();
   }
 
   get isReady() {
-    return !!this.#sourceNode;
+    return this.player.isReady;
   }
 
   cancel() {
-    if (this.#loader) this.#loader.cancel();
-    this.loadHandle = null;
+    this.buffer.cancel();
   }
 
   get end() {
     return this.start !== undefined ? this.start + this.duration : undefined;
   }
 
+  get src() {
+    return this.buffer.src;
+  }
+
   get isLoaded() {
-    return !!this.#audioBuffer || !!this.#arrayBuffer;
+    return this.buffer.isLoaded;
   }
 }
 
