@@ -52,27 +52,27 @@ export default class TrackScheduler {
         segment.$inTransit = false;
       }
     }
-    
+
     this.#queueNextPass(timeframe);
   }
 
   #queueNextPass(timeframe) {
     if (this.#scheduleNotBefore === undefined) return;
-    
+
     // We want to run slightly before the scheduled boundary to give networking a headstart,
     // though the lookahead loop handles 10 seconds ahead anyway.
     let waitMs = (this.#scheduleNotBefore - timeframe.currentTime) * 1000;
-    
+
     // We enforce a minimum safe wait time so it doesn't spin wildly,
     // but caps out to pause/background safeties.
     if (waitMs < 0 || isNaN(waitMs)) waitMs = 0;
-    
+
     // We only wait a maximum of 1000ms while paused, just to ensure if the state
     // changes beneath us the scheduler will eventually catch up and re-sync.
     if (this.track.controller.ac.state !== 'running') {
-       waitMs = Math.min(waitMs, 1000);
+      waitMs = Math.min(waitMs, 1000);
     }
-    
+
     // Minimum 10ms boundary
     waitMs = Math.max(10, waitMs);
 

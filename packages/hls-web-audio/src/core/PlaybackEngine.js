@@ -37,7 +37,7 @@ export default class PlaybackEngine {
 
     // The logic tick: check bounds and buffering gracefully
     this._engineTick();
-    
+
     // The UI tick: continuously update the visual slider as fast as the monitor allows, or strictly capped in Background
     this._uiTick();
   }
@@ -52,9 +52,9 @@ export default class PlaybackEngine {
 
     if (this.controller.ac.state === 'running' || this.isBuffering) {
       if (typeof window !== 'undefined' && window.requestAnimationFrame) {
-         this.tUiNext = window.requestAnimationFrame(() => this._uiTick());
+        this.tUiNext = window.requestAnimationFrame(() => this._uiTick());
       } else {
-         this.tUiNext = setTimeout(() => this._uiTick(), this.refreshRate);
+        this.tUiNext = setTimeout(() => this._uiTick(), this.refreshRate);
       }
     }
   }
@@ -64,7 +64,7 @@ export default class PlaybackEngine {
     this.tEngineNext = null;
 
     const t = this.controller.currentTime;
-    
+
     if (t > this.controller.offset + this.controller.playDuration) {
       return this.controller.end();
     }
@@ -79,27 +79,27 @@ export default class PlaybackEngine {
 
     // Determine when the engine should wake up next.
     if (this.controller.ac.state === 'running' || this.isBuffering) {
-      let waitMs = 250; 
+      let waitMs = 250;
       if (!this.isBuffering) {
-         // calculate time until the end of the timeline
-         let timeToNextCheck = (this.controller.offset + this.controller.playDuration) - t;
-         
-         // OR until the current ready segments end
-         for (const track of this.controller.tracks) {
-             const seg = track.stack.getAt(t);
-             if (seg && seg.isReady) {
-                 const timeToSegEnd = seg.end - t;
-                 if (timeToSegEnd < timeToNextCheck) {
-                     timeToNextCheck = timeToSegEnd;
-                 }
-             }
-         }
-         waitMs = (timeToNextCheck * 1000) - 10;
+        // calculate time until the end of the timeline
+        let timeToNextCheck = this.controller.offset + this.controller.playDuration - t;
+
+        // OR until the current ready segments end
+        for (const track of this.controller.tracks) {
+          const seg = track.stack.getAt(t);
+          if (seg && seg.isReady) {
+            const timeToSegEnd = seg.end - t;
+            if (timeToSegEnd < timeToNextCheck) {
+              timeToNextCheck = timeToSegEnd;
+            }
+          }
+        }
+        waitMs = timeToNextCheck * 1000 - 10;
       } else {
-         // If buffering, poll reasonably fast to unpause immediately when data arrives
-         waitMs = 100;
+        // If buffering, poll reasonably fast to unpause immediately when data arrives
+        waitMs = 100;
       }
-      
+
       waitMs = Math.max(50, waitMs);
       this.tEngineNext = setTimeout(() => this._engineTick(), waitMs);
     }
@@ -113,7 +113,7 @@ export default class PlaybackEngine {
       clearTimeout(this.tUiNext);
     }
     if (this.tEngineNext) clearTimeout(this.tEngineNext);
-    
+
     this.tUiNext = null;
     this.tEngineNext = null;
   }
