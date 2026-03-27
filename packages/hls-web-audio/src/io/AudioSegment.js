@@ -20,7 +20,14 @@ class AudioSegment {
   }
 
   async connect({ destination, ac, start, offset, stop }) {
+    const connectionId = Symbol('connectionId');
+    this.$currentConnection = connectionId;
+
     const audioBuffer = await this.buffer.getAudioBuffer(ac);
+
+    if (this.$currentConnection !== connectionId) {
+      throw new DOMException('Aborted during connection map', 'AbortError');
+    }
 
     this.duration = audioBuffer.duration;
 
@@ -36,6 +43,7 @@ class AudioSegment {
   }
 
   disconnect() {
+    this.$currentConnection = null;
     this.player.disconnect();
   }
 
@@ -48,6 +56,7 @@ class AudioSegment {
   }
 
   cancel() {
+    this.$currentConnection = null;
     this.buffer.cancel();
   }
 

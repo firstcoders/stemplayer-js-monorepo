@@ -24,14 +24,26 @@ export default class TrackScheduler {
     const segments = this.getNextSegments(timeframe, currentIndex);
     if (!segments.length) return;
 
+    // Immediately mark them as in-transit to prevent concurrent runSchedulePass calls
+    // (triggered by rapid ticks) from picking up the same segments before the loop reaches them.
     for (const segment of segments) {
-      await this.scheduleAt(timeframe, segment, currentIndex);
+      segment.$inTransit = true;
+    }
+
+    for (const segment of segments) {
+      // Re-check just in case they were ready'd or disconnected externally
+      if (!segment.isReady) {
+        await this.scheduleAt(timeframe, segment, currentIndex);
+      } else {
+        segment.$inTransit = false;
+      }
     }
   }
 
   async scheduleAt(timeframe, segment, currentIndex) {
     try {
       this.track.controller?.notify('loading-start', this.track);
+      // Let scheduleAt strictly rely on the caller setting it, but re-assert just in case
       segment.$inTransit = true;
 
       // load the segment

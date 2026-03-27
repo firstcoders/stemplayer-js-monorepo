@@ -10,7 +10,8 @@ export default class PlaybackEngine {
   async play() {
     this.desiredState = 'resumed';
 
-    if (typeof this.controller.duration !== 'number') throw new Error('Cannot play before loading content');
+    if (typeof this.controller.duration !== 'number')
+      throw new Error('Cannot play before loading content');
     if (this.isBuffering) throw new Error('The player is buffering');
 
     if (this.controller.ac.state === 'suspended') {

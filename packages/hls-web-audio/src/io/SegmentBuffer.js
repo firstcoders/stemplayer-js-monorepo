@@ -15,6 +15,7 @@ export default class SegmentBuffer {
 
   load() {
     if (this.fetchFailed) return { promise: Promise.reject(new Error('Fetch failed')) };
+    if (this.loading && this.loadHandle) return this.loadHandle;
 
     this.#loader = new SegmentLoader();
     this.loading = true;

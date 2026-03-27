@@ -63,17 +63,35 @@ export default class Controller extends Observer {
     this.notifyUpdated('duration', this.duration);
   }
 
-  get canPlay() { return this.trackGroup.canPlay; }
-  get isSeeking() { return this.trackGroup.isSeeking; }
-  get audioDuration() { return this.trackGroup.audioDuration; }
-  get tracks() { return this.trackGroup.tracks; }
+  get canPlay() {
+    return this.trackGroup.canPlay;
+  }
+  get isSeeking() {
+    return this.trackGroup.isSeeking;
+  }
+  get audioDuration() {
+    return this.trackGroup.audioDuration;
+  }
+  get tracks() {
+    return this.trackGroup.tracks;
+  }
 
   // --- Engine Delegation ---
-  play() { return this.engine.play(); }
-  pause() { return this.engine.pause(); }
-  get desiredState() { return this.engine.desiredState; }
-  get state() { return this.ac.state; }
-  get isBuffering() { return this.engine.isBuffering; }
+  play() {
+    return this.engine.play();
+  }
+  pause() {
+    return this.engine.pause();
+  }
+  get desiredState() {
+    return this.engine.desiredState;
+  }
+  get state() {
+    return this.ac.state;
+  }
+  get isBuffering() {
+    return this.engine.isBuffering;
+  }
 
   async playOnceReady() {
     try {
@@ -84,24 +102,56 @@ export default class Controller extends Observer {
   }
 
   // --- Timeline Delegation ---
-  get playDuration() { return this.timeline.playDuration; }
-  set playDuration(v) { this.timeline.playDuration = v; }
-  get offset() { return this.timeline.offset; }
-  set offset(v) { this.timeline.offset = v; }
-  get currentTime() { return this.timeline.currentTime; }
-  set currentTime(v) { this.timeline.setCurrentTime(v); }
-  get pct() { return this.timeline.pct; }
-  set pct(v) { this.timeline.pct = v; }
-  get remaining() { return this.timeline.remaining; }
-  get rawCurrentTime() { return this.timeline.rawCurrentTime; }
-  get duration() { return this.timeline.audioDuration; }
-  get currentTimeframe() { return this.timeline.currentTimeframe; }
-  get adjustedEnd() { return this.timeline.adjustedEnd; }
-  get adjustedStart() { return this.timeline.adjustedStart; }
-  set adjustedStart(v) { this.timeline.adjustedStart = v; }
+  get playDuration() {
+    return this.timeline.playDuration;
+  }
+  set playDuration(v) {
+    this.timeline.playDuration = v;
+  }
+  get offset() {
+    return this.timeline.offset;
+  }
+  set offset(v) {
+    this.timeline.offset = v;
+  }
+  get currentTime() {
+    return this.timeline.currentTime;
+  }
+  set currentTime(v) {
+    this.timeline.setCurrentTime(v);
+  }
+  get pct() {
+    return this.timeline.pct;
+  }
+  set pct(v) {
+    this.timeline.pct = v;
+  }
+  get remaining() {
+    return this.timeline.remaining;
+  }
+  get rawCurrentTime() {
+    return this.timeline.rawCurrentTime;
+  }
+  get duration() {
+    return this.timeline.audioDuration;
+  }
+  get currentTimeframe() {
+    return this.timeline.currentTimeframe;
+  }
+  get adjustedEnd() {
+    return this.timeline.adjustedEnd;
+  }
+  get adjustedStart() {
+    return this.timeline.adjustedStart;
+  }
+  set adjustedStart(v) {
+    this.timeline.adjustedStart = v;
+  }
 
   /** @deprecated use set playDuration */
-  set duration(v) { this.timeline.playDuration = v; }
+  set duration(v) {
+    this.timeline.playDuration = v;
+  }
 
   // --- Notifications & Events ---
   end() {
@@ -110,7 +160,8 @@ export default class Controller extends Observer {
   }
 
   notify(event, payload) {
-    if (event === 'loading-start' && !this.canPlay && !this.isBuffering) this.engine.bufferingStart();
+    if (event === 'loading-start' && !this.canPlay && !this.isBuffering)
+      this.engine.bufferingStart();
     if (event === 'loading-end' && this.canPlay && this.isBuffering) this.engine.bufferingEnd();
     if (event === 'error') {
       this.fireEvent('error', payload);
@@ -134,9 +185,17 @@ export default class Controller extends Observer {
   }
 
   // --- Volume/Gain Helpers ---
-  get volume() { return this.gainNode.gain.value; }
-  set volume(v) { this.gainNode.gain.value = v; }
+  get volume() {
+    return this.gainNode.gain.value;
+  }
+  set volume(v) {
+    this.gainNode.gain.value = v;
+  }
 
-  fadeIn(duration = 1) { fadeIn(this.gainNode, { duration }); }
-  fadeOut(duration = 1) { fadeOut(this.gainNode, { duration }); }
+  fadeIn(duration = 1) {
+    fadeIn(this.gainNode, { duration });
+  }
+  fadeOut(duration = 1) {
+    fadeOut(this.gainNode, { duration });
+  }
 }

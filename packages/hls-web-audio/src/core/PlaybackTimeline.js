@@ -10,7 +10,9 @@ export default class PlaybackTimeline {
     this.timeframe = new Timeframe();
   }
 
-  get audioDuration() { return this.controller.trackGroup.audioDuration; }
+  get audioDuration() {
+    return this.controller.trackGroup.audioDuration;
+  }
 
   set playDuration(duration) {
     if (duration && typeof duration !== 'number')
@@ -35,7 +37,9 @@ export default class PlaybackTimeline {
   }
 
   get rawCurrentTime() {
-    return this.adjustedStart !== undefined ? this.controller.ac.currentTime - this.adjustedStart : undefined;
+    return this.adjustedStart !== undefined
+      ? this.controller.ac.currentTime - this.adjustedStart
+      : undefined;
   }
 
   get currentTime() {
