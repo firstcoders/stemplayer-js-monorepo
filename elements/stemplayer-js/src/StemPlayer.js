@@ -152,8 +152,16 @@ export class FcStemPlayer extends ResponsiveLitElement {
       lockRegions: { type: Boolean },
 
       /**
+       * How often the UI should update during playback, in milliseconds.
+       * Defaults to 50ms (20 times per second). Controls both the player state
+       * updates and the timeupdate event emission rate.
+       */
+      uiUpdateInterval: { type: Number, attribute: 'ui-update-interval' },
+
+      /**
        * Pixels per second for waveform rendering (calculated)
        */
+
       pixelsPerSecond: { state: true },
     };
   }
@@ -198,6 +206,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
     this.zoom = 1;
     this.collapsed = false;
     this.lockRegions = false;
+    this.uiUpdateInterval = 250;
     this.pixelsPerSecond = 0;
 
     this.playerState = {
@@ -289,39 +298,54 @@ export class FcStemPlayer extends ResponsiveLitElement {
     });
 
     let tUiNext;
-    const uiTick = () => {
-      const t = controller.currentTime;
-      const pct = controller.pct;
+    let lastTickTime = 0;
+    const uiTick = timestamp => {
+      if (!timestamp) timestamp = performance.now();
 
-      this.#updatePlayerState({
-        currentTime: t,
-        currentPct: pct,
-      });
+      if (timestamp - lastTickTime >= this.uiUpdateInterval) {
+        lastTickTime = timestamp;
 
-      this.dispatchEvent(
-        new CustomEvent('timeupdate', {
-          detail: {
-            t,
-            pct,
-            remaining: controller.remaining,
-            act: controller.ac?.currentTime,
-          },
-          bubbles: true,
-        }),
-      );
+        const t = controller.currentTime;
+        const pct = controller.pct;
 
-      if (controller.state === 'running' || controller.isBuffering) {
+        this.#updatePlayerState({ currentTime: t, currentPct: pct });
+
+        this.dispatchEvent(
+          new CustomEvent('timeupdate', {
+            detail: {
+              t,
+              pct,
+              remaining: controller.remaining,
+              act: controller.ac?.currentTime,
+            },
+            bubbles: true,
+          }),
+        );
+      }
+
+      if (
+        controller.desiredState === 'resumed' ||
+        controller.state === 'running' ||
+        controller.isBuffering
+      ) {
         tUiNext = requestAnimationFrame(uiTick);
+      } else {
+        tUiNext = undefined;
       }
     };
 
     controller.on('start', () => {
       if (tUiNext) cancelAnimationFrame(tUiNext);
+      lastTickTime = 0; // force immediate update on start
       tUiNext = requestAnimationFrame(uiTick);
     });
 
     controller.on('pause-end', () => {
-      if (controller.state === 'running' && !tUiNext) {
+      if (
+        (controller.desiredState === 'resumed' ||
+          controller.state === 'running') &&
+        !tUiNext
+      ) {
         tUiNext = requestAnimationFrame(uiTick);
       }
       this.isLoading = false;
