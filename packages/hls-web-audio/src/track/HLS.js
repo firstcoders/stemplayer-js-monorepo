@@ -125,6 +125,11 @@ export default class HLS {
     return this.stack.duration + this.stack.start;
   }
 
+  get canPlay() {
+    const current = this.stack.getAt(this.controller.currentTime);
+    return current?.isReady;
+  }
+
   onTimeUpdate() {
     this.scheduler.runSchedulePass(this.controller.currentTimeframe);
   }
