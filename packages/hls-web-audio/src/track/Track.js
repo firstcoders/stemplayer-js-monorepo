@@ -65,10 +65,6 @@ export default class Track {
     return this.stack.duration;
   }
 
-  get totalDuration() {
-    return this.stack.totalDuration;
-  }
-
   get end() {
     return this.stack.duration + this.stack.start;
   }

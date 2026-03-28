@@ -153,8 +153,8 @@ export class FcStemPlayer extends ResponsiveLitElement {
 
       /**
        * How often the UI should update during playback, in milliseconds.
-       * Defaults to 50ms (20 times per second). Controls both the player state
-       * updates and the timeupdate event emission rate.
+       * Defaults to 250ms (approximately 4 times per second). Controls both the
+       * player state updates and the timeupdate event emission rate.
        */
       uiUpdateInterval: { type: Number, attribute: 'ui-update-interval' },
 
