@@ -128,19 +128,7 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
 
   renderSmallScreen() {
     return html`<div class="stem-row dFlex h100 overflowHidden">
-      <fc-player-button
-        class="w2 flexNoShrink"
-        .disabled=${!this.duration}
-        @click=${this.isPlaying ? this.#onPauseClick : this.#onPlayClick}
-        .title=${this.isPlaying ? 'Pause' : 'Play'}
-        .type=${this.isPlaying ? 'pause' : 'play'}
-      ></fc-player-button>
-      <fc-player-button
-        class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
-        @click=${this.#toggleLoop}
-        .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
-        type="loop"
-      ></fc-player-button>
+      ${this.#renderControl('playpause', true)} ${this.#renderControl('loop')}
       ${this.displayMode !== 'xs'
         ? html`<div
             class="flex1 truncate hideXs px4 pr5 textCenter flexNoShrink"
@@ -258,6 +246,7 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
         class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
         @click=${this.#toggleLoop}
         .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
+        .disabled=${controls.loop?.disabled}
         type="loop"
       ></fc-player-button>`;
 
@@ -304,15 +293,6 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
         ></fc-waveform>
       `;
     }
-
-    if (value === 'loop')
-      return html`<fc-player-button
-        class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
-        @click=${this.#toggleLoop}
-        .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
-        .disabled=${controls.loop.disabled}
-        type="loop"
-      ></fc-player-button>`;
 
     if (value === 'label')
       return html`<div
