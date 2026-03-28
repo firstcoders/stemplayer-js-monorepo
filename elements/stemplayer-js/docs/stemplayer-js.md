@@ -6,59 +6,63 @@ A Stem Player web component
 
 ## Properties
 
-| Property           | Attribute            | Modifiers | Type                                             | Default | Description                                      |
-|--------------------|----------------------|-----------|--------------------------------------------------|---------|--------------------------------------------------|
-| `audioContext`     | `audioContext`       |           | `object`                                         |         | Inject a pre instantiated AudioContext           |
-| `audioDuration`    | `audioDuration`      |           |                                                  |         |                                                  |
-| `autoplay`         | `autoplay`           |           | `boolean`                                        | false   | Whether to (attempt) autoplay                    |
-| `collapsed`        | `collapsed`          |           | `boolean`                                        | false   |                                                  |
-| `currentTime`      |                      |           | `number`                                         |         | Set the curentTime of playback, seeking to that time. |
-| `destination`      | `destination`        |           | `object`                                         |         | Inject a pre instantiated destination for the audio context to use |
-| `duration`         | `duration`           |           | `number`                                         |         | overrides the duration                           |
-| `isLoading`        | `isLoading`          |           |                                                  |         |                                                  |
-| `lockRegions`      | `lockRegions`        |           | `boolean`                                        | false   | Enable locking for the region selection          |
-| `loop`             | `loop`               |           | `boolean`                                        | false   | Allows looping (experimental)                    |
-| `noKeyboardEvents` | `no-keyboard-events` |           | `boolean`                                        | false   | Controls the player by keyboard events (e.g. space = start/pause) |
-| `offset`           | `offset`             |           | `number`                                         |         | the offset                                       |
-| `pct`              |                      |           | `number`                                         |         | Sets the currentTime to a pct of total duration, seeking to that time |
-| `regionDuration`   | `regionDuration`     |           |                                                  |         |                                                  |
-| `regionOffset`     | `regionOffset`       |           |                                                  |         |                                                  |
-| `regions`          | `regions`            |           | `boolean`                                        | false   | Enable region selection                          |
-| `slottedElements`  |                      | readonly  | `array`                                          |         |                                                  |
-| `state`            |                      | readonly  | `{ state: any; currentTime: any; offset: any; duration: any; stems: { id: any; src: any; waveform: any; volume: any; muted: any; solo: any; }[]; }` |         | Exports the current state of the player          |
-| `stemComponents`   |                      | readonly  | `array`                                          |         | Get the stem componenents                        |
-| `zoom`             | `zoom`               |           | `number`                                         | 1       | Zoom waveform                                    |
+| Property             | Attribute            | Modifiers | Type                                             | Default                                          | Description                                      |
+|----------------------|----------------------|-----------|--------------------------------------------------|--------------------------------------------------|--------------------------------------------------|
+| `audioContext`       | `audioContext`       |           | `object`                                         |                                                  | Inject a pre instantiated AudioContext           |
+| `audioDuration`      | `audioDuration`      |           |                                                  |                                                  |                                                  |
+| `autoplay`           | `autoplay`           |           | `boolean`                                        | false                                            | Whether to (attempt) autoplay                    |
+| `collapsed`          | `collapsed`          |           | `boolean`                                        | false                                            |                                                  |
+| `controlsComponents` |                      | readonly  | `array`                                          |                                                  |                                                  |
+| `currentTime`        |                      |           | `number`                                         |                                                  | Set the curentTime of playback, seeking to that time. |
+| `destination`        | `destination`        |           | `object`                                         |                                                  | Inject a pre instantiated destination for the audio context to use |
+| `duration`           | `duration`           |           | `number`                                         |                                                  | overrides the duration                           |
+| `isLoading`          | `isLoading`          |           |                                                  |                                                  |                                                  |
+| `lockRegions`        | `lockRegions`        |           | `boolean`                                        | false                                            | Enable locking for the region selection          |
+| `loop`               | `loop`               |           | `boolean`                                        | false                                            | Allows looping (experimental)                    |
+| `noKeyboardEvents`   | `no-keyboard-events` |           | `boolean`                                        | false                                            | Controls the player by keyboard events (e.g. space = start/pause) |
+| `offset`             | `offset`             |           | `number`                                         |                                                  | the offset                                       |
+| `pct`                |                      |           | `number`                                         |                                                  | Sets the currentTime to a pct of total duration, seeking to that time |
+| `pixelsPerSecond`    | `pixelsPerSecond`    |           |                                                  | 0                                                | Pixels per second for waveform rendering (calculated) |
+| `playerState`        |                      |           | `object`                                         | {"currentTime":0,"currentPct":0,"duration":0,"isPlaying":false,"loop":false,"collapsed":false,"peaks":null} |                                                  |
+| `regionDuration`     | `regionDuration`     |           |                                                  |                                                  |                                                  |
+| `regionOffset`       | `regionOffset`       |           |                                                  |                                                  |                                                  |
+| `regions`            | `regions`            |           | `boolean`                                        | false                                            | Enable region selection                          |
+| `slottedElements`    |                      | readonly  | `array`                                          |                                                  |                                                  |
+| `state`              |                      | readonly  | `{ state: any; currentTime: any; offset: any; duration: any; stems: { id: any; src: any; waveform: any; volume: any; muted: any; solo: any; }[]; }` |                                                  | Exports the current state of the player          |
+| `stemComponents`     |                      | readonly  | `array`                                          |                                                  | Get the stem componenents                        |
+| `uiUpdateInterval`   | `ui-update-interval` |           | `number`                                         | 250                                              | How often the UI should update during playback, in milliseconds.<br />Defaults to 50ms (20 times per second). Controls both the player state<br />updates and the timeupdate event emission rate. |
+| `zoom`               | `zoom`               |           | `number`                                         | 1                                                | Zoom waveform                                    |
 
 ## Methods
 
-| Method                        | Type                    | Description    |
-|-------------------------------|-------------------------|----------------|
-| `#getLargeScreenTpl`          | `(): TemplateResult<1>` |                |
-| `#getSmallScreenTpl`          | `(): TemplateResult<1>` |                |
-| `#handleKeypress`             | `(e: any): void`        |                |
-| `#loadStem`                   | `(e: any): void`        |                |
-| `#onRegionChange`             | `(e: any): void`        |                |
-| `#onRegionUpdate`             | `(e: any): void`        |                |
-| `#onToggleCollapse`           | `(): void`              |                |
-| `#onToggleLoop`               | `(): void`              |                |
-| `#recalculatePixelsPerSecond` | `(): void`              |                |
-| `destroy`                     | `(): void`              |                |
-| `pause`                       | `(): any`               | Pause playback |
-| `play`                        | `(): any`               | Start playback |
+| Method                        | Type                    | Description                                      |
+|-------------------------------|-------------------------|--------------------------------------------------|
+| `#getLargeScreenTpl`          | `(): TemplateResult<1>` |                                                  |
+| `#getSmallScreenTpl`          | `(): TemplateResult<1>` |                                                  |
+| `#handleKeypress`             | `(e: any): void`        |                                                  |
+| `#loadStem`                   | `(e: any): void`        |                                                  |
+| `#onRegionUpdate`             | `(e: any): void`        |                                                  |
+| `#onToggleCollapse`           | `(): void`              |                                                  |
+| `#onToggleLoop`               | `(): void`              |                                                  |
+| `#recalculatePixelsPerSecond` | `(): void`              |                                                  |
+| `destroy`                     | `(): void`              |                                                  |
+| `pause`                       | `(): any`               | Pause playback                                   |
+| `play`                        | `(): any`               | Start playback                                   |
+| `recalculateDisplayMode`      | `(): void`              | Recalculate display mode (public API for manual recalculation) |
 
 ## Events
 
-| Event           | Type                           | Description                                      |
-|-----------------|--------------------------------|--------------------------------------------------|
-| `end`           |                                | Fires when the player reaches the end of the playback |
-| `loading-end`   |                                | Fires when the player completes loading data     |
-| `loading-start` |                                | Fires when the player starts loading data        |
-| `pause`         |                                | Fires when the player pauses playback            |
-| `peaks`         | `CustomEvent<{ peaks: any; }>` |                                                  |
-| `resize`        |                                |                                                  |
-| `seek`          |                                | Fires when the player seeks                      |
-| `start`         |                                | Fires when the player starts playing             |
-| `timeupdate`    |                                | Fires the player progresses                      |
+| Event           | Type                                             | Description                                      |
+|-----------------|--------------------------------------------------|--------------------------------------------------|
+| `end`           |                                                  | Fires when the player reaches the end of the playback |
+| `loading-end`   |                                                  | Fires when the player completes loading data     |
+| `loading-start` |                                                  | Fires when the player starts loading data        |
+| `pause`         |                                                  | Fires when the player pauses playback            |
+| `peaks`         | `CustomEvent<{ peaks: any; }>`                   |                                                  |
+| `resize`        |                                                  |                                                  |
+| `seek`          |                                                  | Fires when the player seeks                      |
+| `start`         |                                                  | Fires when the player starts playing             |
+| `timeupdate`    | `CustomEvent<{ t: any; pct: any; remaining: any; act: any; }>` | Fires the player progresses                      |
 
 ## Slots
 
@@ -94,7 +98,7 @@ A Stem Player web component
 
 A component to render a single stem
 
-**Mixins:** WaveformHostMixin, ResponsiveMixin
+**Mixins:** WaveformHostMixin, PlayerStateConsumerMixin, ResponsiveConsumerMixin
 
 ## Properties
 
@@ -112,16 +116,15 @@ A component to render a single stem
 
 ## Methods
 
-| Method                  | Type                                             |
-|-------------------------|--------------------------------------------------|
-| `#getLargeScreenTpl`    | `(): TemplateResult<1>`                          |
-| `#getSmallScreenTpl`    | `(): TemplateResult<1>`                          |
-| `#onZoominClick`        | `(): void`                                       |
-| `#onZoomoutClick`       | `(): void`                                       |
-| `#renderControl`        | `(value: any, mandatory: any): "" \| TemplateResult<1>` |
-| `#toggleLoop`           | `(e: any): void`                                 |
-| `computeWaveformStyles` | `(): { waveColor: string; progressColor: string; devicePixelRatio: number; barGap: number; barWidth: number; } \| { waveColor: any; progressColor: any; barWidth: any; barGap: any; pixelRatio: any; controlsWaveColor: any; controlsProgressColor: any; }` |
-| `isControlEnabled`      | `(value: any): boolean`                          |
+| Method               | Type                                             |
+|----------------------|--------------------------------------------------|
+| `#getLargeScreenTpl` | `(): TemplateResult<1>`                          |
+| `#getSmallScreenTpl` | `(): TemplateResult<1>`                          |
+| `#onZoominClick`     | `(): void`                                       |
+| `#onZoomoutClick`    | `(): void`                                       |
+| `#renderControl`     | `(value: any, mandatory: any): "" \| TemplateResult<1>` |
+| `#toggleLoop`        | `(e: any): void`                                 |
+| `isControlEnabled`   | `(value: any): boolean`                          |
 
 ## Events
 
@@ -136,7 +139,6 @@ A component to render a single stem
 | `controls:seeking`  | `CustomEvent<any>`    |
 | `controls:zoom:in`  |                       |
 | `controls:zoom:out` |                       |
-| `resize`            |                       |
 
 ## CSS Custom Properties
 
@@ -150,7 +152,7 @@ A component to render a single stem
 
 A component to render a single stem
 
-**Mixins:** WaveformHostMixin, ResponsiveMixin
+**Mixins:** WaveformHostMixin, PlayerStateConsumerMixin, ResponsiveConsumerMixin
 
 ## Properties
 
@@ -161,7 +163,6 @@ A component to render a single stem
 | `label`             | `label`             |           | `string`  |         | The label to display               |
 | `muted`             | `muted`             |           | `boolean` |         |                                    |
 | `peaks`             |                     | readonly  | `array`   |         |                                    |
-| `row`               |                     | readonly  |           |         |                                    |
 | `solo`              | `solo`              |           | `string`  | "off"   |                                    |
 | `src`               | `src`               |           | `string`  |         | The url of the audio file          |
 | `volume`            | `volume`            |           | `number`  |         | Set the volume                     |
@@ -171,18 +172,16 @@ A component to render a single stem
 
 ## Methods
 
-| Method                  | Type                                             | Description                                      |
-|-------------------------|--------------------------------------------------|--------------------------------------------------|
-| `computeWaveformStyles` | `(): { waveColor: string; progressColor: string; devicePixelRatio: number; barGap: number; barWidth: number; } \| { waveColor: any; progressColor: any; barWidth: any; barGap: any; pixelRatio: any; controlsWaveColor: any; controlsProgressColor: any; }` |                                                  |
-| `load`                  | `(controller: any): Promise<void>`               |                                                  |
-| `requestLoad`           | `(): void`                                       | When the src changes, trigger a request to reload the stem (in the context of the player) |
-| `unload`                | `(): void`                                       |                                                  |
+| Method        | Type                               | Description                                      |
+|---------------|------------------------------------|--------------------------------------------------|
+| `load`        | `(controller: any): Promise<void>` |                                                  |
+| `requestLoad` | `(): void`                         | When the src changes, trigger a request to reload the stem (in the context of the player) |
+| `unload`      | `(): void`                         |                                                  |
 
 ## Events
 
 | Event               | Type               |
 |---------------------|--------------------|
-| `resize`            |                    |
 | `stem:load:end`     |                    |
 | `stem:load:error`   | `CustomEvent<any>` |
 | `stem:load:request` |                    |
@@ -193,14 +192,15 @@ A component to render a single stem
 
 An area that represents the timeline providing functionality to select regions
 
-**Mixins:** ResponsiveMixin
+**Mixins:** PlayerStateConsumerMixin, ResponsiveConsumerMixin
 
 ## Properties
 
-| Property    | Modifiers | Type                                    | Description                                      |
-|-------------|-----------|-----------------------------------------|--------------------------------------------------|
-| `dragState` | readonly  | `{ offset: number; duration: number; }` | Gets the current selection state.<br /><br />When a handle is being dragged, we return the public properties<br />(which are updated by the handle-drag code). Otherwise, we compute<br />the state from the normal region drag selection. |
-| `horizon`   | readonly  | `{ left: any; right: number; }`         | The horizon represents the limit in which mouse events matter. It coincides with the area where the waveforms are rendered<br />We do not simply render an absolutely positioned overlay and listen to events on that element, since this would disrupt the normal<br />event paths, and would prevent us from e.g. listening to click events on a inner element such as a stem. |
+| Property        | Modifiers | Type                                    | Description                                      |
+|-----------------|-----------|-----------------------------------------|--------------------------------------------------|
+| `dragState`     | readonly  | `{ offset: number; duration: number; }` | Gets the current selection state.<br /><br />When a handle is being dragged, we return the public properties<br />(which are updated by the handle-drag code). Otherwise, we compute<br />the state from the normal region drag selection. |
+| `horizon`       | readonly  | `{ left: any; right: number; }`         | The horizon represents the limit in which mouse events matter. It coincides with the area where the waveforms are rendered<br />We do not simply render an absolutely positioned overlay and listen to events on that element, since this would disrupt the normal<br />event paths, and would prevent us from e.g. listening to click events on a inner element such as a stem. |
+| `waveformWidth` | readonly  | `number`                                |                                                  |
 
 ## Methods
 
@@ -224,16 +224,3 @@ An area that represents the timeline providing functionality to select regions
 | `region:pre-update` | `CustomEvent<{ offset: number; duration: number; }>` |
 | `region:seek`       | `CustomEvent<number>`                            |
 | `region:update`     | `CustomEvent<{ offset: number; duration: number; }>` |
-| `resize`            |                                                  |
-
-
-# stemplayer-js-row
-
-A component to render a single stem
-
-## Properties
-
-| Property       | Attribute     | Modifiers | Type                  | Description                                      |
-|----------------|---------------|-----------|-----------------------|--------------------------------------------------|
-| `displayMode`  | `displayMode` |           | `string`              |                                                  |
-| `nonFlexWidth` |               | readonly  | `number \| undefined` | Returns the combined width of the non fluid (flex) containers |
