@@ -72,6 +72,7 @@ export class FcPlayerButton extends LitElement {
     return html`<button
       ?disabled=${this.disabled}
       type="button"
+      title=${this.label || this.type}
       aria-label=${this.label || this.type}
     >
       <span aria-hidden="true">${icons[this.type]}</span>
