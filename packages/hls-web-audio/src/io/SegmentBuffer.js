@@ -20,6 +20,7 @@ export default class SegmentBuffer {
     const loader = new SegmentLoader();
     this.#loader = loader;
     this.loading = true;
+    let loadHandle;
 
     const promise = loader
       .load(this.src, this.fetchOptions)
@@ -42,7 +43,7 @@ export default class SegmentBuffer {
         }
       });
 
-    const loadHandle = {
+    loadHandle = {
       promise,
       cancel: () => this.cancel(),
     };
