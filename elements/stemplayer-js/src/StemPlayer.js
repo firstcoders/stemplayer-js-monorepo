@@ -436,7 +436,11 @@ export class FcStemPlayer extends ResponsiveLitElement {
     });
 
     controller.on('pause', () => {
-      this.#updatePlayerState({ isPlaying: false });
+      this.#updatePlayerState({
+        isPlaying: false,
+        currentTime: controller.currentTime,
+        currentPct: controller.pct,
+      });
     });
 
     this.addEventListener('resize', () => {
