@@ -254,6 +254,8 @@ export class Workspace extends ResponsiveConsumerLitElement {
 
   #onMouseDown(e) {
     if (this.lockRegions) return;
+    if (e.target.closest && e.target.closest('fc-player-button')) return;
+
     const { offsetX, offsetWidth } = this.resolveOffsets(e);
 
     if (this.isDraggingRegion) {
@@ -353,9 +355,17 @@ export class Workspace extends ResponsiveConsumerLitElement {
   }
 
   #onMouseUp() {
+    const isClick =
+      this.#mouseDownTime && new Date() - this.#mouseDownTime < 200;
+
     // Only handle regular region selection if we weren't dragging handles
     // If we're finishing a normal region selection drag, dispatch an event.
-    if (this.#mouseMoveWidth) {
+    // We ignore if the interaction was so fast that it's clearly a click/tap rather than a deliberate drag
+    if (
+      this.#mouseMoveWidth &&
+      Math.abs(this.#mouseMoveWidth) > 3 &&
+      !isClick
+    ) {
       this.dispatchEvent(
         new CustomEvent('region:change', {
           detail: this.dragState,
@@ -365,9 +375,9 @@ export class Workspace extends ResponsiveConsumerLitElement {
       );
     }
 
-    // If we were dragging a handle, dispatch an event with the new offset and duration, which were set explicitly
+    // If we were dragging a region or a handle, dispatch an event with the new offset and duration, which were set explicitly
     // in the mousemove handler. This is to allow the parent to update the region state.
-    if (this.isDraggingRegion) {
+    if (this.isDraggingRegion || this.isDraggingHandle !== undefined) {
       this.dispatchEvent(
         new CustomEvent('region:change', {
           detail: {

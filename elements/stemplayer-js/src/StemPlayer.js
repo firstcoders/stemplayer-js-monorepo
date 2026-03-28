@@ -471,6 +471,9 @@ export class FcStemPlayer extends ResponsiveLitElement {
   }
 
   updated(changedProperties) {
+    let offsetChanged = false;
+    let durationChanged = false;
+
     changedProperties.forEach((oldValue, propName) => {
       if (['loop'].indexOf(propName) !== -1) {
         this.#controller.loop = this.loop;
@@ -481,16 +484,25 @@ export class FcStemPlayer extends ResponsiveLitElement {
         });
       }
       if (['offset'].indexOf(propName) !== -1) {
-        this.#controller.offset = parseFloat(this.offset); // for some reason, the value is sometimes reflected as a string
+        offsetChanged = true;
       }
       if (['duration'].indexOf(propName) !== -1) {
-        this.#controller.playDuration = parseFloat(this.duration); // for some reason, the value is sometimes reflected as a string
+        durationChanged = true;
       }
       if (propName === 'zoom') {
         if (this.zoom < 1) this.zoom = 1; // zomming to smaller than 1 is pointless
         this.#debouncedRecalculatePixelsPerSecond();
       }
     });
+
+    if (offsetChanged || durationChanged) {
+      const parsedOffset = parseFloat(this.offset);
+      const parsedDuration = parseFloat(this.duration);
+      this.#controller.setRegion(
+        Number.isNaN(parsedOffset) ? 0 : parsedOffset,
+        Number.isNaN(parsedDuration) ? undefined : parsedDuration,
+      );
+    }
   }
 
   /**
@@ -803,8 +815,10 @@ export class FcStemPlayer extends ResponsiveLitElement {
 
   #onRegionChange(e) {
     const { offset, duration } = e.detail;
-    this.#controller.offset = offset;
-    this.#controller.playDuration = duration;
+    this.#controller.setRegion(
+      Number.isNaN(parseFloat(offset)) ? 0 : parseFloat(offset),
+      Number.isNaN(parseFloat(duration)) ? undefined : parseFloat(duration),
+    );
   }
 
   #onRegionUpdate(e) {
