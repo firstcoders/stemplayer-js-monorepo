@@ -36,6 +36,23 @@ export default class PlaybackTimeline {
     return this.#offset;
   }
 
+  setRegion(offset, playDuration) {
+    if (typeof offset !== 'number')
+      throw new TypeError('The property "offset" must be of type number');
+    if (playDuration && typeof playDuration !== 'number')
+      throw new TypeError('The property "playDuration" must be of type number');
+
+    const offsetChanged = this.#offset !== offset;
+    const durationChanged = this.#playDuration !== playDuration;
+
+    this.#offset = offset;
+    this.#playDuration = playDuration;
+
+    // notify after both have been set, so they don't trigger intermediate incomplete bounds
+    if (offsetChanged) this.controller.notifyUpdated('offset', this.#offset);
+    if (durationChanged) this.controller.notifyUpdated('playDuration', this.playDuration);
+  }
+
   get rawCurrentTime() {
     return this.adjustedStart !== undefined
       ? this.controller.ac.currentTime - this.adjustedStart

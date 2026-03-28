@@ -154,6 +154,10 @@ export default class Controller extends Observer {
     this.timeline.adjustedStart = v;
   }
 
+  setRegion(offset, playDuration) {
+    this.timeline.setRegion(offset, playDuration);
+  }
+
   // --- Notifications & Events ---
   end() {
     this.engine.reset();

@@ -39,6 +39,7 @@ export default class Track {
 
   #reset() {
     this.scheduler.reset();
+    this.scheduler.runSchedulePass(this.controller.currentTimeframe, true);
   }
 
   destroy() {
