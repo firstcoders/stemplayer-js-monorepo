@@ -172,9 +172,10 @@ export class FcRange extends LitElement {
    * This avoids layout/style recalculation on every playback tick.
    */
   set value(val) {
-    this._value = val;
+    const num = val == null ? 0 : Number(val);
+    this._value = Number.isNaN(num) ? 0 : num;
     const input = this.shadowRoot?.querySelector('input');
-    if (input) input.value = val ?? 0;
+    if (input) input.value = String(this._value);
   }
 
   get value() {

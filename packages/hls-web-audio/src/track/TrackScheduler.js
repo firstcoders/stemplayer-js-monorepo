@@ -130,9 +130,9 @@ export default class TrackScheduler {
     while (segment && accumulatedLookahead < LOOKAHEAD_DURATION_SECONDS) {
       // If we crossed the timeframe boundary, wrap around or stop
       if (segment.start >= timeframe.end) {
-        if (timeframe.loop) {
+        if (this.track.controller.loop) {
           // Logically loop around to the timeframe start
-          segment = this.stack.getAt(timeframe.start);
+          segment = this.stack.getAt(timeframe.offset);
           if (!segment) break; // safety fallback
         } else {
           break; // Stop looking once outside of the buffering window

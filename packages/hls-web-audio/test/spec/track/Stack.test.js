@@ -49,7 +49,7 @@ describe('stack', () => {
       const element = stack.head;
       element.$inTransit = true;
 
-      expect(element.$inTransit);
+      expect(element.$inTransit).equal(true);
 
       stack.ack(element);
 
@@ -92,9 +92,9 @@ describe('stack', () => {
     it('cancels any elements that are loading', () => {
       stack.disconnectAll();
 
-      expect(stack.head.cancel.calledOnce);
-      expect(stack.head.next.cancel.calledOnce);
-      expect(stack.head.next.next.cancel.calledOnce);
+      expect(stack.head.cancel.calledOnce).equal(true);
+      expect(stack.head.next.cancel.calledOnce).equal(true);
+      expect(stack.head.next.next.cancel.calledOnce).equal(true);
     });
 
     it('disconnects any elements that are ready', () => {

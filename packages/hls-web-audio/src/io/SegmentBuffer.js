@@ -17,10 +17,11 @@ export default class SegmentBuffer {
     if (this.fetchFailed) return { promise: Promise.reject(new Error('Fetch failed')) };
     if (this.loading && this.loadHandle) return this.loadHandle;
 
-    this.#loader = new SegmentLoader();
+    const loader = new SegmentLoader();
+    this.#loader = loader;
     this.loading = true;
 
-    const promise = this.#loader
+    const promise = loader
       .load(this.src, this.fetchOptions)
       .then((arrayBuffer) => {
         this.#arrayBuffer = arrayBuffer;
@@ -32,15 +33,21 @@ export default class SegmentBuffer {
         throw err;
       })
       .finally(() => {
-        this.loading = false;
-        this.loadHandle = undefined;
-        this.#loader = null;
+        if (this.#loader === loader) {
+          this.#loader = null;
+          this.loading = false;
+        }
+        if (this.loadHandle === loadHandle) {
+          this.loadHandle = undefined;
+        }
       });
 
-    this.loadHandle = {
+    const loadHandle = {
       promise,
       cancel: () => this.cancel(),
     };
+
+    this.loadHandle = loadHandle;
 
     return this.loadHandle;
   }

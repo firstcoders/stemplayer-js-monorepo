@@ -44,6 +44,7 @@ export default class Track {
 
   destroy() {
     this.cancel?.();
+    this.scheduler?.reset();
 
     this.controller.unobserve(this);
     this.controller = null;
@@ -55,6 +56,11 @@ export default class Track {
 
     this.stack.destroy();
     this.stack = null;
+
+    if (this.gainNode) {
+      this.gainNode.disconnect();
+      this.gainNode = null;
+    }
   }
 
   set duration(duration) {
