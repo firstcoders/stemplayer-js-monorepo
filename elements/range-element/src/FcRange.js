@@ -40,7 +40,7 @@ export class FcRange extends LitElement {
         [type='range']::-webkit-slider-runnable-track {
           cursor: default;
           height: 0.188rem;
-          transition: all 0.2s ease;
+
           width: 100%;
           box-shadow:
             0rem 0rem 0rem rgba(0, 0, 0, 0.2),
@@ -76,7 +76,7 @@ export class FcRange extends LitElement {
             0 0 0rem rgba(13, 13, 13, 0.2);
           cursor: default;
           height: 0.188rem;
-          transition: all 0.2s ease;
+
           width: 100%;
           background: grey;
           border: 0rem solid #cfd8dc;
@@ -105,7 +105,7 @@ export class FcRange extends LitElement {
         [type='range']::-ms-track {
           cursor: default;
           height: 0.188rem;
-          transition: all 0.2s ease;
+
           width: 100%;
           background: transparent;
           border-color: transparent;
@@ -159,12 +159,27 @@ export class FcRange extends LitElement {
 
   static get properties() {
     return {
-      value: { type: Number },
+      value: { type: Number, hasChanged: () => false },
       min: { type: Number },
       max: { type: Number },
       step: { type: Number },
       label: { type: String },
     };
+  }
+
+  /**
+   * Set value directly on the underlying input without triggering a Lit re-render.
+   * This avoids layout/style recalculation on every playback tick.
+   */
+  set value(val) {
+    const num = val == null ? 0 : Number(val);
+    this._value = Number.isNaN(num) ? 0 : num;
+    const input = this.shadowRoot?.querySelector('input');
+    if (input) input.value = String(this._value);
+  }
+
+  get value() {
+    return this._value;
   }
 
   constructor() {
