@@ -1,5 +1,5 @@
 import Observer from './observer.js';
-import AudioContext from './lib/audio-context.js';
+import AudioContext from './lib/AudioContext.js';
 import { fadeIn, fadeOut } from './lib/fade.js';
 import isIOS from './lib/isIOS';
 import unmuteAudioContext from './lib/unmuteAudioContext.js';
@@ -364,8 +364,10 @@ class Controller extends Observer {
     });
   }
 
+  #timeframe = new Timeframe();
+
   get currentTimeframe() {
-    return new Timeframe({
+    return this.#timeframe.update({
       adjustedStart: this.adjustedStart,
       adjustedEnd: this.adjustedEnd,
       currentTime: this.currentTime,
