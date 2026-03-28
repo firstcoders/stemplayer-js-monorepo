@@ -141,6 +141,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
   };
 
   #hoverRafId = null;
+
   #mouseMoveRafId = null;
 
   constructor() {

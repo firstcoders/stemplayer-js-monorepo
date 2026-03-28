@@ -1,9 +1,9 @@
 import { html, css } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { ContextProvider } from '@lit/context';
-import { playerStateContext } from './contexts.js';
 import Controller from '@firstcoders/hls-web-audio/core/AudioController.js';
 import Peaks from '@firstcoders/waveform-element/Peaks.js';
+import { playerStateContext } from './contexts.js';
 import { ResponsiveLitElement } from './ResponsiveLitElement.js';
 import { FcStemPlayerControls as ControlComponent } from './StemPlayerControls.js';
 import { FcStemPlayerStem as StemComponent } from './StemPlayerStem.js';
@@ -300,13 +300,12 @@ export class FcStemPlayer extends ResponsiveLitElement {
     let tUiNext;
     let lastTickTime = 0;
     const uiTick = timestamp => {
-      if (!timestamp) timestamp = performance.now();
+      const currentTimestamp = timestamp || performance.now();
 
-      if (timestamp - lastTickTime >= this.uiUpdateInterval) {
-        lastTickTime = timestamp;
+      if (currentTimestamp - lastTickTime >= this.uiUpdateInterval) {
+        lastTickTime = currentTimestamp;
 
-        const t = controller.currentTime;
-        const pct = controller.pct;
+        const { currentTime: t, pct } = controller;
 
         // Push clock values directly to children — bypassing ContextProvider entirely
         // avoids triggering the ContextConsumer cascade (12+ microtasks per tick)
@@ -670,7 +669,7 @@ export class FcStemPlayer extends ResponsiveLitElement {
     let changed = currentData.length !== this.#lastPeaksData.length;
 
     if (!changed) {
-      for (let i = 0; i < currentData.length; i++) {
+      for (let i = 0; i < currentData.length; i += 1) {
         if (currentData[i] !== this.#lastPeaksData[i]) {
           changed = true;
           break;
