@@ -17,16 +17,15 @@ export default css`
   }
 
   .bgControls {
-    background-color: var(
-      --stemplayer-js-row-controls-background-color,
-      black
-    );
+    background-color: var(--stemplayer-js-row-controls-background-color, black);
   }
 
   .bgEnd {
-    background-color: var(
-      --stemplayer-js-row-end-background-color,
-      black
-    );
+    background-color: var(--stemplayer-js-row-end-background-color, black);
+  }
+
+  .hRow {
+    line-height: var(--stemplayer-js-row-height, 4.5rem);
+    height: var(--stemplayer-js-row-height, 4.5rem);
   }
 `;
