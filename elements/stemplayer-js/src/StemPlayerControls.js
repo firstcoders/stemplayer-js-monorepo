@@ -1,12 +1,5 @@
 import { html, css } from 'lit';
-import { ResponsiveConsumerLitElement } from './ResponsiveConsumerLitElement.js';
-import { WaveformHostMixin } from './mixins/WaveformHostMixin.js';
-import gridStyles from './styles/grid.js';
-import flexStyles from './styles/flex.js';
-import spacingStyles from './styles/spacing.js';
-import typographyStyles from './styles/typography.js';
-import bgStyles from './styles/backgrounds.js';
-import utilityStyle from './styles/utilities.js';
+import { StemPlayerBaseRow } from './StemPlayerBaseRow.js';
 import formatSeconds from './lib/format-seconds.js';
 import debounce from './lib/debounce.js';
 
@@ -16,17 +9,10 @@ import debounce from './lib/debounce.js';
  * @cssprop [--stemplayer-js-controls-color]
  * @cssprop [--stemplayer-js-controls-background-color]
  */
-export class FcStemPlayerControls extends WaveformHostMixin(
-  ResponsiveConsumerLitElement,
-) {
+export class FcStemPlayerControls extends StemPlayerBaseRow {
   static get styles() {
     return [
-      gridStyles,
-      flexStyles,
-      spacingStyles,
-      typographyStyles,
-      bgStyles,
-      utilityStyle,
+      ...super.styles,
       css`
         :host {
           --fc-player-button-color: var(
@@ -39,51 +25,12 @@ export class FcStemPlayerControls extends WaveformHostMixin(
           --stemplayer-js-row-controls-background-color: transparent;
           --stemplayer-js-row-end-background-color: transparent;
         }
-
-        .stem-row {
-          position: relative;
-          line-height: var(--stemplayer-js-row-height, 4.5rem);
-          height: var(--stemplayer-js-row-height, 4.5rem);
-          user-select: none;
-        }
-
-        .wControls {
-          width: var(--stemplayer-js-row-controls-width);
-        }
-
-        .wEnd {
-          min-width: var(--stemplayer-js-row-end-width);
-        }
-
-        .bgControls {
-          background-color: var(
-            --stemplayer-js-row-controls-background-color,
-            black
-          );
-        }
-
-        .bgEnd {
-          background-color: var(
-            --stemplayer-js-row-end-background-color,
-            black
-          );
-        }
       `,
     ];
   }
 
   static get properties() {
     return {
-      /**
-       * The label to display
-       */
-      label: { type: String },
-
-      /**
-       * The duration of the track
-       */
-      duration: { type: Number },
-
       /**
        * The current time of playback
        */
@@ -93,11 +40,6 @@ export class FcStemPlayerControls extends WaveformHostMixin(
        * The peaks data that are to be used for displaying the waveform
        */
       peaks: { type: Object },
-
-      /**
-       * The percentage of the current time
-       */
-      currentPct: { type: Number, hasChanged: () => false },
 
       /**
        * The playing state
@@ -142,19 +84,13 @@ export class FcStemPlayerControls extends WaveformHostMixin(
     return this._currentTime;
   }
 
-  set currentPct(val) {
-    this._currentPct = val;
+  updateProgress(val) {
+    super.updateProgress(val);
     if (this.shadowRoot) {
       this.shadowRoot.querySelectorAll('fc-range.js-progress').forEach(el => {
         el.value = val * 100;
       });
-      const waveform = this.shadowRoot.querySelector('fc-waveform');
-      if (waveform) waveform.progress = val;
     }
-  }
-
-  get currentPct() {
-    return this._currentPct;
   }
 
   constructor() {
@@ -163,15 +99,7 @@ export class FcStemPlayerControls extends WaveformHostMixin(
     this.controls = ['playpause', 'loop', 'progress', 'duration', 'time'];
   }
 
-  render() {
-    return html`<div>
-      ${this.displayMode === 'lg'
-        ? this.#getLargeScreenTpl()
-        : this.#getSmallScreenTpl()}
-    </div>`;
-  }
-
-  #getLargeScreenTpl() {
+  renderLargeScreen() {
     return html`<div class="stem-row dFlex h100">
       <div class="wControls stickLeft bgControls z999 dFlex h100">
         ${this.#renderControl('playpause', true)} ${this.#renderControl('loop')}
@@ -198,7 +126,7 @@ export class FcStemPlayerControls extends WaveformHostMixin(
     </div>`;
   }
 
-  #getSmallScreenTpl() {
+  renderSmallScreen() {
     return html`<div class="stem-row dFlex h100 overflowHidden">
       <fc-player-button
         class="w2 flexNoShrink"
