@@ -47,9 +47,9 @@ describe('controller', () => {
         beforeEach(() => {
           controller = new Controller();
           originalTick = controller.engine._engineTick;
-          controller.engine._engineTick = function () {
-            ticks++;
-            originalTick.apply(this, arguments);
+          controller.engine._engineTick = function engineTickSpy(...args) {
+            ticks += 1;
+            originalTick.apply(this, args);
           };
         });
 
@@ -158,10 +158,10 @@ describe('controller', () => {
 
     it('stops ticking', async () => {
       let ticks = 0;
-      let originalTick = controller.engine._engineTick;
-      controller.engine._engineTick = function () {
+      const originalTick = controller.engine._engineTick;
+      controller.engine._engineTick = function engineTickSpy(...args) {
         ticks += 1;
-        if (originalTick) originalTick.apply(this, arguments);
+        if (originalTick) originalTick.apply(this, args);
       };
 
       await controller.play();
@@ -356,15 +356,17 @@ describe('controller', () => {
 
       it('schedules the "tick" timeout', async () => {
         let called = false;
-        let originalTick = controller.engine._engineTick;
-        controller.engine._engineTick = function () {
+        const originalTick = controller.engine._engineTick;
+        controller.engine._engineTick = function engineTickSpy(...args) {
           called = true;
-          if (originalTick) originalTick.apply(this, arguments);
+          if (originalTick) originalTick.apply(this, args);
         };
 
         controller.play();
 
-        await new Promise((done) => setTimeout(done, 100));
+        await new Promise((done) => {
+          setTimeout(done, 100);
+        });
 
         expect(called).to.be.true;
         controller.engine._engineTick = originalTick;
@@ -401,10 +403,10 @@ describe('controller', () => {
     // it no longer stops the tick timeout
     it('stops the "tick" timeout', async () => {
       let ticks = 0;
-      let originalTick = controller.engine._engineTick;
-      controller.engine._engineTick = function () {
+      const originalTick = controller.engine._engineTick;
+      controller.engine._engineTick = function engineTickSpy(...args) {
         ticks += 1;
-        if (originalTick) originalTick.apply(this, arguments);
+        if (originalTick) originalTick.apply(this, args);
       };
 
       // wait for a few ticks

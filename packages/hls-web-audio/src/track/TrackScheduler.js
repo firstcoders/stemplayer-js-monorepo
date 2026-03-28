@@ -40,18 +40,20 @@ export default class TrackScheduler {
 
     // Immediately mark them as in-transit to prevent concurrent runSchedulePass calls
     // (triggered by rapid ticks) from picking up the same segments before the loop reaches them.
-    for (const segment of segments) {
+    segments.forEach((segment) => {
       segment.$inTransit = true;
-    }
+    });
 
-    for (const segment of segments) {
-      // Re-check just in case they were ready'd or disconnected externally
-      if (!segment.isReady) {
-        await this.scheduleAt(timeframe, segment);
-      } else {
-        segment.$inTransit = false;
-      }
-    }
+    await Promise.all(
+      segments.map(async (segment) => {
+        // Re-check just in case they were ready'd or disconnected externally
+        if (!segment.isReady) {
+          await this.scheduleAt(timeframe, segment);
+        } else {
+          segment.$inTransit = false;
+        }
+      }),
+    );
 
     this.#queueNextPass(timeframe);
   }
@@ -65,7 +67,7 @@ export default class TrackScheduler {
 
     // We enforce a minimum safe wait time so it doesn't spin wildly,
     // but caps out to pause/background safeties.
-    if (waitMs < 0 || isNaN(waitMs)) waitMs = 0;
+    if (waitMs < 0 || Number.isNaN(waitMs)) waitMs = 0;
 
     // We only wait a maximum of 1000ms while paused, just to ensure if the state
     // changes beneath us the scheduler will eventually catch up and re-sync.
@@ -162,14 +164,18 @@ export default class TrackScheduler {
     const evictQueue = [];
 
     let lookbehind = currentSegment;
-    for (let i = 0; i < 4; i++) {
+    let i = 0;
+    while (i < 4) {
       if (lookbehind) lookbehind = lookbehind.prev;
+      i += 1;
     }
     if (lookbehind) evictQueue.push(lookbehind);
 
     let lookahead = currentSegment;
-    for (let i = 0; i < 4; i++) {
+    i = 0;
+    while (i < 4) {
       if (lookahead) lookahead = lookahead.next;
+      i += 1;
     }
     if (lookahead) evictQueue.push(lookahead);
 

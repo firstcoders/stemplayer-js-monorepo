@@ -132,6 +132,12 @@ export default class Controller extends Observer {
   get rawCurrentTime() {
     return this.timeline.rawCurrentTime;
   }
+
+  /** @deprecated use set playDuration */
+  set duration(v) {
+    this.timeline.playDuration = v;
+  }
+
   get duration() {
     return this.timeline.audioDuration;
   }
@@ -148,11 +154,6 @@ export default class Controller extends Observer {
     this.timeline.adjustedStart = v;
   }
 
-  /** @deprecated use set playDuration */
-  set duration(v) {
-    this.timeline.playDuration = v;
-  }
-
   // --- Notifications & Events ---
   end() {
     this.engine.reset();
@@ -165,7 +166,6 @@ export default class Controller extends Observer {
     if (event === 'loading-end' && this.canPlay && this.isBuffering) this.engine.bufferingEnd();
     if (event === 'error') {
       this.fireEvent('error', payload);
-      console.error(payload);
     }
     if (event === 'init') {
       this.fireEvent('init', payload);

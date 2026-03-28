@@ -30,7 +30,7 @@ describe('stack', () => {
 
   describe('#push', () => {
     it('adds elements to the stack', () => {
-      expect(stack.length === 3);
+      expect(stack.length).equal(3);
     });
 
     it('sets the correct start time', () => {
@@ -104,9 +104,9 @@ describe('stack', () => {
 
       stack.disconnectAll();
 
-      expect(stack.head.disconnect.calledOnce);
-      expect(!stack.head.next.disconnect.calledOnce);
-      expect(stack.head.next.next.disconnect.calledOnce);
+      expect(stack.head.disconnect.calledOnce).equal(true);
+      expect(stack.head.next.disconnect.calledOnce).equal(false);
+      expect(stack.head.next.next.disconnect.calledOnce).equal(true);
     });
 
     it('acks any elements that are in transit', () => {
@@ -114,7 +114,7 @@ describe('stack', () => {
 
       stack.disconnectAll();
 
-      expect(stack.head.$inTransit === false);
+      expect(stack.head.$inTransit).equal(false);
     });
 
     it('preserves loading elements if they are close to the target timeframe', () => {
@@ -124,8 +124,8 @@ describe('stack', () => {
       const timeframe = { currentTime: 12 }; // within 15 seconds
       stack.disconnectAll(timeframe);
 
-      expect(stack.head.cancel.called).to.be.false;
-      expect(stack.head.$inTransit).to.be.true; // did not ack
+      expect(stack.head.cancel.called).equal(false);
+      expect(stack.head.$inTransit).equal(true); // did not ack
     });
 
     it('cancels loading elements if they are far from the target timeframe', () => {
@@ -135,8 +135,8 @@ describe('stack', () => {
       const timeframe = { currentTime: 30 }; // further than 15 seconds
       stack.disconnectAll(timeframe);
 
-      expect(stack.head.cancel.calledOnce).to.be.true;
-      expect(stack.head.$inTransit).to.be.false; // acked
+      expect(stack.head.cancel.calledOnce).equal(true);
+      expect(stack.head.$inTransit).equal(false); // acked
     });
   });
 
@@ -146,13 +146,12 @@ describe('stack', () => {
     });
   });
 
-  describe('#getAt()', () => { 
-    it('returns element at a time t', () => { 
-      expect(stack.getAt(1.0)).equal(stack.head); 
-      expect(stack.getAt(2.3)).equal(stack.head.next); 
-      expect(stack.getAt(4.5)).equal(stack.head.next.next); 
-      expect(stack.getAt(9.9)).equal(undefined); 
-    }); 
+  describe('#getAt()', () => {
+    it('returns element at a time t', () => {
+      expect(stack.getAt(1.0)).equal(stack.head);
+      expect(stack.getAt(2.3)).equal(stack.head.next);
+      expect(stack.getAt(4.5)).equal(stack.head.next.next);
+      expect(stack.getAt(9.9)).equal(undefined);
+    });
   });
-
 });

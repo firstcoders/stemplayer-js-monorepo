@@ -44,7 +44,8 @@ export default class PlaybackEngine {
     const t = this.controller.currentTime;
 
     if (t > this.controller.offset + this.controller.playDuration) {
-      return this.controller.end();
+      this.controller.end();
+      return;
     }
 
     const needsBuffering = this.controller.tracks.some((track) => !track.shouldAndCanPlay);
@@ -63,7 +64,7 @@ export default class PlaybackEngine {
         let timeToNextCheck = this.controller.offset + this.controller.playDuration - t;
 
         // OR until the current ready segments end
-        for (const track of this.controller.tracks) {
+        this.controller.tracks.forEach((track) => {
           const seg = track.stack.getAt(t);
           if (seg && seg.isReady) {
             const timeToSegEnd = seg.end - t;
@@ -71,7 +72,7 @@ export default class PlaybackEngine {
               timeToNextCheck = timeToSegEnd;
             }
           }
-        }
+        });
         waitMs = timeToNextCheck * 1000 - 10;
       } else {
         // If buffering, poll reasonably fast to unpause immediately when data arrives

@@ -267,7 +267,7 @@ describe('hls', () => {
 
         it('loads the next segment and connects it', async () => {
           const current = hls.stack.getAt(0);
-          const next = current.next;
+          const { next } = current;
 
           current.connect = sinon.spy();
           next.connect = sinon.spy();
@@ -291,7 +291,7 @@ describe('hls', () => {
           // await hls.runSchedulePass(); // loads the next one
 
           const current = hls.stack.getAt(0);
-          const next = current.next;
+          const { next } = current;
 
           // sets them as loaded (easier than really loading via runSchedulePass)
           current.sourceNode = {};
