@@ -100,9 +100,9 @@ export default class PlaybackTimeline {
   fixAdjustedStart(t) {
     this.adjustedStart = this.controller.ac.currentTime - t;
     this.controller.fireEvent('seek', {
-      t: this.currentTime,
-      pct: this.pct,
-      remaining: this.remaining,
+      t: this.rawCurrentTime,
+      pct: this.rawCurrentTime / this.audioDuration,
+      remaining: this.audioDuration - this.rawCurrentTime,
     });
   }
 
