@@ -540,7 +540,11 @@ export class FcStemPlayer extends ResponsiveLitElement {
   }
 
   #getLargeScreenTpl() {
-    return html`<div class="relative overflowHidden noSelect">
+    return html`<div
+      class="relative overflowHidden noSelect"
+      role="region"
+      aria-label="Audio Player"
+    >
       <slot name="header" @slotchange=${this.#onSlotChange}></slot>
       <div
         class="scrollWrapper relative"
@@ -571,7 +575,11 @@ export class FcStemPlayer extends ResponsiveLitElement {
   }
 
   #getSmallScreenTpl() {
-    return html`<div class="relative overflowHidden noSelect">
+    return html`<div
+      class="relative overflowHidden noSelect"
+      role="region"
+      aria-label="Audio Player"
+    >
       ${this.isLoading
         ? html`<fc-mask>
             <fc-loader></fc-loader>

@@ -157,14 +157,14 @@ export class FcStemPlayerStem extends StemPlayerBaseRow {
     return html`<div class="stem-row dFlex h100 overflowHidden">
       <fc-player-button
         @click=${this.solo === 'on' ? this.#onUnSoloClick : this.#onSoloClick}
-        .title=${this.solo === 'on' ? 'Disable solo' : 'Solo'}
+        .label=${this.solo === 'on' ? 'Disable solo' : 'Solo'}
         .type=${this.solo === 'on' ? 'unsolo' : 'solo'}
         class="w2 flexNoShrink ${this.solo === 'on' ? 'bgBrand' : ''}"
       ></fc-player-button>
       <fc-player-button
         class="w2 flexNoShrink"
         @click=${this.#toggleMute}
-        .title="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
+        .label="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
         .type="${this.muted || this.volume === 0 ? 'unmute' : 'mute'}"
       ></fc-player-button>
       <fc-slider
@@ -191,13 +191,13 @@ export class FcStemPlayerStem extends StemPlayerBaseRow {
         <fc-player-button
           class="w2 overflowHidden"
           @click=${this.solo === 'on' ? this.#onUnSoloClick : this.#onSoloClick}
-          .title=${this.solo === 'on' ? 'Disable solo' : 'Solo'}
+          .label=${this.solo === 'on' ? 'Disable solo' : 'Solo'}
           .type=${this.solo === 'on' ? 'unsolo' : 'solo'}
         ></fc-player-button>
         <fc-player-button
           class="w2 overflowHidden"
           @click=${this.#toggleMute}
-          .title="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
+          .label="${this.muted || this.volume === 0 ? 'Unmute' : 'Mute'}"
           type="${this.muted || this.volume === 0 ? 'unmute' : 'mute'}"
         ></fc-player-button>
         <fc-range

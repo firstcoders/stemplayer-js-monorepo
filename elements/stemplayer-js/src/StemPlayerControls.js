@@ -141,6 +141,9 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
         : ''}
       <div
         class="w2 truncate textCenter flexNoShrink z99 op75 top right textXs js-currentTime"
+        role="timer"
+        aria-label="Current time"
+        aria-live="off"
       >
         0:00
       </div>
@@ -153,7 +156,9 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
         @change=${this.#debouncedHandleSeek}
       ></fc-range>
       <div class="w2 op75 textCenter textXs">
-        <span class="p2">${formatSeconds(this.duration)}</span>
+        <span class="p2" role="timer" aria-label="Duration"
+          >${formatSeconds(this.duration)}</span
+        >
       </div>
     </div>`;
   }
@@ -240,7 +245,7 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
         class="w2 flexNoShrink"
         .disabled=${!this.duration}
         @click=${this.isPlaying ? this.#onPauseClick : this.#onPlayClick}
-        .title=${this.isPlaying ? 'Pause' : 'Play'}
+        .label=${this.isPlaying ? 'Pause' : 'Play'}
         .type=${this.isPlaying ? 'pause' : 'play'}
       ></fc-player-button>`;
 
@@ -248,7 +253,7 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
       return html`<fc-player-button
         class="w2 flexNoShrink ${this.loop ? '' : 'textMuted'}"
         @click=${this.#toggleLoop}
-        .title=${this.loop ? 'Disable loop' : 'Enable Loop'}
+        .label=${this.loop ? 'Disable loop' : 'Enable Loop'}
         .disabled=${controls.loop?.disabled}
         type="loop"
       ></fc-player-button>`;
@@ -256,14 +261,14 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
     if (value === 'zoom')
       return html`<fc-player-button
           class="w2 flexNoShrink"
-          title="zoom in"
+          label="zoom in"
           type="zoomin"
           .disabled=${controls.zoom.disabled}
           @click=${this.#onZoominClick}
         ></fc-player-button
         ><fc-player-button
           class="w2 flexNoShrink"
-          title="zoom out"
+          label="zoom out"
           type="zoomout"
           .disabled=${controls.zoom.disabled}
           @click=${this.#onZoomoutClick}
@@ -300,25 +305,33 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
     if (value === 'label')
       return html`<div
         class="flex1 w100 truncate hideXs px4 pr5 textCenter flexNoShrink textSm"
-        title=${this.label}
+        label=${this.label}
       >
         ${this.label}
       </div>`;
 
     if (value === 'duration')
       return html`<div class="textCenter w2">
-        <span class="p2 textXs">${formatSeconds(this.duration)}</span>
+        <span class="p2 textXs" role="timer" aria-label="Duration"
+          >${formatSeconds(this.duration)}</span
+        >
       </div>`;
 
     if (value === 'time')
       return html`<div class="w2 textCenter flexNoShrink z99 top right">
-        <span class="p2 textXs js-currentTime">0:00</span>
+        <span
+          class="p2 textXs js-currentTime"
+          role="timer"
+          aria-label="Current time"
+          aria-live="off"
+          >0:00</span
+        >
       </div>`;
 
     if (value === 'download')
       return html`<fc-player-button
         class="w2 flexNoShrink"
-        title="download"
+        label="download"
         type="download"
         .disabled=${controls.download.disabled}
         @click=${this.#onDownloadClick}
@@ -328,7 +341,7 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
       return html`<fc-player-button
         class="w2 flexNoShrink"
         @click=${this.#onToggleCollapseClick}
-        title="toggle"
+        label="toggle"
         type="${controls.collapse.toggled ? 'unfoldmore' : 'unfoldless'}"
       ></fc-player-button>`;
 
