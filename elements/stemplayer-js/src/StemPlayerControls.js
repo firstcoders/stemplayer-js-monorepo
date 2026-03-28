@@ -21,7 +21,10 @@ export class FcStemPlayerControls extends StemPlayerBaseRow {
           );
           display: block;
           color: var(--stemplayer-js-controls-color, inherit);
-          background-color: var(--stemplayer-js-controls-background-color);
+          background-color: var(
+            --stemplayer-js-controls-background-color,
+            transparent
+          );
           --stemplayer-js-row-controls-background-color: transparent;
           --stemplayer-js-row-end-background-color: transparent;
         }

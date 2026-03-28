@@ -53,11 +53,16 @@ export class FcStemPlayer extends ResponsiveLitElement {
           --fc-player-button-color: var(--stemplayer-js-color, white);
           --fc-range-border-color: var(--stemplayer-js-brand-color, #01a4b3);
           --fc-player-button-focus-background-color: var(
-            --stemplayer-js-brand-color
+            --stemplayer-js-brand-color,
+            #01a4b3
           );
-          --fc-range-focus-background-color: var(--stemplayer-js-brand-color);
+          --fc-range-focus-background-color: var(
+            --stemplayer-js-brand-color,
+            #01a4b3
+          );
           --fc-slider-handle-border-right-color: var(
-            --stemplayer-js-brand-color
+            --stemplayer-js-brand-color,
+            #01a4b3
           );
 
           --stemplayer-js-row-controls-width: calc(
