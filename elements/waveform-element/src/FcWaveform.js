@@ -60,6 +60,18 @@ export class FcWaveform extends LitElement {
     padding: { type: Number },
   };
 
+  set progress(val) {
+    this._progress = val;
+    // Bypass Lit's render cycle entirely — directly call the drawer
+    if (this.drawer) {
+      this.drawer.progress(Math.max(0, Math.min(1, val ?? 0)));
+    }
+  }
+
+  get progress() {
+    return this._progress;
+  }
+
   constructor() {
     super();
     this.waveColor = 'white';
@@ -124,9 +136,6 @@ export class FcWaveform extends LitElement {
           this.#updateWidth();
         }
         this.drawPeaks();
-      }
-      if (propName === 'progress') {
-        this.#updateProgress();
       }
       if (
         [

@@ -473,6 +473,7 @@ var F = class extends E {
       (this.halfPixel = 0.5 / e.pixelRatio),
       (this.canvases = []),
       (this.progressWave = null),
+      (this.cursorWave = null),
       (this.EntryClass = y),
       (this.canvasContextAttributes = e.drawingContextAttributes),
       (this.overlap = 2 * Math.ceil(e.pixelRatio / 2)),
@@ -493,18 +494,32 @@ var F = class extends E {
         left: 0,
         top: 0,
         bottom: 0,
-        overflow: 'hidden',
+        width: '100%',
+        display: 'none',
+        boxSizing: 'border-box',
+        pointerEvents: 'none',
+        clipPath: 'inset(0 100% 0 0)',
+      });
+    (this.cursorWave = v(
+      this.wrapper.appendChild(document.createElement('wave')),
+      this.params.vertical,
+    )),
+      this.style(this.cursorWave, {
+        position: 'absolute',
+        zIndex: 4,
+        top: 0,
+        bottom: 0,
         width: '0',
         display: 'none',
         boxSizing: 'border-box',
         borderRightStyle: 'solid',
         pointerEvents: 'none',
-      }),
-      this.addCanvas(),
-      this.updateCursor();
+      });
+    this.addCanvas();
+    this.updateCursor();
   }
   updateCursor() {
-    this.style(this.progressWave, {
+    this.cursorWave && this.style(this.cursorWave, {
       borderRightWidth: this.params.cursorWidth + 'px',
       borderRightColor: this.params.cursorColor,
     });
@@ -573,6 +588,7 @@ var F = class extends E {
       a = Math.round(this.width / this.params.pixelRatio);
     t.updateDimensions(i, a, e, s),
       this.style(this.progressWave, { display: 'block' });
+    this.cursorWave && this.style(this.cursorWave, { display: 'block' });
   }
   clearWave() {
     T(() => {
@@ -769,7 +785,10 @@ var F = class extends E {
     }
   }
   updateProgress(t) {
-    this.style(this.progressWave, { width: t + 'px' });
+    const totalCSSWidth = this.width / this.params.pixelRatio;
+    const rightPx = Math.max(0, totalCSSWidth - t);
+    this.style(this.progressWave, { clipPath: `inset(0 ${rightPx}px 0 0)` });
+    this.cursorWave && this.style(this.cursorWave, { transform: `translateX(${t}px)` });
   }
 };
 export { F as default };
