@@ -20,26 +20,20 @@
     "./animate.js": "./src/animate.js"
   },
   "scripts": {
-    "lint": "eslint --ext .js,.html . --ignore-path .gitignore && prettier \"**/*.js\" --check --ignore-path .gitignore",
-    "format": "eslint --ext .js,.html . --fix --ignore-path .gitignore && prettier \"**/*.js\" --write --ignore-path .gitignore"
+    "lint": "eslint . && prettier \"**/*.js\" --check --ignore-path .gitignore",
+    "format": "eslint . --fix && prettier \"**/*.js\" --write --ignore-path .gitignore"
   },
   "dependencies": {
     "lit": "^3.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",
-    "@open-wc/eslint-config": "^9.2.2",
-    "eslint": "^8.57.1",
-    "eslint-config-prettier": "^8.10.2",
+    "@open-wc/eslint-config": "^13.0.0",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "prettier": "^3.7.4"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@open-wc",
-      "prettier"
-    ]
+    "prettier": "^3.8.1"
   },
   "prettier": {
     "singleQuote": true,

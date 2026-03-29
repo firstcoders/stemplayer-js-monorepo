@@ -42,14 +42,14 @@
     "@bundled-es-modules/chai": "^4.3.7",
     "@web/test-runner-mocha": "^0.9.0",
     "@web/test-runner-playwright": "^0.11.1",
-    "eslint": "^8.57.1",
+    "eslint": "^10.1.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^9.1.2",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-prettier": "^5.5.5",
     "lint-staged": "^16.4.0",
     "mocha": "^10.8.2",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "sinon": "^19.0.5"
   },
   "eslintConfig": {
