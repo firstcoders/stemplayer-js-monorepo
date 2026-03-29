@@ -33,7 +33,7 @@
     "lit": "^3.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.5",
+    "@babel/core": "^7.29.0",
     "@custom-elements-manifest/analyzer": "^0.11.0",
     "@open-wc/eslint-config": "^13.0.0",
     "@open-wc/testing": "^4.0.0",
