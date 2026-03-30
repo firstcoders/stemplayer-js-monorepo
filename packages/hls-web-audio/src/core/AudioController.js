@@ -12,7 +12,7 @@ import PlaybackEngine from './PlaybackEngine.js';
  * @class Controller
  */
 export default class Controller extends Observer {
-  constructor({ ac, acOpts, refreshRate, destination, duration, loop, unmuteAc = true } = {}) {
+  constructor({ ac, acOpts, destination, duration, loop, unmuteAc = true } = {}) {
     super();
 
     this.ac = ac || new AudioContext(acOpts);
@@ -22,7 +22,6 @@ export default class Controller extends Observer {
     this.gainNode = this.ac.createGain();
     this.gainNode.connect(this.destination);
 
-    this.refreshRate = refreshRate || 250;
     this.loop = loop;
 
     this.trackGroup = new TrackGroup();
