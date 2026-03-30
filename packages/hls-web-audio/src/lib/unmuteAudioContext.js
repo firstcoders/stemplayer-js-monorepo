@@ -1,5 +1,10 @@
 // Create an audio context that unmutes on IOS
 // @see https://github.com/swevans/unmute
+/**
+ * Attaches a touch-based iOS unmute helper to an audio context and cleans it up on close.
+ *
+ * @param {BaseAudioContext} ac
+ */
 export default (ac) => {
   const audio = document.createElement('audio');
   audio.controls = false;
