@@ -147,10 +147,6 @@ export class Workspace extends ResponsiveConsumerLitElement {
     pixelsPerSecond: { type: Number },
   };
 
-  #hoverRafId = null;
-
-  #mouseMoveRafId = null;
-
   constructor() {
     super();
 
@@ -306,9 +302,9 @@ export class Workspace extends ResponsiveConsumerLitElement {
           newOffset = 0.0001; // nearly 0, due to a check offset > 0 above in render
         }
 
-        if (newOffset + this.duration > this.totalDuration) {
+        if (newOffset + this.regionDuration > this.totalDuration) {
           // prevent dragging past the end
-          newOffset = this.totalDuration - this.duration;
+          newOffset = this.totalDuration - this.regionDuration;
         }
 
         this.offset = newOffset;
@@ -443,15 +439,6 @@ export class Workspace extends ResponsiveConsumerLitElement {
    *
    * @returns {{offset: Number, duration: Number}}
    */
-  /**
-   * Gets the current selection state.
-   *
-   * When a handle is being dragged, we return the public properties
-   * (which are updated by the handle-drag code). Otherwise, we compute
-   * the state from the normal region drag selection.
-   *
-   * @returns {{offset: Number, duration: Number}}
-   */
   get dragState() {
     const coord1 = this.#mouseDownX || 0;
     const coord2 = this.lastOffsetX || 0;
@@ -477,21 +464,17 @@ export class Workspace extends ResponsiveConsumerLitElement {
   /**
    *@private
    */
-  // eslint-disable-next-line consistent-return
   #onHover(e) {
     if (this.lockRegions) return;
 
     const { offsetX, offsetWidth } = this.resolveOffsets(e);
-    const el = this.shadowRoot.querySelector('.cursor');
-
-    let cursorX = Math.floor(offsetX);
 
     if (offsetX < 0 || offsetX > offsetWidth) {
-      cursorX = -10000;
+      this.style.setProperty('--cursor-x', `-10000px`);
       return;
     }
 
-    this.style.setProperty('--cursor-x', `${cursorX}px`);
+    this.style.setProperty('--cursor-x', `${Math.floor(offsetX)}px`);
 
     this.cursorPosition =
       Math.floor((offsetX / offsetWidth) * this.totalDuration * 1000) / 1000;
@@ -541,7 +524,7 @@ export class Workspace extends ResponsiveConsumerLitElement {
 
       const left = Math.round(this.pixelsPerSecond * this.offset * 1000) / 1000;
       const width =
-        Math.round(this.pixelsPerSecond * this.duration * 1000) / 1000;
+        Math.round(this.pixelsPerSecond * this.regionDuration * 1000) / 1000;
       const right2 = left + width;
 
       if (isRightHandle) {
