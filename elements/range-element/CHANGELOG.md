@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1-beta.1](https://github.com/firstcoders/range-element/compare/@firstcoders/range-element@1.0.1-beta.0...@firstcoders/range-element@1.0.1-beta.1) (2026-03-30)
+
+
+### Bug Fixes
+
+* address Copilot review feedback across tests, docs, and scheduler/buffer logic ([dfdc829](https://github.com/firstcoders/range-element/commit/dfdc829ea31589839983360481891f9a8165436e))
+
+
+
+
+
 ## [1.0.1-beta.0](https://github.com/firstcoders/range-element/compare/@firstcoders/range-element@1.0.0...@firstcoders/range-element@1.0.1-beta.0) (2025-12-24)
 
 **Note:** Version bump only for package @firstcoders/range-element

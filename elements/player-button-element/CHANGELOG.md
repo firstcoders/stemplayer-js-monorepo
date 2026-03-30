@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-beta.0](https://github.com/firstcoders/player-button-element/compare/@firstcoders/player-button-element@1.0.1-beta.0...@firstcoders/player-button-element@1.1.0-beta.0) (2026-03-30)
+
+
+### Features
+
+* **stemplayer-js:** accessability improvements ([a695665](https://github.com/firstcoders/player-button-element/commit/a695665df81a5c482bcc6a1fafc8e404e57b80b1))
+
+
+
+
+
 ## [1.0.1-beta.0](https://github.com/firstcoders/player-button-element/compare/@firstcoders/player-button-element@1.0.0...@firstcoders/player-button-element@1.0.1-beta.0) (2025-12-24)
 
 **Note:** Version bump only for package @firstcoders/player-button-element
