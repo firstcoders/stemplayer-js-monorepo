@@ -14,19 +14,16 @@ export default (ac) => {
   }
 
   const unlock = () => {
-    // Attempt to play the audio and resume the context on user gesture
+    // Play the silent audio to establish the iOS media session.
+    // Once it succeeds, the session is active and the AC will join it
+    // when ac.resume() is called by the engine on the play gesture.
     audio
       .play()
       .then(() => {
-        ac.resume();
-        // Once confirmed running, we can remove the listener
-        if (ac.state === 'running') {
-          window.removeEventListener('touchend', unlock);
-        }
+        window.removeEventListener('touchend', unlock);
       })
       .catch(() => {
-        // Catch DOMException: play() failed because the user didn't interact
-        // Wait for next interaction
+        // DOMException: play() not yet allowed — wait for next interaction
       });
   };
 
